@@ -1,18 +1,16 @@
 # Minuta de reunión
 
 **Curso:** Investigación de Operaciones, TEC, II Semestre 2026
-**Fecha:** AAAA-MM-DD
+**Fecha:** 2026-11-DD
 **Hora de inicio:** HH:MM
 **Hora de finalización:** HH:MM
 
 ## Presentes
 
-- [ ] Nombre Apellido (P1)
-- [ ] Nombre Apellido (P2)
-- [ ] Nombre Apellido (P3)
-- [ ] Nombre Apellido (P4)
-- [ ] Nombre Apellido (P5)
-- [ ] Nombre Apellido (P6)
+- [ ] Fabián Vargas
+- [ ] Yan Torres
+- [ ] Kenni Rodríguez
+- [ ] Kenneth Araya
 
 ## Agenda tratada
 
