@@ -1,0 +1,15 @@
+# EJEMPLO - reemplazar por el problema del grupo
+#
+# Problema de asignación (versión de programación lineal).
+# Si la matriz no es cuadrada, el script la completa con filas o columnas
+# ficticias (valor 0) y lo informa. Este ejemplo tiene 4 agentes y 3 tareas.
+# Se usa en: parte1/python/asignacion.py y parte1/r/asignacion.R
+nombre: Asignación de 4 técnicos a 3 trabajos
+sentido: min                 # min si la matriz es de costos, max si es de rendimiento
+agentes: [Ana, Beto, Carla, Diego]
+tareas: [Trabajo 1, Trabajo 2, Trabajo 3]
+matriz:                      # filas = agentes, columnas = tareas
+  - [9, 2, 7]
+  - [6, 4, 3]
+  - [5, 8, 1]
+  - [7, 6, 9]

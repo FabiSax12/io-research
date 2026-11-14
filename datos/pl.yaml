@@ -1,0 +1,13 @@
+# EJEMPLO - reemplazar por el problema del grupo
+#
+# Programación lineal. Todas las variables son >= 0.
+# Se usa en: parte1/python/pl.py y parte1/r/pl.R
+nombre: Plantas de vidrio (ejemplo de Hillier)
+sentido: max                 # max o min
+variables: [x1, x2]          # nombres de las variables de decisión
+objetivo: [3, 5]             # coeficientes de la función objetivo, en el orden de "variables"
+restricciones:               # al menos 3
+  # signo va SIEMPRE entre comillas: "<=", ">=" o "="
+  - {nombre: Planta 1, coef: [1, 0], signo: "<=", rhs: 4}
+  - {nombre: Planta 2, coef: [0, 2], signo: "<=", rhs: 12}
+  - {nombre: Planta 3, coef: [3, 2], signo: "<=", rhs: 18}

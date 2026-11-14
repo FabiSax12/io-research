@@ -1,0 +1,27 @@
+# EJEMPLO - reemplazar por el problema del grupo
+#
+# Problema de transbordo (minimizar costo). Este ejemplo está DESBALANCEADO (oferta 100 > demanda 80).
+# Se agrega un destino ficticio que absorbe el excedente de oferta.
+# Se usa en: parte2/python/transbordo.py y parte2/r/transbordo.R (con argumento: transbordo_desbalanceado)
+nombre: Red desbalanceada (sobra oferta)
+nodos:
+  # tipo: origen, transbordo o destino
+  # origen -> oferta; destino -> demanda; transbordo -> sin cantidad (0)
+  - {nombre: P1, tipo: origen, oferta: 60}
+  - {nombre: P2, tipo: origen, oferta: 40}
+  - {nombre: T1, tipo: transbordo}
+  - {nombre: T2, tipo: transbordo}
+  - {nombre: D1, tipo: destino, demanda: 30}
+  - {nombre: D2, tipo: destino, demanda: 30}
+  - {nombre: D3, tipo: destino, demanda: 20}
+arcos:                       # solo los arcos que existen; el resto se llena con M
+  - {desde: P1, hasta: T1, costo: 4}
+  - {desde: P1, hasta: T2, costo: 6}
+  - {desde: P2, hasta: T1, costo: 5}
+  - {desde: P2, hasta: T2, costo: 3}
+  - {desde: T1, hasta: T2, costo: 2}
+  - {desde: T1, hasta: D1, costo: 3}
+  - {desde: T1, hasta: D2, costo: 7}
+  - {desde: T2, hasta: D2, costo: 4}
+  - {desde: T2, hasta: D3, costo: 5}
+  - {desde: P1, hasta: D1, costo: 12}

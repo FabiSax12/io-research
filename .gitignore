@@ -1,0 +1,28 @@
+# Entornos y caché de Python
+venv/
+.venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+
+# Archivos de R
+.Rhistory
+.RData
+.Rproj.user/
+.Rapp.history
+
+# Temporales de Office / LibreOffice
+~$*
+.~lock.*#
+*.tmp
+
+# Sistema
+.DS_Store
+Thumbs.db
+
+# Salidas regenerables con `python run_all.py` (las carpetas se conservan con .gitkeep)
+resultados/*
+capturas/*
+!resultados/.gitkeep
+!capturas/.gitkeep
+.atl/

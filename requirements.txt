@@ -1,0 +1,8 @@
+pulp>=3.0,<4
+scipy
+numpy
+pyyaml
+matplotlib
+networkx
+openpyxl
+pytest

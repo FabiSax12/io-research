@@ -1,0 +1,15 @@
+# EJEMPLO - reemplazar por el problema del grupo
+#
+# Problema de transporte (minimizar costo).
+# Si oferta total != demanda total, el script agrega un origen o destino
+# ficticio con costo 0 y lo informa. Este ejemplo está desbalanceado a propósito.
+# Se usa en: parte1/python/transporte.py y parte1/r/transporte.R
+nombre: Distribución desde 3 plantas a 4 clientes
+origenes: [Planta A, Planta B, Planta C]
+destinos: [Cliente 1, Cliente 2, Cliente 3, Cliente 4]
+oferta: [120, 80, 100]       # una por origen (total 300)
+demanda: [80, 60, 70, 60]    # una por destino (total 270)
+costos:                      # filas = orígenes, columnas = destinos
+  - [8, 6, 10, 9]
+  - [9, 12, 13, 7]
+  - [14, 9, 16, 5]

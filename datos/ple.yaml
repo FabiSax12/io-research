@@ -1,0 +1,13 @@
+# EJEMPLO - reemplazar por el problema del grupo
+#
+# Programación lineal entera. Igual que pl.yaml, más la lista de variables enteras.
+# Se usa en: parte1/python/ple.py y parte1/r/ple.R
+nombre: Producción en unidades enteras
+sentido: max
+variables: [x1, x2]
+enteras: [x1, x2]            # variables que deben ser enteras (puede ser un subconjunto)
+objetivo: [5, 4]
+restricciones:
+  - {nombre: Madera, coef: [6, 4], signo: "<=", rhs: 24}
+  - {nombre: Horas, coef: [1, 2], signo: "<=", rhs: 6}
+  - {nombre: Demanda de x2, coef: [0, 1], signo: "<=", rhs: 2}
