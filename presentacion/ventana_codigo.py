@@ -124,6 +124,12 @@ def _agrupar(chars):
     return [tuple(g) for g in grupos]
 
 
+def _lineas_necesarias(codigo, lenguaje, ancho, tam):
+    ancho_char = _fuente("normal", round(tam * ESCALA)).getlength("M") / ESCALA
+    max_col = max(20, int((ancho - 32) / ancho_char))
+    return sum(len(_envolver(l, max_col)) for l in _tokens_por_linea(codigo, lenguaje))
+
+
 def ventana(codigo, ruta_png, ancho, alto=None, lenguaje="python", titulo="", tam=10.0, interlineado=1.45,
             aviso_corte="# ... (continúa en el script)"):
     """Dibuja la ventana y la guarda en ruta_png. ancho/alto/tam en px de lámina.
@@ -133,6 +139,15 @@ def ventana(codigo, ruta_png, ancho, alto=None, lenguaje="python", titulo="", ta
     """
     if isinstance(codigo, (list, tuple)):
         codigo = "\n".join(codigo)
+    if isinstance(tam, tuple):   # (mínimo, máximo): la letra más grande con la que cabe todo el fragmento
+        tam_min, tam_max = tam
+        tam = tam_min
+        t = tam_max
+        while t >= tam_min:
+            if alto is None or _lineas_necesarias(codigo, lenguaje, ancho, t) * t * interlineado <= alto - 26 - 20:
+                tam = t
+                break
+            t -= 0.5
     e = ESCALA
     barra, pad_x, pad_y = 26, 16, 10
     f_normal, f_italica = _fuente("normal", round(tam * e)), _fuente("italica", round(tam * e))

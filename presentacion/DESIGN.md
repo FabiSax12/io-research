@@ -49,7 +49,7 @@ El diseño es fijo; lo que cambia es el contenido. Estas son las únicas traducc
 | Pestaña negra *Summary* | **Resumen** (conclusiones, minutas, referencias) |
 | Portada: año + *Global Outlook* | "2026 / Trabajo de investigación" a 64 px 800 |
 | Nombre del instituto apilado | Instituto / **Tecnológico** / de Costa Rica (solo texto, sin logo) |
-| Franja de embargo | Fecha de la defensa en mayúsculas bermellón |
+| Franja de embargo | **Se quitó** a pedido del equipo (la portada no lleva fecha de defensa) |
 | *Chart takeaway:* | **Lectura del gráfico:** |
 | *Forward-looking estimates may not come to pass.* | **Los resultados dependen de los datos de entrada y pueden variar.** |
 | *Investment implications* | **Implicaciones para el modelo** |
@@ -70,6 +70,13 @@ por si se quiere volver a la redacción original en inglés.
 - **Capturas** (`capturas/*.png`): `comun/utilidades.py` y `comun/utilidades.R` dibujan las tablas con encabezado negro,
   texto blanco y reglas horizontales negras; el diagrama de red de `parte2/python/transbordo.py` usa la paleta.
 - **Matrices** (transbordo): se dibujan como tabla nativa desde el CSV para que se lean; las celdas con costo real van en bermellón.
+- **Índice**: solo secciones con rango de láminas y el equipo; sin resumen del enunciado (pedido del equipo).
+- **Código**: una lámina por lenguaje (primero Python, después R) para que la ventana use todo el ancho; la letra se
+  ajusta sola entre 10 y 13.5 px para que entre el fragmento completo.
+- **Resultados de la Parte I y del transbordo**: dos columnas; a la izquierda la tabla de Python sobre la de R, a la
+  derecha la salida de consola. Las capturas se recortan (sin margen blanco) antes de insertarlas.
+- **Tabla de librerías**: columnas Librería, Lenguaje, Qué resuelve, Rol en el trabajo, Recomendación (medidor de
+  −3 a +3) y Comentario; la leyenda de arriba explica el medidor con un ejemplo.
 - **Marcadores** de contenido pendiente: recuadro #ededf1 con "Pendiente" en negrita. Desaparecen solos cuando existe la captura.
 
 ## Ventanas de código (estilo carbon.now.sh)

@@ -155,9 +155,6 @@ def portada(m):
     a, b, c = K.INSTITUCION
     texto(lam, 640, MARGEN + 300, 280, 100, [[(a, {})], [(b, {"negrita": True})], [(c, {})]], tam=22, color=BLANCO,
           interlineado=1.0)
-    rect(lam, MARGEN, 470, ANCHO - 2 * MARGEN, 30, GRIS_EMBARGO)
-    texto(lam, MARGEN + 14, 470, 800, 30, K.FECHA_DEFENSA, tam=12, negrita=True, color=BERMELLON, mayusculas=True,
-          anclar="medio")
 
 
 def indice(m, lam, integrantes):
@@ -182,12 +179,6 @@ def indice(m, lam, integrantes):
         y += 56
     texto(lam, 500, TOPE + 20, 420, 30, "Equipo", tam=15, fuente=TITULAR)
     texto(lam, 500, TOPE + 46, 420, 120, integrantes or ["[completar: integrantes]"], tam=13)
-    texto(lam, 500, TOPE + 170, 420, 30, "Enunciado", tam=15, fuente=TITULAR)
-    texto(lam, 500, TOPE + 196, 420, 160, [
-        "Parte I: resolver con librerías de Python y R un problema de PL, PLE, transporte y asignación (3 o más restricciones cada uno).",
-        "Parte II: investigar el problema de transbordo, plantear su modelo matricial, resolverlo con R, Python y Solver, y "
-        "analizar el caso desbalanceado.",
-    ], tam=12, espacio_despues=6)
 
 
 def dividida(m, seccion, c, grafico, alto_grafico=None, sin_grafico=False):
@@ -233,21 +224,53 @@ def matriz_nativa(lam, ruta_csv, x, y, w, h):
 
 
 def codigo(m, seccion, titulo, fragmentos):
-    """Dos fragmentos de código (Python y R) lado a lado. fragmentos: [(ruta, desde, hasta), ...]."""
+    """Una lámina por fragmento (Python y luego R), con la ventana de código a todo lo ancho.
+
+    fragmentos: [(ruta, desde, hasta), ...]
+    """
+    for ruta, desde, hasta in fragmentos:
+        python = ruta.endswith(".py")
+        lenguaje = "Python" if python else "R"
+        lam = m.nueva(seccion, f"{titulo} en {lenguaje}")
+        titular(lam, MARGEN, TOPE, 880, f"{titulo} en {lenguaje}", h=50)
+        y = TOPE + 62
+        lineas = datos.fragmento(ruta, desde, hasta, max_lineas=80)   # la ventana corta lo que no cabe
+        ventana(lam, lineas or ["(sin fragmento)"], MARGEN, y, 880, BASE - 40 - y, "python" if python else "r",
+                f"{lenguaje} · {ruta}", tam=(10.0, 13.5))
+        nota_fuente(lam, MARGEN, BASE - 28, 880, f"Fragmento de {ruta}, sin preámbulo ni la parte de salida (JSON y PNG).")
+
+
+def resultados(m, seccion, titulo, problema, lectura_txt, fuente):
+    """Dos columnas: tablas de solución de Python y de R (una sobre la otra) | salida de consola."""
     lam = m.nueva(seccion, titulo)
     titular(lam, MARGEN, TOPE, 880, titulo, h=50)
-    w = (ANCHO - 2 * MARGEN - 28) / 2
-    y = TOPE + 62
-    alto = BASE - 40 - y
-    for i, (ruta, desde, hasta) in enumerate(fragmentos):
-        x = MARGEN + i * (w + 28)
-        python = ruta.endswith(".py")
-        lineas = datos.fragmento(ruta, desde, hasta, max_lineas=60)   # la ventana corta lo que no cabe
-        ventana(lam, lineas or ["(sin fragmento)"], x, y, w, alto, "python" if python else "r",
-                f"{'Python' if python else 'R'} · {ruta}")
-        if i == 0:
-            regla_v(lam, x + w + 12, y, alto)
-    nota_fuente(lam, MARGEN, BASE - 28, 880, "Fragmentos tomados de los scripts del repositorio, sin preámbulo ni la parte de salida (JSON y PNG).")
+    y0, y_fin = TOPE + 62, BASE - 74
+    w_izq, gap = 500, 28
+    w_der = 880 - w_izq - gap
+    alto_panel = (y_fin - y0 - 16) / 2
+    for k, lenguaje in enumerate(("python", "r")):
+        t, sub, ruta, falta = panel_resultado(problema, lenguaje)
+        y = y0 + k * (alto_panel + 16)
+        texto(lam, MARGEN, y, w_izq, 20, t, tam=15, fuente=TITULAR)
+        texto(lam, MARGEN, y + 20, w_izq, 16, sub, tam=12)
+        if ruta is None:
+            marcador(lam, MARGEN, y + 42, w_izq, alto_panel - 42, falta)
+        else:
+            imagen(lam, ruta, MARGEN, y + 42, w_izq, alto_panel - 42, recortar=True)
+        if k == 0:
+            regla_h(lam, MARGEN, y + alto_panel + 7, w_izq, grosor=1.5)
+    x_der = MARGEN + w_izq + gap
+    regla_v(lam, x_der - gap / 2 - 2, y0, y_fin - y0)
+    t, sub, lineas, falta = panel_consola(problema)
+    texto(lam, x_der, y0, w_der, 20, t, tam=15, fuente=TITULAR)
+    texto(lam, x_der, y0 + 20, w_der, 16, sub, tam=12)
+    if lineas is None:
+        marcador(lam, x_der, y0 + 42, w_der, y_fin - y0 - 42, falta)
+    else:
+        ventana(lam, lineas, x_der, y0 + 42, w_der, y_fin - y0 - 42, "consola", f"Terminal · python run_all.py {problema}",
+                tam=(8.5, 11.5))
+    lectura(lam, MARGEN, BASE - 62, 880, lectura_txt, h=20)
+    nota_fuente(lam, MARGEN, BASE - 38, 880, fuente)
     return lam
 
 
@@ -295,39 +318,45 @@ def panel_consola(problema):
 
 
 def tabla_herramientas(m, c):
+    from tema import GRIS_NEUTRO, ROSADO
     lam = m.nueva("herramientas", c["titular"])
     titular(lam, MARGEN, TOPE, 880, c["titular"], h=50)
-    # leyenda sobre la tabla, alineada a la derecha
-    lx, ly, lw = ANCHO - MARGEN - 380, TOPE + 54, 380
-    rect(lam, lx, ly, lw, 54, None, borde=NEGRO, grosor=1.5)
+    texto(lam, MARGEN, TOPE + 58, 440, 60, c["intro"], tam=12, interlineado=1.25)
+    # leyenda arriba de la tabla: un medidor de ejemplo explicado
+    lx, ly, lw, lh = ANCHO - MARGEN - 420, TOPE + 54, 420, 66
+    rect(lam, lx, ly, lw, lh, None, borde=NEGRO, grosor=1.5)
     texto(lam, lx + 10, ly + 7, lw - 20, 14, c["leyenda"], tam=10, negrita=True)
-    texto(lam, MARGEN, ly + 4, 460, 50, "Cada medidor va de −3 a +3; la celda de color es nuestra valoración "
-          "después de usar la librería y el punto, la que teníamos antes.", tam=12)
-    from tema import GRIS_NEUTRO, ROSADO
-    items = [(ROSADO, "Desaconsejada", 96), (GRIS_NEUTRO, "Neutral", 70), (AMARILLO, "Recomendada", 92)]
-    ix = lx + 10
-    for color, et, ancho in items:
-        rect(lam, ix, ly + 31, 12, 12, color)
-        texto(lam, ix + 17, ly + 30, ancho - 17, 14, et, tam=10)
+    medidor(lam, lx + 10, ly + 24, 2, 1)
+    texto(lam, lx + 130, ly + 23, lw - 140, 30, [
+        [("Ejemplo: ", {"negrita": True}), ("+2 = la recomendamos; el punto negro marca lo que esperábamos (+1) antes de probarla.", {})]],
+        tam=10, interlineado=1.15)
+    ix = lx + 130
+    for color, et, ancho in ((ROSADO, "−3 a −1: no", 80), (GRIS_NEUTRO, "0: neutral", 74), (AMARILLO, "+1 a +3: sí", 80)):
+        rect(lam, ix, ly + 50, 10, 10, color)
+        texto(lam, ix + 14, ly + 48, ancho - 14, 14, et, tam=10)
         ix += ancho
-    ovalo(lam, ix + 3, ly + 34, 6, NEGRO)
-    texto(lam, ix + 14, ly + 30, 100, 14, "Valoración previa", tam=10)
-    # encabezado negro
-    y = TOPE + 118
-    cols = [(MARGEN, 150, "Librería"), (MARGEN + 160, 60, "Lenguaje"), (MARGEN + 230, 130, "Valoración"), (MARGEN + 380, 500, "Comentario")]
+    # tabla
+    cols = [("Librería", 108), ("Lenguaje", 62), ("Qué resuelve", 152), ("Rol en el trabajo", 122), ("Recomendación", 128),
+            ("Comentario", 308)]
+    xs = [MARGEN]
+    for _, w in cols[:-1]:
+        xs.append(xs[-1] + w)
+    y = TOPE + 130
     rect(lam, MARGEN, y, 880, 24, NEGRO)
-    for x, w, t in cols:
-        texto(lam, x + 8, y, w, 24, t, tam=12, negrita=True, color=BLANCO, anclar="medio")
+    for (t, w), x in zip(cols, xs):
+        texto(lam, x + 8, y, w - 8, 24, t, tam=12, negrita=True, color=BLANCO, anclar="medio")
     y += 24
-    alto_fila = (BASE - 58 - y) / len(c["filas"])
-    for nombre, leng, val, prev, com in c["filas"]:
-        texto(lam, MARGEN + 8, y + 5, 150, alto_fila - 6, nombre, tam=13, negrita=True)
-        texto(lam, MARGEN + 168, y + 6, 60, alto_fila - 6, leng, tam=12)
-        medidor(lam, MARGEN + 238, y + 3, val, prev)
-        texto(lam, MARGEN + 388, y + 4, 492, alto_fila - 4, com, tam=11.5)
+    alto_fila = (BASE - 56 - y) / len(c["filas"])
+    for nombre, leng, resuelve, rol, val, prev, com in c["filas"]:
+        texto(lam, xs[0] + 8, y + 5, cols[0][1] - 8, alto_fila - 6, nombre, tam=12.5, negrita=True)
+        texto(lam, xs[1] + 8, y + 6, cols[1][1] - 8, alto_fila - 6, leng, tam=11.5)
+        texto(lam, xs[2] + 8, y + 6, cols[2][1] - 8, alto_fila - 6, resuelve, tam=11.5)
+        texto(lam, xs[3] + 8, y + 6, cols[3][1] - 8, alto_fila - 6, rol, tam=11.5, negrita=rol == "Solución principal")
+        medidor(lam, xs[4] + 8, y + 3, val, prev, celda=12, alto=9, alto_centro=14)
+        texto(lam, xs[5] + 8, y + 5, cols[5][1] - 8, alto_fila - 4, com, tam=11.5)
         y += alto_fila
         regla_h(lam, MARGEN, y - 1.5, 880)
-    lectura(lam, MARGEN, BASE - 52, 880, c["lectura"], h=18)
+    lectura(lam, MARGEN, BASE - 50, 880, c["lectura"], h=18)
     nota_fuente(lam, MARGEN, BASE - 30, 880, c["fuente"])
 
 
@@ -481,10 +510,9 @@ def construir(destino=None):
         c = llenar(K.PARTE1[p], v)
         dividida(m, "parte1", c, g[p]["ruta"], alto_grafico=190)
         codigo(m, "parte1", f"{c['titular']}: código", list(c["codigo"]))
-        capturas(m, "parte1", f"{c['titular']}: resultados",
-                 [panel_resultado(p, "python"), panel_resultado(p, "r"), panel_consola(p)],
-                 f"Python y R resuelven el mismo YAML; el valor óptimo es {f((datos.resultado(p) or {}).get('valor_objetivo'))}.",
-                 f"Capturas de run_all.py: capturas/{p}_python_tabla.png, {p}_r_tabla.png y {p}_python.txt, a partir de datos/{p}.yaml.")
+        resultados(m, "parte1", f"{c['titular']}: resultados", p,
+                   f"Python y R resuelven el mismo YAML; el valor óptimo es {f((datos.resultado(p) or {}).get('valor_objetivo'))}.",
+                   f"Capturas de run_all.py: capturas/{p}_python_tabla.png, {p}_r_tabla.png y {p}_python.txt, a partir de datos/{p}.yaml.")
     dividida(m, "parte1", llenar(K.COMPARACION, v), g["comparacion"]["ruta"], alto_grafico=180)
 
     fuerzas(m, llenar(K.QUE_ES, v), g["directo"]["ruta"])
@@ -494,10 +522,9 @@ def construir(destino=None):
     lam = dividida(m, "parte2", llenar(K.MATRICIAL, v), None, alto_grafico=190, sin_grafico=True)
     matriz_nativa(lam, datos.CAPTURAS / "transbordo_matriz_python.csv", EXH_X, TOPE + 42, EXH_W, 190)
     codigo(m, "parte2", "Transbordo: código", K.CODIGO_TRANSBORDO)
-    capturas(m, "parte2", "Transbordo: resultados",
-             [panel_resultado("transbordo", "python"), panel_resultado("transbordo", "r"), panel_consola("transbordo")],
-             f"el modelo de red y el modelo matricial con buffer dan {v['tb_optimo']} en Python.",
-             "Capturas de run_all.py: capturas/transbordo_python_tabla.png, transbordo_r_tabla.png y transbordo_python.txt, a partir de datos/transbordo.yaml.")
+    resultados(m, "parte2", "Transbordo: resultados", "transbordo",
+               f"el modelo de red y el modelo matricial con buffer dan {v['tb_optimo']} en Python.",
+               "Capturas de run_all.py: capturas/transbordo_python_tabla.png, transbordo_r_tabla.png y transbordo_python.txt, a partir de datos/transbordo.yaml.")
     dividida(m, "parte2", llenar(K.SOLVER_LAMINA, v), datos.captura("transbordo_solver.png") or "transbordo_solver.png",
              alto_grafico=190)
     escenarios(m, llenar(K.VARIANTES, v), v["_escenarios"])

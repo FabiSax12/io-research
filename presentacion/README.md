@@ -47,10 +47,11 @@ Queda marcado para completar (buscar `[completar` en `contenido.py` o los recuad
 4. Enunciados de cada problema, nombre del profesor, valoración de librerías, conclusión propia y fuentes extra.
 5. Cronograma: llenar la tabla de `minutas/minuta_1.md`.
 
-## Orden de las láminas (31)
+## Orden de las láminas (36)
 
 Portada · Contenido · Introducción · Librerías (tabla) · Patrón PuLP/lpSolve ·
-por cada problema de la Parte I (PL, PLE, transporte, asignación): planteamiento + gráfico, código Python/R, capturas de resultados ·
+por cada problema de la Parte I (PL, PLE, transporte, asignación): planteamiento + gráfico, código en Python, código en R,
+resultados (tablas de Python y R a la izquierda, consola a la derecha) ·
 Comparación Python/R/Solver · ¿Qué es transbordo? · Transporte vs. transbordo · Ejemplo (red) · Modelo matricial paso a paso ·
-Código · Resultados · Solver · Variantes desbalanceadas · Caso desbalanceado · Resultados desbalanceado ·
+Código en Python · Código en R · Resultados · Solver · Variantes desbalanceadas · Caso desbalanceado · Resultados desbalanceado ·
 Conclusiones · Minutas y cronograma · Referencias (última lámina, como pide el enunciado).

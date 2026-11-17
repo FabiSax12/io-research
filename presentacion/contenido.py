@@ -9,8 +9,7 @@ Convenciones:
 CURSO = "Investigación de Operaciones"
 SEMESTRE = "II Semestre 2026"
 INSTITUCION = ("Instituto", "Tecnológico", "de Costa Rica")     # la palabra del medio va en negrita
-PROFESOR = "[completar: nombre del profesor]"
-FECHA_DEFENSA = "Defensa: 19 o 20 de noviembre de 2026, por Zoom"
+PROFESOR = "Prof. Esteban José Ballestero Alfaro"
 
 # Resultados de Excel Solver: escribir el valor óptimo que dio Solver al terminar el paso manual.
 # None = todavía no se corrió (la lámina muestra un marcador y el gráfico una barra rayada).
@@ -54,22 +53,32 @@ INTRO = {
 }
 
 # ------------------------------------------------------------------ herramientas (tabla de valoración)
-# valor y previo van de -3 a +3: valoración del equipo para este curso (facilidad + cobertura de los 4 tipos).
-# previo = lo que esperábamos antes de probarla (punto negro). Ajustar a la experiencia real del equipo.
+# Tabla de librerías. Cada fila: (librería, lenguaje, qué resuelve, rol en el trabajo, recomendación, expectativa, comentario)
+# recomendación y expectativa van de -3 (no la recomendamos) a +3 (la recomendamos) para los problemas de este curso:
+# recomendación = después de probarla (celda de color); expectativa = lo que pensábamos antes (punto negro).
 HERRAMIENTAS = {
     "titular": "Librerías que investigamos",
-    "leyenda": "Valoración del equipo para los problemas del curso, de -3 a +3",
+    "intro": "¿Con qué resolver cada tipo de problema? Comparamos siete herramientas según qué problemas cubren y qué "
+             "tan fácil fue escribir los modelos. La columna Recomendación resume nuestra opinión en una escala de −3 a +3.",
+    "leyenda": "Cómo leer la columna Recomendación",
     "filas": [
-        ("PuLP", "Python", 2, 1, "Modelado algebraico legible; trae CBC. Cubre PL, PLE, transporte y asignación. Es nuestra opción principal en Python."),
-        ("SciPy (optimize)", "Python", 1, 1, "linprog y milp (HiGHS) usan matrices; linear_sum_assignment resuelve asignación directa. La usamos para verificar."),
-        ("OR-Tools", "Python", 1, 2, "Muy completa (LP, MIP, flujo de costo mínimo), pero más verbosa para modelos de clase."),
-        ("Pyomo", "Python", 0, 1, "Potente para modelos grandes; requiere instalar un solver aparte. Excesiva para este trabajo."),
-        ("lpSolve", "R", 2, 1, "lp(), lp.transport() y lp.assign() resuelven los cuatro tipos con una llamada cada uno."),
-        ("ompr + ROI", "R", 0, 0, "Sintaxis algebraica tipo PuLP en R, pero con más dependencias que instalar."),
-        ("Excel Solver", "Excel", 1, 0, "Simplex LP integrado; útil para mostrar la matriz. Límite de 200 celdas variables."),
+        ("PuLP", "Python", "PL · PLE · Transp. · Asig.", "Solución principal", 2, 1,
+         "El modelo se escribe casi igual que en la pizarra; trae el solver CBC."),
+        ("SciPy", "Python", "PL · PLE · Asig.", "Verificación", 1, 1,
+         "linprog y milp trabajan con matrices; linear_sum_assignment resuelve asignación."),
+        ("OR-Tools", "Python", "PL · PLE · Redes", "Solo investigada", 1, 2,
+         "Muy completa, pero pide más código del necesario para modelos de clase."),
+        ("Pyomo", "Python", "PL · PLE", "Solo investigada", 0, 1,
+         "Pensada para modelos grandes; hay que instalar el solver aparte."),
+        ("lpSolve", "R", "PL · PLE · Transp. · Asig.", "Solución principal", 2, 1,
+         "lp(), lp.transport() y lp.assign(): una llamada por tipo de problema."),
+        ("ompr + ROI", "R", "PL · PLE", "Solo investigada", 0, 0,
+         "Sintaxis parecida a PuLP, pero con muchas dependencias que instalar."),
+        ("Excel Solver", "Excel", "PL · PLE · Transp. · Asig.", "Transbordo (Parte II)", 1, 0,
+         "Simplex LP; muestra la matriz completa. Máximo 200 celdas variables."),
     ],
-    "lectura": "PuLP y lpSolve resuelven los cuatro tipos de problema con poco código; SciPy sirve como verificación independiente.",
-    "fuente": "Valoración cualitativa del equipo [completar: confirmar con la experiencia de cada integrante]. "
+    "lectura": "PuLP (Python) y lpSolve (R) cubren los cuatro tipos con poco código, por eso son las que usamos; SciPy verifica los resultados.",
+    "fuente": "Opinión del equipo después de resolver los problemas [completar: confirmar con la experiencia de cada integrante]. "
               "Documentación oficial de cada librería (ver referencias).",
 }
 

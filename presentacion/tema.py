@@ -154,9 +154,23 @@ def texto(lamina, x, y, w, h, parrafos, tam=12, fuente=CUERPO, color=NEGRO, negr
     return caja
 
 
-def imagen(lamina, ruta, x, y, w, h, alinear="izq"):
-    """Inserta una imagen ajustada (sin deformar) dentro de la caja x, y, w, h."""
-    from PIL import Image
+def imagen(lamina, ruta, x, y, w, h, alinear="izq", recortar=False):
+    """Inserta una imagen ajustada (sin deformar) dentro de la caja x, y, w, h.
+
+    recortar=True quita el margen blanco de la imagen (las capturas de tablas traen mucho) para que se vea más grande.
+    """
+    from PIL import Image, ImageChops
+    if recortar:
+        with Image.open(ruta) as im:
+            rgb = im.convert("RGB")
+            caja = ImageChops.difference(rgb, Image.new("RGB", rgb.size, "white")).getbbox()
+            if caja:
+                m = 12
+                caja = (max(caja[0] - m, 0), max(caja[1] - m, 0), min(caja[2] + m, rgb.width), min(caja[3] + m, rgb.height))
+                destino = Path(__file__).resolve().parent / "salida" / "recortes"
+                destino.mkdir(parents=True, exist_ok=True)
+                ruta = destino / Path(ruta).name
+                rgb.crop(caja).save(ruta)
     with Image.open(ruta) as im:
         iw, ih = im.size
     escala = min(w / iw, h / ih)
@@ -243,12 +257,11 @@ def exhibicion(lamina, seccion, titulo, subtitulo, grafico, lectura_txt, fuente,
         caja_implicaciones(lamina, x, BASE - alto_caja, w, alto_caja, seccion, implicaciones)
 
 
-def medidor(lamina, x, y, valor, previo=None, celda=14, hueco=2):
+def medidor(lamina, x, y, valor, previo=None, celda=14, hueco=2, alto=12, alto_centro=18):
     """Medidor de convicción de siete celdas (-3 .. +3). La celda central es más alta.
 
     valor < 0 -> celda activa rosada; 0 -> gris #595959; > 0 -> amarilla. Punto negro en la valoración previa.
     """
-    alto, alto_centro = 12, 18
     for i, v in enumerate(range(-3, 4)):
         cx = x + i * (celda + hueco)
         h = alto_centro if v == 0 else alto
@@ -261,5 +274,5 @@ def medidor(lamina, x, y, valor, previo=None, celda=14, hueco=2):
             ovalo(lamina, cx + celda / 2 - 3, cy + h / 2 - 3, 6, NEGRO)
     etiqueta = "Neutral" if valor == 0 else f"{valor:+d}"
     ax = x + (valor + 3) * (celda + hueco) + celda / 2
-    texto(lamina, ax - 30, y + alto_centro + 2, 60, 12, etiqueta, tam=10, negrita=True, alinear="centro")
+    texto(lamina, ax - 30, y + alto_centro + 1, 60, 12, etiqueta, tam=10, negrita=True, alinear="centro")
     return 7 * celda + 6 * hueco
