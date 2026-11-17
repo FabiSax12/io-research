@@ -28,6 +28,7 @@ resultados/       one JSON per run: <problem>_python.json / <problem>_r.json
 capturas/         PNG tables, network diagram, matrix CSV/PNG, console output (.txt)
 minutas/          plantilla.md (meeting minutes template)
 tests/            pytest suite
+presentacion/     generates the PowerPoint deck (see presentacion/README.md and DESIGN.md)
 run_all.py        runs everything and prints the comparison table
 ```
 
@@ -237,6 +238,16 @@ padding of non-square assignments. R tests are skipped automatically if `Rscript
 
 Everyone: when the data of your part is final, run `python run_all.py <your problems>`, check the comparison table,
 and write the meeting minutes with `minutas/plantilla.md`.
+
+## Presentation
+
+```bash
+python presentacion/reconstruir.py          # run_all.py + charts + presentacion/salida/presentacion_io.pptx
+python presentacion/reconstruir.py --pdf    # also PDF and PNG previews (LibreOffice)
+```
+
+Texts live in `presentacion/contenido.py`; the theme is described in `presentacion/DESIGN.md`.
+Install the fonts in `presentacion/fuentes/` before opening the PPTX.
 
 ## Reminder
 

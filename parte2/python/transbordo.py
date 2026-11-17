@@ -113,22 +113,23 @@ for t, columna in ORDEN.items():
     grupo = [k for k in nodos if tipo[k] == t]
     for i, k in enumerate(grupo):
         pos[k] = (columna * 3, (len(grupo) - 1) / 2 - i)
-colores = {"origen": "#9ecae1", "transbordo": "#fdd49e", "destino": "#a1d99b"}
+colores = {"origen": "#ffce00", "transbordo": "#fc9bb3", "destino": "#008b5c"}  # paleta del tema
 usados = [a for a in costo if flujo[a].value() > 1e-9]
 fig, ax = plt.subplots(figsize=(10, 6))
-nx.draw_networkx_nodes(G, pos, node_color=["#d9d9d9" if k == "Ficticio" else colores[tipo[k]] for k in G],
+nx.draw_networkx_nodes(G, pos, node_color=["#d6d5dd" if k == "Ficticio" else colores[tipo[k]] for k in G],
                        node_size=1800, edgecolors="black", ax=ax)
-nx.draw_networkx_labels(G, pos, font_size=10, ax=ax)
+nx.draw_networkx_labels(G, pos, font_size=10, font_weight="bold", ax=ax,
+                        font_color="black")
 estilo = dict(node_size=1800, arrowsize=15, connectionstyle="arc3,rad=0.12", ax=ax)
-nx.draw_networkx_edges(G, pos, edgelist=[a for a in costo if a not in usados], edge_color="#999999", **estilo)
-nx.draw_networkx_edges(G, pos, edgelist=usados, edge_color="#d62728", width=2.2, **estilo)
+nx.draw_networkx_edges(G, pos, edgelist=[a for a in costo if a not in usados], edge_color="#d6d5dd", **estilo)
+nx.draw_networkx_edges(G, pos, edgelist=usados, edge_color="#ff4713", width=2.6, **estilo)
 etiquetas = {a: f"{fmt(costo[a])}" + (f"  [{fmt(flujo[a].value())}]" if a in usados else "") for a in costo}
 nx.draw_networkx_edge_labels(G, pos, edge_labels=etiquetas, font_size=8, label_pos=0.35, rotate=False,
                              connectionstyle="arc3,rad=0.12", ax=ax, bbox=dict(fc="white", ec="none", alpha=0.8))
 for t, columna in ORDEN.items():
     ax.text(columna * 3, max(y for _, y in pos.values()) + 0.8, {"origen": "Orígenes", "transbordo": "Transbordo", "destino": "Destinos"}[t],
             ha="center", fontweight="bold")
-ax.set_title(f"{d['nombre']}: costo por arco (rojo = arco usado, [flujo])", fontsize=11)
+ax.set_title(f"{d['nombre']}: costo por arco (bermellón = arco usado, [flujo])", fontsize=11)
 ax.axis("off")
 fig.savefig(ruta_salida("capturas", f"{nombre}_red.png"), dpi=150, bbox_inches="tight", facecolor="white")
 plt.close(fig)

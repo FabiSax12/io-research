@@ -26,3 +26,6 @@ capturas/*
 !resultados/.gitkeep
 !capturas/.gitkeep
 .atl/
+
+# Salida de la presentación (se regenera con presentacion/reconstruir.py)
+presentacion/salida/

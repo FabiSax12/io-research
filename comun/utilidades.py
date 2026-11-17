@@ -66,20 +66,40 @@ def armar_resultado(problema, estado, valor, variables, ajustes=(), verificacion
     }
 
 
+def _registrar_fuentes():
+    """Usa Onest (fuente del tema de la presentación) si está en presentacion/fuentes; si no, la de matplotlib."""
+    from matplotlib import font_manager
+    carpeta = RAIZ / "presentacion" / "fuentes"
+    for ttf in sorted(carpeta.glob("Onest-*.ttf")):
+        font_manager.fontManager.addfont(str(ttf))
+    if any(f.name == "Onest" for f in font_manager.fontManager.ttflist):
+        plt.rcParams["font.family"] = "Onest"
+
+
+_registrar_fuentes()
+
+
 def tabla_png(ruta, titulo, columnas, filas):
-    """Guarda una tabla (lista de filas) como imagen PNG lista para las láminas."""
+    """Guarda una tabla (lista de filas) como imagen PNG lista para las láminas.
+
+    Estilo del tema de la presentación: encabezado negro con texto blanco en negrita,
+    reglas horizontales negras de 1.5 px, sin líneas verticales ni sombras.
+    """
     fig, ax = plt.subplots(figsize=(max(5, 1.7 * len(columnas)), 0.8 + 0.4 * (len(filas) + 1)))
     ax.axis("off")
-    ax.set_title(titulo, fontsize=11, fontweight="bold")
+    ax.set_title(titulo, fontsize=11, fontweight="bold", loc="left")
     tabla = ax.table(cellText=[[fmt(c) for c in fila] for fila in filas],
                      colLabels=columnas, loc="center", cellLoc="center")
     tabla.auto_set_font_size(False)
     tabla.set_fontsize(10)
     tabla.scale(1, 1.5)
     for (fila, _), celda in tabla.get_celld().items():
+        celda.visible_edges = "closed" if fila == 0 else "B"   # filas: solo la regla inferior
+        celda.set_edgecolor("#000000")
+        celda.set_linewidth(1.1)            # ~1.5 px a 150 dpi
         if fila == 0:
-            celda.set_facecolor("#dbe7f5")
-            celda.set_text_props(fontweight="bold")
+            celda.set_facecolor("#000000")
+            celda.set_text_props(fontweight="bold", color="#ffffff")
     fig.savefig(ruta, dpi=150, bbox_inches="tight", facecolor="white")
     plt.close(fig)
 
