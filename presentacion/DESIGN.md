@@ -66,17 +66,43 @@ por si se quiere volver a la redacción original en inglés.
 
 ## Decisiones que la especificación no cubre
 
-- **Código fuente**: va en Barlow Condensed 400 (11.5 px) sobre un recuadro #ededf1. La especificación no define
-  una fuente monoespaciada y no se quiso salir de las dos familias.
+- **Código fuente**: ver "Ventanas de código" más abajo.
 - **Capturas** (`capturas/*.png`): `comun/utilidades.py` y `comun/utilidades.R` dibujan las tablas con encabezado negro,
   texto blanco y reglas horizontales negras; el diagrama de red de `parte2/python/transbordo.py` usa la paleta.
 - **Matrices** (transbordo): se dibujan como tabla nativa desde el CSV para que se lean; las celdas con costo real van en bermellón.
 - **Marcadores** de contenido pendiente: recuadro #ededf1 con "Pendiente" en negrita. Desaparecen solos cuando existe la captura.
 
+## Ventanas de código (estilo carbon.now.sh)
+
+Pedido del equipo: todo fragmento de código se muestra como una ventana de editor, al estilo de carbon.now.sh, con
+los tres botones de la ventana de macOS. Lo dibuja `ventana_codigo.py` como PNG (4× el tamaño en la lámina).
+
+| Elemento | Valor |
+|---|---|
+| Fuente | JetBrains Mono 400 (cursiva en comentarios), 10 px en código y 8.5 px en la terminal; sin ligaduras |
+| Fondo de la ventana y barra | #000000 |
+| Botones (cerrar, minimizar, maximizar) | #ff4713, #ffce00, #008b5c: la versión de la paleta del rojo, amarillo y verde de macOS |
+| Título en la barra | Lenguaje · ruta del script, JetBrains Mono 9 px #8a8a8a |
+| Palabras clave (`for`, `if`, `function`, `True`) | #ff4713 |
+| Funciones y llamadas (`lpSum(`, `lp(`) | #ffce00 |
+| Cadenas | #fc9bb3 |
+| Números | #008b5c |
+| Comentarios | #8a8a8a cursiva |
+| Operadores y puntuación | #d6d5dd |
+| Resto del texto | #ffffff |
+
+Se usa en las láminas de código (Python a la izquierda, R a la derecha), en la salida de consola (ventana "Terminal")
+y en el ejemplo PuLP frente a lpSolve. Las líneas largas se cortan con sangría francesa; si el fragmento no cabe, la
+última línea dice `# ... (continúa en el script)`.
+
+Diferencias con Carbon, a propósito: **sin esquinas redondeadas y sin sombra**, porque la especificación del tema
+los prohíbe. Los botones sí son círculos (son el detalle que identifica la ventana).
+
 ## Fuentes
 
-`fuentes/` trae los TTF estáticos de Google Fonts (licencia SIL OFL 1.1, ver `OFL-*.txt`): Onest 400/700/800 y
-Barlow Condensed 400/700. Los gráficos las cargan desde esa carpeta. **Para que el PPTX se vea bien hay que instalarlas
+`fuentes/` trae los TTF estáticos de Google Fonts (licencia SIL OFL 1.1, ver `OFL-*.txt`): Onest 400/700/800,
+Barlow Condensed 400/700 y JetBrains Mono 400/700/cursiva. JetBrains Mono solo se usa dentro de las imágenes de
+código, así que no hace falta instalarla para abrir el PPTX. Los gráficos las cargan desde esa carpeta. **Para que el PPTX se vea bien hay que instalarlas
 en la computadora que abre la presentación** (Windows: clic derecho → Instalar para todos los usuarios; macOS: Catálogo
 tipográfico). En el PPTX los titulares usan el nombre "Onest ExtraBold" (el peso 800).
 

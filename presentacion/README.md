@@ -27,6 +27,7 @@ Antes de abrir el PPTX, instalar las fuentes de `presentacion/fuentes/` (Onest y
 | `contenido.py` | Todos los textos de las láminas, la tabla de librerías, las referencias y `SOLVER` (óptimos de Excel) | Todo el equipo |
 | `construir.py` | Tipos de lámina y orden de la presentación | Integración |
 | `graficos.py` | Gráficos (PNG) con el estilo del tema | Integración |
+| `ventana_codigo.py` | Dibuja los fragmentos de código como ventanas estilo carbon.now.sh (JetBrains Mono, botones de macOS) | Solo si cambia el diseño |
 | `datos.py` | Lee YAML, JSON, capturas, minutas y fragmentos de código | Integración |
 | `tema.py` | Paleta, tipografía, retícula y primitivas (pestaña, pie, exhibición, medidor) | Solo si cambia el diseño |
 | `reconstruir.py` | Script único que rehace todo | Nadie |

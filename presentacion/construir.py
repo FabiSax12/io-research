@@ -14,6 +14,7 @@ sys.path.insert(0, str(AQUI))
 import contenido as K  # noqa: E402
 import datos  # noqa: E402
 import graficos  # noqa: E402
+import ventana_codigo  # noqa: E402
 from tema import (AMARILLO, BASE, BLANCO, COL_IZQ_W, COL_IZQ_X, EXH_W, EXH_X, GRIS_EMBARGO, GRIS_VENTANA,  # noqa: E402
                   MARGEN, NEGRO, NOTA, REGLA_X, SECCIONES, TITULAR, TOPE, BERMELLON, caja_implicaciones,
                   columnas_cuerpo, exhibicion, imagen, lectura, marcador, medidor, nota_fuente, ovalo, pestana, pie,
@@ -21,6 +22,16 @@ from tema import (AMARILLO, BASE, BLANCO, COL_IZQ_W, COL_IZQ_X, EXH_W, EXH_X, GR
 
 SALIDA = AQUI / "salida"
 GRAFICOS = SALIDA / "graficos"
+CODIGO = SALIDA / "codigo"          # ventanas de código (PNG estilo carbon.now.sh)
+_contador_ventanas = [0]
+
+
+def ventana(lam, codigo_txt, x, y, w, h, lenguaje, titulo, tam=10.0):
+    """Inserta un fragmento de código como ventana estilo Carbon (ver ventana_codigo.py)."""
+    _contador_ventanas[0] += 1
+    ruta = CODIGO / f"ventana_{_contador_ventanas[0]:02d}.png"
+    ventana_codigo.ventana(codigo_txt, ruta, w, h, lenguaje, titulo, tam=tam)
+    return lam.shapes.add_picture(str(ruta), px(x), px(y), px(w), px(h))
 f = datos.fmt
 
 
@@ -226,17 +237,16 @@ def codigo(m, seccion, titulo, fragmentos):
     lam = m.nueva(seccion, titulo)
     titular(lam, MARGEN, TOPE, 880, titulo, h=50)
     w = (ANCHO - 2 * MARGEN - 28) / 2
-    alto = BASE - TOPE - 88 - 40
+    y = TOPE + 62
+    alto = BASE - 40 - y
     for i, (ruta, desde, hasta) in enumerate(fragmentos):
         x = MARGEN + i * (w + 28)
-        lenguaje = "Python" if ruta.endswith(".py") else "R"
-        texto(lam, x, TOPE + 62, w, 20, f"{lenguaje}: {ruta}", tam=15, fuente=TITULAR)
-        lineas = datos.fragmento(ruta, desde, hasta, max_lineas=int((alto - 16) / 13.2))
-        rect(lam, x, TOPE + 88, w, alto, GRIS_VENTANA)
-        texto(lam, x + 10, TOPE + 96, w - 20, alto - 16, lineas or ["(sin fragmento)"], tam=11.5, fuente=NOTA,
-              interlineado=1.12)
+        python = ruta.endswith(".py")
+        lineas = datos.fragmento(ruta, desde, hasta, max_lineas=60)   # la ventana corta lo que no cabe
+        ventana(lam, lineas or ["(sin fragmento)"], x, y, w, alto, "python" if python else "r",
+                f"{'Python' if python else 'R'} · {ruta}")
         if i == 0:
-            regla_v(lam, x + w + 12, TOPE + 62, alto + 26)
+            regla_v(lam, x + w + 12, y, alto)
     nota_fuente(lam, MARGEN, BASE - 28, 880, "Fragmentos tomados de los scripts del repositorio, sin preámbulo ni la parte de salida (JSON y PNG).")
     return lam
 
@@ -259,8 +269,8 @@ def capturas(m, seccion, titulo, paneles, lectura_txt, fuente, pesos=None):
             marcador(lam, x, y, w, alto - 20, falta)
         elif isinstance(ruta, Path) and ruta.suffix == ".csv":   # matriz dibujada como tabla del tema
             matriz_nativa(lam, ruta, x, y, w, alto - 20)
-        elif isinstance(ruta, list):   # salida de consola
-            texto(lam, x, y, w, alto - 20, ruta, tam=11.5, fuente=NOTA, interlineado=1.12)
+        elif isinstance(ruta, list):   # salida de consola, como ventana de terminal
+            ventana(lam, ruta, x, y, w, alto - 20, "consola", "Terminal", tam=8.5)
         else:
             imagen(lam, ruta, x, y, w, alto - 20)
         if i < n - 1:
@@ -280,7 +290,7 @@ def panel_resultado(problema, lenguaje):
 
 
 def panel_consola(problema):
-    lineas = datos.consola(problema)
+    lineas = datos.consola(problema, max_lineas=40)
     return ("Salida de consola", "Lo que imprime el script de Python", lineas, f"correr python run_all.py {problema}.")
 
 
@@ -450,25 +460,21 @@ def construir(destino=None):
     regla_v(lam, REGLA_X, TOPE, BASE - TOPE)
     texto(lam, EXH_X, TOPE, EXH_W, 20, "PuLP frente a lpSolve", tam=15, fuente=TITULAR)
     texto(lam, EXH_X, TOPE + 20, EXH_W, 16, "El mismo modelo de PL en las dos librerías", tam=12)
-    rect(lam, EXH_X, TOPE + 44, EXH_W, 300, GRIS_VENTANA)
-    texto(lam, EXH_X + 10, TOPE + 52, EXH_W - 20, 290, [
-        "# Python (PuLP)",
+    ventana(lam, [
         "m = pulp.LpProblem(\"PL\", pulp.LpMaximize)",
         "x = [pulp.LpVariable(f\"x{i}\", lowBound=0) for i in range(2)]",
-        "m += 3*x[0] + 5*x[1]                # objetivo",
-        "m += x[0] <= 4                      # restricciones",
+        "m += 3*x[0] + 5*x[1]          # objetivo",
+        "m += x[0] <= 4                # restricciones",
         "m += 2*x[1] <= 12",
         "m += 3*x[0] + 2*x[1] <= 18",
         "m.solve(pulp.PULP_CBC_CMD(msg=False))",
-        "",
-        "# R (lpSolve)",
+    ], EXH_X, TOPE + 44, EXH_W, 166, "python", "Python · PuLP")
+    ventana(lam, [
         "A <- matrix(c(1,0, 0,2, 3,2), nrow = 3, byrow = TRUE)",
         "sol <- lp(\"max\", c(3, 5), A, rep(\"<=\", 3), c(4, 12, 18))",
         "sol$objval; sol$solution",
-        "",
-        "# Variantes: cat=\"Integer\" / int.vec (PLE),",
-        "# lp.transport(costos, ...) y lp.assign(matriz)",
-    ], tam=11, fuente=NOTA, interlineado=1.0)
+        "# PLE: int.vec · transporte: lp.transport() · asignación: lp.assign()",
+    ], EXH_X, TOPE + 220, EXH_W, 124, "r", "R · lpSolve")
     nota_fuente(lam, EXH_X, TOPE + 354, EXH_W, "Ejemplo ilustrativo (plantas de vidrio, Hillier y Lieberman). El código completo está en parte1/.")
 
     for p in ("pl", "ple", "transporte", "asignacion"):
