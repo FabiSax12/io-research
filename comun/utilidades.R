@@ -55,13 +55,13 @@ tabla_png <- function(ruta, titulo, tabla) {
   plot.new()
   plot.window(xlim = c(0, nc), ylim = c(nf, 0))
   title(titulo, font.main = 2, cex.main = 1)
-  rect(0, 0, nc, 1, col = "#dbe7f5", border = NA)
+  # Estilo del tema de la presentación: encabezado negro, reglas horizontales negras, sin verticales
+  rect(0, 0, nc, 1, col = "#000000", border = NA)
   for (j in seq_len(nc)) {
-    text(j - 0.5, 0.5, names(tabla)[j], font = 2)
+    text(j - 0.5, 0.5, names(tabla)[j], font = 2, col = "#ffffff")
     for (i in seq_len(nrow(tabla))) text(j - 0.5, i + 0.5, tabla[i, j])
   }
-  segments(0, 0:nf, nc, 0:nf, col = "grey40")
-  segments(0:nc, 0, 0:nc, nf, col = "grey40")
+  segments(0, 1:nf, nc, 1:nf, col = "#000000", lwd = 1.5)
   invisible(dev.off())
 }
 

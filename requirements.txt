@@ -6,3 +6,5 @@ matplotlib
 networkx
 openpyxl
 pytest
+python-pptx>=1.0
+Pillow
