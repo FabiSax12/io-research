@@ -321,11 +321,6 @@ CONCLUSIONES = {
                       "El modelo de red es más corto de escribir; el matricial es el que se presenta en clase."],
 }
 
-MINUTAS = {
-    "titular": "Minutas y cronograma",
-    "nota": "Minutas completas en la carpeta de archivos del subgrupo en Teams (minutas/*.md en el repositorio).",
-}
-
 REFERENCIAS = [
     "Hillier, F. S. y Lieberman, G. J. (2021). Introduction to Operations Research (11.ª ed.). McGraw-Hill.",
     "Taha, H. A. (2017). Operations Research: An Introduction (10.ª ed.). Pearson.",

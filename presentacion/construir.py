@@ -14,6 +14,8 @@ sys.path.insert(0, str(AQUI))
 import contenido as K  # noqa: E402
 import datos  # noqa: E402
 import graficos  # noqa: E402
+import laminas_minutas  # noqa: E402
+import minutas  # noqa: E402
 import ventana_codigo  # noqa: E402
 from tema import (AMARILLO, BASE, BLANCO, COL_IZQ_W, COL_IZQ_X, EXH_W, EXH_X, GRIS_EMBARGO, GRIS_VENTANA,  # noqa: E402
                   MARGEN, NEGRO, NOTA, REGLA_X, SECCIONES, TITULAR, TOPE, BERMELLON, caja_implicaciones,
@@ -131,9 +133,9 @@ class Mazo:
         self.prs = Presentation()
         self.prs.slide_width, self.prs.slide_height = px(ANCHO), px(ALTO)
         self.vacia = self.prs.slide_layouts[6]
-        self.indice = []   # (sección, titular, número de lámina)
+        self.indice = []   # (sección, grupo del índice, número de lámina)
 
-    def nueva(self, seccion=None, titulo=None, fondo=BLANCO):
+    def nueva(self, seccion=None, titulo=None, fondo=BLANCO, grupo=None):
         lam = self.prs.slides.add_slide(self.vacia)
         lam.background.fill.solid()
         lam.background.fill.fore_color.rgb = __import__("tema").rgb(fondo)
@@ -141,7 +143,7 @@ class Mazo:
         if seccion:
             pestana(lam, seccion)
             pie(lam, n)
-            self.indice.append((seccion, titulo, n))
+            self.indice.append((seccion, grupo or seccion, n))
         return lam
 
 
@@ -162,21 +164,22 @@ def indice(m, lam, integrantes):
     rect(lam, MARGEN, TOPE, 420, BASE - TOPE, AMARILLO)
     texto(lam, MARGEN + 24, TOPE + 20, 380, 50, "Contenido", tam=42, fuente=TITULAR, interlineado=1.0)
     grupos = []
-    for sec, _, n in m.indice[1:]:
-        if grupos and grupos[-1][0] == sec:
-            grupos[-1][2] = n
+    for sec, grupo, n in m.indice[1:]:
+        if grupos and grupos[-1][0] == grupo:
+            grupos[-1][3] = n
         else:
-            grupos.append([sec, n, n])
-    descripciones = {"contexto": "Introducción", "herramientas": "Librerías de Python y R",
-                     "parte1": "PL, PLE, transporte y asignación", "parte2": "Problema de transbordo",
-                     "resumen": "Conclusiones, minutas y referencias"}
+            grupos.append([grupo, sec, n, n])
+    # (rótulo, descripción) de cada fila; las secciones sin entrada usan la etiqueta de su pestaña
+    filas = {"contexto": "Introducción", "herramientas": "Librerías de Python y R",
+             "parte1": "PL, PLE, transporte y asignación", "parte2": "Problema de transbordo",
+             "resumen": "Conclusiones", "minutas": "Tres reuniones y cronograma", "referencias": "Fuentes consultadas"}
     y = TOPE + 100
-    for sec, a, b in grupos:
+    for grupo, sec, a, b in grupos:
+        rotulo = SECCIONES[sec]["etiqueta"] if grupo == sec else grupo.capitalize()
         regla_h(lam, MARGEN + 24, y - 8, 372)
-        texto(lam, MARGEN + 24, y, 250, 40, [[(SECCIONES[sec]["etiqueta"], {"negrita": True})], [(descripciones[sec], {})]],
-              tam=13)
+        texto(lam, MARGEN + 24, y, 250, 40, [[(rotulo, {"negrita": True})], [(filas[grupo], {})]], tam=13)
         texto(lam, MARGEN + 300, y, 96, 20, f"{a}–{b}" if a != b else str(a), tam=13, negrita=True, alinear="der")
-        y += 56
+        y += 46
     texto(lam, 500, TOPE + 20, 420, 30, "Equipo", tam=15, fuente=TITULAR)
     texto(lam, 500, TOPE + 46, 420, 120, integrantes or ["[completar: integrantes]"], tam=13)
 
@@ -446,25 +449,8 @@ def conclusiones(m, c):
     nota_fuente(lam, EXH_X, y + 8, EXH_W, "Valores óptimos de resultados/*.json; Solver se reporta a mano en contenido.SOLVER.")
 
 
-def minutas(m, c):
-    mins = datos.minutas()
-    filas = []
-    for mi in mins:
-        if mi["cronograma"]:
-            filas = [fl for fl in mi["cronograma"] if any(fl)]
-            break
-    if not filas:
-        filas = [["[completar: actividad]", "[fecha]", "[responsable]", "[en proceso / concluida]"]] * 3
-    lam = tabla_texto(m, "resumen", c["titular"], ["Actividad", "Plazo", "Responsable", "Condición"], filas[:7],
-                      [380, 140, 200, 160], tam=12, alto_max=36)
-    resumen = "  ·  ".join(f"{mi['archivo'].replace('.md', '').replace('_', ' ').capitalize()}: {mi['fecha']} "
-                           f"({mi['inicio']}–{mi['fin']})" for mi in mins) or "[completar: minutas]"
-    texto(lam, MARGEN, BASE - 54, 880, 18, [[("Reuniones: ", {"negrita": True}), (resumen, {})]], tam=11.5)
-    nota_fuente(lam, MARGEN, BASE - 30, 880, c["nota"])
-
-
 def referencias(m):
-    lam = m.nueva("resumen", "Referencias")
+    lam = m.nueva("resumen", "Referencias", grupo="referencias")
     titular(lam, MARGEN, TOPE, 880, "Referencias", h=50)
     regla_h(lam, MARGEN, TOPE + 62, 880)
     texto(lam, MARGEN, TOPE + 76, 880, BASE - TOPE - 76, K.REFERENCIAS, tam=12, espacio_despues=7)
@@ -540,10 +526,10 @@ def construir(destino=None):
              pesos=[0.95, 1.45, 0.9])
 
     conclusiones(m, K.CONCLUSIONES)
-    minutas(m, K.MINUTAS)
+    laminas_minutas.agregar(m)
     referencias(m)
 
-    integrantes = next((mi["presentes"] for mi in datos.minutas() if mi["presentes"]), [])
+    integrantes = next(([n for _, n in mi["presentes"]] for mi in minutas.leer_todas() if mi["presentes"]), [])
     indice(m, lam_indice, integrantes)
 
     destino = Path(destino or SALIDA / "presentacion_io.pptx")

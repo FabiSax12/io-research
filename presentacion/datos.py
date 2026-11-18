@@ -1,5 +1,5 @@
 """Lectura de todo lo que alimenta la presentación: YAML de datos/, JSON de resultados/,
-imágenes y salidas de consola de capturas/, minutas/ y fragmentos de los scripts.
+imágenes y salidas de consola de capturas/ y fragmentos de los scripts.
 
 Nada de esto resuelve los problemas del curso (eso lo hacen los scripts de parte1/ y parte2/);
 solo hay dos cálculos auxiliares para gráficos: la relajación lineal del PLE y la curva de
@@ -13,7 +13,7 @@ import yaml
 from scipy.optimize import linprog
 
 RAIZ = Path(__file__).resolve().parents[1]
-DATOS, RESULTADOS, CAPTURAS, MINUTAS = (RAIZ / c for c in ("datos", "resultados", "capturas", "minutas"))
+DATOS, RESULTADOS, CAPTURAS = (RAIZ / c for c in ("datos", "resultados", "capturas"))
 PROBLEMAS = ["pl", "ple", "transporte", "asignacion", "transbordo", "transbordo_desbalanceado"]
 
 
@@ -177,22 +177,3 @@ def escenarios_transbordo():
         casos.append({"caso": etiqueta, "oferta": total_o + delta, "demanda": total_d, "valor": valor,
                       "ficticio": sum(v for k, v in flujos.items() if "Ficticio" in k)})
     return casos
-
-
-# ------------------------------------------------------------------ minutas
-def minutas():
-    """Lista de minutas con fecha, horas, presentes y el cronograma (de la primera que lo tenga)."""
-    salida = []
-    for ruta in sorted(MINUTAS.glob("minuta_*.md"), key=lambda p: int(re.findall(r"\d+", p.stem)[0])):
-        t = ruta.read_text(encoding="utf-8")
-        campo = lambda nombre: (re.search(rf"\*\*{nombre}:\*\*\s*(.+)", t) or [None, ""])[1].strip()
-        presentes = re.findall(r"^- \[[ xX]\] (.+)$", t, flags=re.M)
-        filas = []
-        if "## Cronograma" in t:
-            for linea in t.split("## Cronograma", 1)[1].splitlines():
-                celdas = [c.strip() for c in linea.strip().strip("|").split("|")]
-                if linea.startswith("|") and len(celdas) == 4 and not set(celdas[0]) <= set("-") and celdas[0] != "ACTIVIDAD":
-                    filas.append(celdas)
-        salida.append({"archivo": ruta.name, "fecha": campo("Fecha"), "inicio": campo("Hora de inicio"),
-                       "fin": campo("Hora de finalización"), "presentes": presentes, "cronograma": filas})
-    return salida
