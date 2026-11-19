@@ -20,13 +20,18 @@ if (sobran > 0) {                                     # más tareas que agentes
   tareas <- c(tareas, paste("Ficticio", seq_len(-sobran)))
   matriz <- cbind(matriz, matrix(0, nrow(matriz), -sobran))
 }
-if (sobran != 0) {
-  ajustes <- sprintf("Matriz %dx%d no cuadrada: se agregaron %d %s ficticio(s) con valor 0; quien se asigna a uno queda sin asignar",
-                     length(d$agentes), length(d$tareas), abs(sobran), if (sobran > 0) "agente(s)" else "tarea(s)")
-}
 
 # --- Modelo de asignación (PL con variables 0/1) ---
 sol <- lp.assign(matriz, direction = d$sentido)
+
+# --- Nota del ajuste (va al JSON) ---
+if (sobran != 0) {
+  k <- abs(sobran)
+  cosa <- if (sobran > 0) c("agente ficticio", "agentes ficticios") else c("tarea ficticia", "tareas ficticias")
+  ajustes <- sprintf("Matriz %dx%d no cuadrada: se %s con valor 0; quien queda asignado ahí no recibe trabajo",
+                     length(d$agentes), length(d$tareas),
+                     if (k == 1) paste("agregó 1", cosa[1], "(Ficticio 1)") else paste0("agregaron ", k, " ", cosa[2], " (Ficticio 1 a ", k, ")"))
+}
 
 estado <- estado_lp(sol$status)
 optimo <- estado == "Optimal"
