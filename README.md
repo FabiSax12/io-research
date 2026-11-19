@@ -1,6 +1,6 @@
 # Operations Research project (TEC, II Semester 2026)
 
-Internal repository for a six-person, chained assignment. The only deliverable is a **PowerPoint
+Internal repository for a four-person assignment (Fabián, Yan, Kenneth and Kenni). The only deliverable is a **PowerPoint
 presentation**; this repo exists to solve the models and to generate the material that goes on the slides
 (code fragments, solution tables, network diagram, Excel file for Solver).
 
@@ -225,16 +225,16 @@ The tests run the real scripts on temporary data (through the `IO_DIR` environme
 a small transshipment) or come from comparing both languages and both solvers. They cover automatic balancing and
 padding of non-square assignments. R tests are skipped automatically if `Rscript` is not found.
 
-## Who does what (chain of six)
+## Who does what
 
-| Person | Responsibility | Files to edit / use |
-|--------|----------------|---------------------|
-| P1 | Library research and choice of the Part I problems; loads the Part I data | `datos/pl.yaml`, `datos/ple.yaml`, `datos/transporte.yaml`, `datos/asignacion.yaml` |
-| P2 | LP and ILP (Python and R) | `parte1/python/pl.py`, `ple.py`; `parte1/r/pl.R`, `ple.R`; `python run_all.py pl ple` |
-| P3 | Transportation and assignment (Python and R) | `parte1/python/transporte.py`, `asignacion.py`; `parte1/r/transporte.R`, `asignacion.R`; `python run_all.py transporte asignacion` |
-| P4 | Transshipment theory and choice of the example; loads the data | `datos/transbordo.yaml` (and `transbordo_desbalanceado.yaml` if used) |
-| P5 | Matrix model and Excel Solver | `capturas/transbordo_matriz_*.png/.csv`, `parte2/solver/transbordo.xlsx` (sheet *Instrucciones*) |
-| P6 | Transshipment in Python and R, unbalanced case, integration | `parte2/python/transbordo.py`, `parte2/r/transbordo.R`, `run_all.py`; final `python run_all.py` and tests |
+| Person | Technical work | Presents (slides) |
+|--------|----------------|-------------------|
+| Fabián | LP and ILP (Python and R): `parte1/*/pl.*`, `ple.*` | 3, 6-13 |
+| Yan | Transportation (Python and R): `parte1/*/transporte.*`; library table; conclusions | 4-5, 14-17, 22, 35 |
+| Kenneth | Assignment (Python and R): `parte1/*/asignacion.*`; what transshipment is and the example network | 18-21, 23-25 |
+| Kenni | Transshipment in Python, R and Excel Solver, balanced and unbalanced: `parte2/`, `datos/transbordo*.yaml` | 26-34 |
+
+Library research and the meeting minutes are shared.
 
 Everyone: when the data of your part is final, run `python run_all.py <your problems>`, check the comparison table,
 and write the meeting minutes with `minutas/plantilla.md`.
