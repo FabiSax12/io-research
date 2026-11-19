@@ -201,6 +201,11 @@ PARTE1 = {
                               "lo mejora Carolina (30), y Andrea queda libre.",
                               "La orden ficticia marca a quién no se le asigna trabajo."],
         },
+        "cita": "Fuentes: Winston (2004, sec. 7.5); Kuhn (1955); Crouse (2016). Problema y gráfico: elaboración propia.",
+        "cita_codigo": {"Python": "Código propio. Librerías: SciPy (Virtanen et al., 2020; algoritmo de Crouse, 2016) "
+                                  "y PuLP (Mitchell et al., 2011) para verificar.",
+                        "R": CITA_R},
+        "cita_resultados": CITA_RESULTADOS,
         "codigo": [("parte1/python/asignacion.py", "--- SciPy: Jonker-Volgenant", None),
                    ("parte1/r/asignacion.R", "--- Si no es cuadrada", "--- Nota del ajuste")],
     },
@@ -231,13 +236,14 @@ QUE_ES = {
     "titular": "¿Qué es un problema de transbordo?",
     "cita": "Un problema de transbordo es un problema de transporte en el que la mercancía puede pasar por "
             "nodos intermedios antes de llegar a su destino.",
-    "autor": "Definición basada en Taha (2017), cap. 5, y Winston (2004), sec. 7.6; el modelo lo planteó Orden (1956)",
+    "autor": "Definición basada en Winston (2004), sec. 7.6, y Taha (2017), sec. 22.1; el modelo lo planteó Orden (1956)",
+    "pie": "Gráfico: elaboración propia con el resultado del ejemplo de la Parte II.",
     "iniciales": "HT",
     "situaciones": [
         "## Situaciones que modela",
-        "Plantas que abastecen clientes a través de bodegas o centros de distribución (Taha, 2017, cap. 5); "
-        "envíos que pasan por aeropuertos intermedios (Winston, 2004, sec. 7.6); redes de distribución y de "
-        "suministro planteadas como flujo de costo mínimo (Hillier y Lieberman, 2021, cap. 10).",
+        "Plantas que abastecen clientes pasando por puntos intermedios, como aeropuertos (Winston, 2004, sec. 7.6); "
+        "redes de distribución y de suministro con bodegas o centros de distribución, planteadas como flujo de "
+        "costo mínimo (Hillier y Lieberman, 2021, cap. 10; Taha, 2017, sec. 22.1).",
         "## Elementos",
         "Nodos de origen (oferta), de transbordo (entra = sale) y de destino (demanda); arcos con costo unitario.",
     ],
@@ -258,10 +264,10 @@ RELACION = {
         ("Restricciones", "Oferta por fila y demanda por columna", "Conservación de flujo en cada nodo: sale − entra = oferta − demanda"),
         ("Matriz", "m × n (orígenes × destinos)", "n × n con todos los nodos; costo 0 en la diagonal y M donde no hay arco"),
         ("Relación", "Caso particular del transbordo sin nodos intermedios",
-         "Se convierte en transporte agregando un buffer B a filas y columnas (Taha, 2017)"),
+         "Se convierte en transporte agregando un buffer B a filas y columnas (Winston, 2004, sec. 7.6)"),
     ],
     "lectura": "todo problema de transbordo se puede resolver como uno de transporte; la diferencia está en armar la matriz.",
-    "fuente": "Taha (2017), cap. 5; Hillier y Lieberman (2021), caps. 9 y 10; Winston (2004), sec. 7.6; Khurana (2015).",
+    "fuente": "Winston (2004), sec. 7.6; Hillier y Lieberman (2021), caps. 9 y 10; Taha (2017), cap. 5 y sec. 22.1; Khurana (2015).",
 }
 
 EJEMPLO = {
@@ -279,6 +285,7 @@ EJEMPLO = {
                           "otra ruta y también da {tb_optimo}.",
                           "Los nodos rosados no ofrecen ni demandan: solo redistribuyen."],
     },
+    "cita": "Problema y gráfico: elaboración propia. Método: Winston (2004, sec. 7.6).",
 }
 
 MATRICIAL = {

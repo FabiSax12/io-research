@@ -386,6 +386,7 @@ def fuerzas(m, c, grafico):
     regla_v(lam, REGLA_X, TOPE, BASE - TOPE)
     e = c["exhibicion"]
     exhibicion(lam, "parte2", e["titulo"], e["subtitulo"], grafico, e["lectura"], e["fuente"], None, alto_grafico=230)
+    cita_pie(lam, c.get("pie"))
 
 
 def tabla_texto(m, seccion, titular_txt, encabezados, filas, anchos, lectura_txt=None, fuente=None, tam=12, alto_max=80,
