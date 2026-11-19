@@ -140,11 +140,16 @@ PARTE1 = {
     },
     "transporte": {
         "titular": "Problema de transporte",
-        "izq": ["## Problema", "{tr_nombre}. Oferta total {tr_oferta}, demanda total {tr_demanda}.",
-                "## Modelo", "min Σ c_ij x_ij, con Σ_j x_ij = oferta_i, Σ_i x_ij = demanda_j y x_ij ≥ 0."],
+        "izq": ["## Problema", "{tr_nombre}. Una cooperativa lechera envía leche desde sus plantas de San Carlos, "
+                "Zarcero y Cartago (200, 150 y 150 miles de litros) a sus centros de San José, Alajuela y Heredia "
+                "(180, 170 y 100). xij = miles de litros de la planta i al centro j (Z en miles de colones).",
+                "## Modelo", "Min Z = 8x11 + 5x12 + 6x13 + 7x21 + 4x22 + 5x23 + 4x31 + 9x32 + 7x33",
+                "Oferta: x11 + x12 + x13 ≤ 200; x21 + x22 + x23 ≤ 150; x31 + x32 + x33 ≤ 150",
+                "Demanda: x11 + x21 + x31 = 180; x12 + x22 + x32 = 170; x13 + x23 + x33 = 100; xij ≥ 0"],
         "der": ["## Balanceo", "{tr_ajuste}",
                 "## Librerías", "Python: PuLP. R: lpSolve::lp.transport().",
-                "## Resultado", "Costo mínimo = {tr_optimo}."],
+                "## Resultado", "Costo mínimo = {tr_optimo} (₡2 140 000). Cartago abastece a San José y Zarcero a "
+                "Alajuela; San Carlos reparte el resto y le sobran 50 mil litros."],
         "exhibicion": {
             "titulo": "Uso de la oferta por planta",
             "subtitulo": "Unidades enviadas a clientes y asignadas al destino ficticio, por origen",
@@ -337,7 +342,9 @@ CONCLUSIONES = {
             "## Verificación", "Resolver con dos lenguajes y un segundo método detecta errores de planteamiento."],
     "der": ["## Parte II", "El transbordo generaliza al transporte; con el buffer B se resuelve con las mismas herramientas.",
             "## Desbalanceo", "Se corrige con un nodo ficticio de costo 0, igual que en transporte.",
-            "[completar: conclusión propia del equipo.]"],
+            "## Conclusión", "Con problemas propios (café, bicicletas, leche y una red de transbordo) vimos que, "
+            "si el modelo está bien planteado, Python, R y Solver llegan al mismo óptimo: la herramienta cambia la "
+            "sintaxis, no la respuesta. Lo que más trabajo cuesta es pasar el enunciado a variables y restricciones."],
     "implicaciones": ["Modelar bien (nodos, arcos, balance) importa más que la herramienta elegida.",
                       "El modelo de red es más corto de escribir; el matricial es el que se presenta en clase."],
 }
