@@ -240,7 +240,7 @@ RELACION = {
 
 EJEMPLO = {
     "titular": "Nuestro ejemplo de transbordo",
-    "izq": ["## Enunciado", "{tb_nombre}. [completar: contexto del ejemplo.]",
+    "izq": ["## Enunciado", "{tb_nombre}. Una empresa envía producto desde dos plantas (P1, P2) a tres clientes (D1, D2, D3), casi siempre a través de dos centros de distribución (T1, T2); también existe un envío directo P1→D1, más caro.",
             "## Nodos", "{tb_nodos}"],
     "der": ["## Arcos", "{tb_narcos} rutas posibles con costo unitario; las que no existen no se pueden usar (costo M en la matriz).",
             "## Resultado", "Costo mínimo = {tb_optimo}. Flujo por los nodos de transbordo: {tb_via} unidades."],
@@ -285,6 +285,21 @@ SOLVER_LAMINA = {
         "fuente": None,
         "implicaciones": ["Solver no se automatiza: se corre a mano y se guarda la captura.",
                           "Guardar el libro resuelto con otro nombre; el script sobrescribe transbordo.xlsx."],
+    },
+}
+
+SOLVER_DESB_LAMINA = {
+    "titular": "Solver: caso desbalanceado",
+    "izq": ["## Archivo", "parte2/solver/transbordo_desbalanceado.xlsx: la misma hoja con una fila y una columna más para el nodo Ficticio."],
+    "der": ["## Qué cambia", "El ficticio absorbe el excedente de oferta a costo 0; B se calcula con el total ya balanceado.",
+            "## Método", "Mismo modelo: minimizar el costo total con suma de fila = oferta + B y suma de columna = demanda + B (Simplex LP)."],
+    "exhibicion": {
+        "titulo": "Resultado de Solver (desbalanceado)",
+        "subtitulo": "Hoja resuelta con el nodo Ficticio",
+        "lectura": "{solver_desb_lectura}",
+        "fuente": None,
+        "implicaciones": ["El flujo hacia el ficticio son las unidades de oferta que no salen del origen.",
+                          "Guardar el libro resuelto con otro nombre; el script sobrescribe el archivo."],
     },
 }
 

@@ -29,3 +29,7 @@ capturas/*
 
 # Salida de la presentación (se regenera con presentacion/reconstruir.py)
 presentacion/salida/
+
+# Capturas manuales de Excel Solver (no se regeneran con run_all.py)
+!capturas/transbordo_solver.png
+!capturas/transbordo_desbalanceado_solver.png

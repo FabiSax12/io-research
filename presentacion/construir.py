@@ -104,6 +104,11 @@ def valores(g):
     v["solver_lectura"] = (f"Solver da {f(sv)}, igual que Python y R." if sv is not None and abs(sv - (rtb or {}).get("valor_objetivo", -1)) < 1e-6
                            else f"Solver da {f(sv)}; revisar contra {v['tb_optimo']}." if sv is not None
                            else f"[completar: correr Solver; el óptimo esperado es {v['tb_optimo']}.]")
+    sd = K.SOLVER.get("transbordo_desbalanceado")
+    vd = (datos.resultado("transbordo_desbalanceado") or {}).get("valor_objetivo")
+    v["solver_desb_lectura"] = (f"Solver da {f(sd)}, igual que Python y R." if sd is not None and vd is not None and abs(sd - vd) < 1e-6
+                                else f"Solver da {f(sd)}; revisar contra {f(vd)}." if sd is not None
+                                else "[completar: correr Solver en el caso desbalanceado.]")
     esc = {c["caso"]: c for c in datos.escenarios_transbordo()}
     v.update(o_bal=esc["balanceado"]["oferta"], d_bal=esc["balanceado"]["demanda"],
              f_sobra=f(esc["sobra"]["ficticio"]), f_falta=f(esc["falta"]["ficticio"]))
@@ -521,6 +526,8 @@ def construir(destino=None):
              f"el ficticio absorbe el excedente a costo 0 y el costo óptimo es {v['desb_optimo']}.",
              None,
              pesos=[0.95, 1.45, 0.9])
+    dividida(m, "parte2", llenar(K.SOLVER_DESB_LAMINA, v),
+             datos.captura("transbordo_desbalanceado_solver.png") or "transbordo_desbalanceado_solver.png", alto_grafico=190)
 
     conclusiones(m, K.CONCLUSIONES)
     laminas_minutas.agregar(m)
