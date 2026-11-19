@@ -367,7 +367,7 @@ def tabla_herramientas(m, c):
         texto(lam, xs[5] + 8, y + 5, cols[5][1] - 8, alto_fila - 4, com, tam=11.5)
         y += alto_fila
         regla_h(lam, MARGEN, y - 1.5, 880)
-    lectura(lam, MARGEN, BASE - 50, 880, c["lectura"], h=18)
+    lectura(lam, MARGEN, BASE - 50, 880, c["lectura"], h=18, etiqueta="Lectura de la tabla:")
     cita_pie(lam, c["fuente"])
 
 
@@ -513,7 +513,7 @@ def construir(destino=None):
         resultados(m, "parte1", f"{c['titular']}: resultados", p,
                    f"Python y R resuelven el mismo YAML; el valor óptimo es {f((datos.resultado(p) or {}).get('valor_objetivo'))}.",
                    c.get("cita_resultados"),
-                   etiqueta="Lectura de los resultados:" if p == "asignacion" else None)
+                   etiqueta="Lectura de los resultados:" if p in ("transporte", "asignacion") else None)
     dividida(m, "parte1", llenar(K.COMPARACION, v), g["comparacion"]["ruta"], alto_grafico=180)
 
     fuerzas(m, llenar(K.QUE_ES, v), g["directo"]["ruta"])

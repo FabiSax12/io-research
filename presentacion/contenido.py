@@ -378,7 +378,7 @@ CONCLUSIONES = {
             "## Verificación", "Resolver con dos lenguajes y un segundo método detecta errores de planteamiento."],
     "der": ["## Parte II", "El transbordo generaliza al transporte; con el buffer B se resuelve con las mismas herramientas.",
             "## Desbalanceo", "Se corrige con un nodo ficticio de costo 0, igual que en transporte.",
-            "## Conclusión", "Con problemas propios (café, bicicletas, leche y una red de transbordo) vimos que, "
+            "## Conclusión", "Con problemas propios (café, bicicletas, leche, asignación de técnicos y una red de transbordo) vimos que, "
             "si el modelo está bien planteado, Python, R y Solver llegan al mismo óptimo: la herramienta cambia la "
             "sintaxis, no la respuesta. Lo que más trabajo cuesta es pasar el enunciado a variables y restricciones."],
     "implicaciones": ["Modelar bien (nodos, arcos, balance) importa más que la herramienta elegida.",
