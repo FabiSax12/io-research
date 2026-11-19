@@ -223,7 +223,7 @@ QUE_ES = {
     "titular": "¿Qué es un problema de transbordo?",
     "cita": "Un problema de transbordo es un problema de transporte en el que la mercancía puede pasar por "
             "nodos intermedios antes de llegar a su destino.",
-    "autor": "Paráfrasis de Taha (2017), cap. 5",
+    "autor": "Paráfrasis de Taha (2017), p. 224",
     "iniciales": "HT",
     "situaciones": [
         "## Situaciones que modela",
@@ -249,10 +249,10 @@ RELACION = {
         ("Restricciones", "Oferta por fila y demanda por columna", "Conservación de flujo en cada nodo: sale − entra = oferta − demanda"),
         ("Matriz", "m × n (orígenes × destinos)", "n × n con todos los nodos; costo 0 en la diagonal y M donde no hay arco"),
         ("Relación", "Caso particular del transbordo sin nodos intermedios",
-         "Se convierte en transporte agregando un buffer B a filas y columnas (Taha, 2017)"),
+         "Se convierte en transporte agregando un buffer B a filas y columnas (Taha, 2017, p. 224)"),
     ],
     "lectura": "todo problema de transbordo se puede resolver como uno de transporte; la diferencia está en armar la matriz.",
-    "fuente": "Taha (2017), cap. 5; Hillier y Lieberman (2021), cap. 9; Winston (2004), sec. 7.6; Khurana (2015).",
+    "fuente": "Taha (2017), p. 224 y sec. 22.1 (material web); Hillier y Lieberman (2021), cap. 9; Winston (2004), sec. 7.6; Khurana (2015).",
 }
 
 EJEMPLO = {
@@ -332,7 +332,7 @@ VARIANTES = {
     "nota": "Costo óptimo de la red balanceada del ejemplo (oferta {o_bal}, demanda {d_bal}) al variar la oferta de P1 en ±20 unidades. "
             "Nuestro caso desbalanceado (demanda 80, costo {desb_optimo}) se resuelve en las láminas siguientes. "
             "B se calcula después de balancear.",
-    "fuente": "Taha (2017), cap. 5; Khurana (2015).",
+    "fuente": "Taha (2017), pp. 209-210; Khurana (2015).",
 }
 
 DESBALANCEADO = {
@@ -397,7 +397,7 @@ REFERENCIAS = [
     "Perron, L. y Furnon, V. (2024). *OR-Tools* (versión 9.10) [Software]. Google. https://developers.google.com/optimization/",
     "Schumacher, D. (2023). *ompr: Model and solve mixed integer linear programs* [Paquete de R]. CRAN. "
     "https://CRAN.R-project.org/package=ompr",
-    "Taha, H. A. (2017). *Operations research: An introduction* (10.ª ed.). Pearson.",
+    "Taha, H. A. (2017). *Operations research: An introduction* (10.ª ed., edición global). Pearson.",
     "Theußl, S., Schwendinger, F. y Hornik, K. (2020). ROI: An extensible R optimization infrastructure. "
     "*Journal of Statistical Software, 94*(15), 1–64. https://doi.org/10.18637/jss.v094.i15",
     "Virtanen, P., Gommers, R., Oliphant, T. E., Haberland, M., Reddy, T., Cournapeau, D., … SciPy 1.0 Contributors. "
