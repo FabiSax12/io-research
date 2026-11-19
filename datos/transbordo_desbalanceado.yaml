@@ -1,5 +1,8 @@
 # Problema propuesto por el grupo (no viene de un enunciado dado).
 #
+# ENUNCIADO: misma red que transbordo.yaml, pero la demanda baja (D2 de 40 a 30 y D3 de 30 a 20). P1 y P2 siguen
+# ofreciendo 60 y 40, así que sobran 20 unidades. ¿Cómo enviar al menor costo total?
+#
 # Problema de transbordo (minimizar costo). Este ejemplo está DESBALANCEADO (oferta 100 > demanda 80).
 # Se agrega un destino ficticio que absorbe el excedente de oferta.
 # Se usa en: parte2/python/transbordo.py y parte2/r/transbordo.R (con argumento: transbordo_desbalanceado)

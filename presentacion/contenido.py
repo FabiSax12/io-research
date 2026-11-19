@@ -319,10 +319,11 @@ VARIANTES = {
 
 DESBALANCEADO = {
     "titular": "Cómo se resuelve el caso desbalanceado",
-    "izq": ["## Sobra oferta", "Se agrega un destino ficticio. Lo que recibe es oferta que no sale del origen.",
+    "izq": ["## Sobra oferta", "Se agrega un destino ficticio (una columna más). Lo que recibe es oferta que no sale del origen.",
             "## Falta oferta", "Se agrega un origen ficticio. Lo que envía es demanda que queda sin atender; "
             "si eso tiene un costo (penalización), se usa en lugar de 0."],
-    "der": ["## En la matriz", "El ficticio es una fila o columna más; B se calcula con el total ya balanceado.",
+    "der": ["## Enunciado", "Misma red del ejemplo anterior, pero la demanda baja: D2 pasa de 40 a 30 y D3 de 30 a 20. "
+            "P1 y P2 siguen ofreciendo 60 y 40, así que sobran 20 unidades. ¿Cómo enviar al menor costo?",
             "## Nuestro caso", "{desb_ajuste} Costo = {desb_optimo}."],
     "exhibicion": {
         "titulo": "Costo óptimo según la oferta disponible",
