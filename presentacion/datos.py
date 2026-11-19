@@ -107,6 +107,17 @@ def tamanos():
 
 
 # ------------------------------------------------------------------ PLE: relajación lineal (cota)
+def yaml_lineas(problema, sin=("nombre",)):
+    """Bloque de datos de datos/<problema>.yaml tal como lo leen los scripts, sin comentarios ni las claves de `sin`."""
+    salida = []
+    for l in (DATOS / f"{problema}.yaml").read_text(encoding="utf-8").splitlines():
+        l = l.split(" #")[0].rstrip()
+        if not l or l.lstrip().startswith("#") or l.split(":")[0] in sin:
+            continue
+        salida.append(l)
+    return salida
+
+
 def relajacion_ple():
     d = yaml_de("ple")
     k = -1 if d["sentido"] == "max" else 1

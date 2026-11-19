@@ -44,6 +44,9 @@ SECCIONES = {
     "parte2":       {"etiqueta": "Parte II",     "fondo": VERDE,     "texto": BLANCO, "tinte": TINTE_VERDE},
     "herramientas": {"etiqueta": "Herramientas", "fondo": ROSADO,    "texto": NEGRO,  "tinte": TINTE_BERMELLON},
     "resumen":      {"etiqueta": "Resumen",      "fondo": NEGRO,     "texto": BLANCO, "tinte": TINTE_AMARILLO},
+    "codigo":       {"etiqueta": "Código e IA",  "fondo": ROSADO,    "texto": NEGRO,  "tinte": TINTE_BERMELLON},
+    "minutas":      {"etiqueta": "Minutas",      "fondo": NEGRO,     "texto": BLANCO, "tinte": TINTE_AMARILLO},
+    "referencias":  {"etiqueta": "Referencias",  "fondo": NEGRO,     "texto": BLANCO, "tinte": TINTE_AMARILLO},
 }
 
 # ------------------------------------------------------------------ textos fijos del diseño (en español)

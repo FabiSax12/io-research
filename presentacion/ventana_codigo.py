@@ -11,7 +11,7 @@ from pathlib import Path
 
 from PIL import Image, ImageDraw, ImageFont
 from pygments import lex
-from pygments.lexers import PythonLexer, SLexer, TextLexer
+from pygments.lexers import PythonLexer, SLexer, TextLexer, YamlLexer
 from pygments.token import Comment, Keyword, Name, Number, Operator, Punctuation, String, Text, Token
 
 FUENTES = Path(__file__).resolve().parent / "fuentes"
@@ -44,7 +44,7 @@ COLORES = [   # el primer prefijo de token que coincida gana
     (Operator, TEXTO_SUAVE),
     (Punctuation, TEXTO_SUAVE),
 ]
-LEXERS = {"python": PythonLexer, "r": SLexer, "consola": TextLexer}
+LEXERS = {"python": PythonLexer, "r": SLexer, "consola": TextLexer, "yaml": YamlLexer}
 
 # Sin ligaduras: "<-" y ">=" se ven tal como se escriben (con Pillow + libraqm; sin raqm no hay ligaduras de todos modos).
 try:
