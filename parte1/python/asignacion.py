@@ -26,10 +26,12 @@ for k in range(-sobran):                                  # más agentes que tar
     for fila in matriz:
         fila.append(0)
 if sobran:
-    ajustes.append(f"Matriz {len(d['agentes'])}x{len(d['tareas'])} no cuadrada: se agregaron {abs(sobran)} "
-                   f"{'agente(s)' if sobran > 0 else 'tarea(s)'} ficticio(s) con valor 0; quien se asigna a uno queda sin asignar")
+    k, cosa = abs(sobran), ("agente ficticio" if sobran > 0 else "tarea ficticia")
+    ajustes.append(f"Matriz {len(d['agentes'])}x{len(d['tareas'])} no cuadrada: se "
+                   + (f"agregó 1 {cosa} (Ficticio 1)" if k == 1 else f"agregaron {k} {cosa.replace(' ', 's ')}s (Ficticio 1 a {k})")
+                   + " con valor 0; quien queda asignado ahí no recibe trabajo")
 
-# --- Método húngaro de SciPy ---
+# --- SciPy: Jonker-Volgenant modificado (Crouse, 2016) ---
 costo = np.array(matriz, dtype=float)
 filas_opt, cols_opt = linear_sum_assignment(costo, maximize=maximizar)
 valor = costo[filas_opt, cols_opt].sum()
