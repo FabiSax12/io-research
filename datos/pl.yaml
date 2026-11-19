@@ -1,13 +1,53 @@
-# EJEMPLO - reemplazar por el problema del grupo
-#
-# Programación lineal. Todas las variables son >= 0.
+# Programación lineal (PL). Todas las variables son >= 0.
 # Se usa en: parte1/python/pl.py y parte1/r/pl.R
-nombre: Plantas de vidrio (ejemplo de Hillier)
+#
+# ------------------------------------------------------------------ ENUNCIADO
+# Una cooperativa cafetalera de Tarrazú tuesta y empaca dos tipos de café para exportar: Tradicional y Premium.
+# Cada quintal de café Tradicional deja una ganancia de ₡30 000 y cada quintal de Premium deja ₡50 000.
+#
+# - Grano verde: esta semana la cooperativa dispone de 100 quintales de grano verde. Cada quintal de café
+#   tostado, sea Tradicional o Premium, consume 1 quintal de grano verde.
+# - Tostadora: el Tradicional requiere 2 horas de tostado por quintal y el Premium, por ser un tueste más lento,
+#   4 horas. La tostadora puede trabajar como máximo 280 horas en la semana.
+# - Demanda del Premium: el comprador extranjero acepta como máximo 50 quintales de Premium.
+# - Contrato del Tradicional: la cooperativa firmó un contrato con un supermercado local y debe entregar al
+#   menos 20 quintales de Tradicional.
+#
+# ¿Cuántos quintales de cada tipo de café debe producir la cooperativa para maximizar su ganancia semanal?
+#
+# ------------------------------------------------------------------ MODELO
+# Variables de decisión:
+#   x1 = quintales de café Tradicional producidos en la semana
+#   x2 = quintales de café Premium producidos en la semana
+#
+# Función objetivo (ganancia en miles de colones):
+#   Max Z = 30 x1 + 50 x2
+#
+# Sujeto a:
+#   x1 +   x2 <= 100      (grano verde disponible, en quintales)
+#   2x1 + 4x2 <= 280      (horas de tostadora)
+#          x2 <=  50      (demanda máxima del Premium)
+#   x1        >=  20      (contrato mínimo del Tradicional)
+#   x1, x2    >=   0      (no negatividad; la pone el script)
+#
+# ------------------------------------------------------------------ SOLUCIÓN ESPERADA
+# Óptimo: x1 = 60, x2 = 40, Z = 3800 (₡3 800 000 de ganancia semanal).
+# Vértices de la región factible: (20, 0) Z = 600; (100, 0) Z = 3000; (60, 40) Z = 3800;
+#   (40, 50) Z = 3700; (20, 50) Z = 3100.
+# Restricciones activas (sin holgura): grano verde y tostadora; el óptimo está donde se cruzan.
+# Con holgura: demanda del Premium (sobran 10 quintales de demanda) y contrato (se entregan 40 quintales de más).
+# La pendiente de Z (30/50 = 0,6) queda entre la del grano (1) y la de la tostadora (0,5), por eso ese vértice gana.
+# Precios sombra (duales): se resuelve y1 + 2y2 = 30 (columna de x1) y y1 + 4y2 = 50 (columna de x2):
+#   y1 = 10 -> un quintal más de grano verde vale ₡10 000; y2 = 10 -> una hora más de tostadora vale ₡10 000.
+#   Demanda y contrato tienen precio sombra 0 (tienen holgura). Comprobación: 100·10 + 280·10 = 3800 = Z.
+
+nombre: Cooperativa cafetalera (café Tradicional y Premium)
 sentido: max                 # max o min
-variables: [x1, x2]          # nombres de las variables de decisión
-objetivo: [3, 5]             # coeficientes de la función objetivo, en el orden de "variables"
+variables: [x1, x2]          # x1 = Tradicional, x2 = Premium (quintales)
+objetivo: [30, 50]           # ganancia por quintal, en miles de colones
 restricciones:               # al menos 3
   # signo va SIEMPRE entre comillas: "<=", ">=" o "="
-  - {nombre: Planta 1, coef: [1, 0], signo: "<=", rhs: 4}
-  - {nombre: Planta 2, coef: [0, 2], signo: "<=", rhs: 12}
-  - {nombre: Planta 3, coef: [3, 2], signo: "<=", rhs: 18}
+  - {nombre: Grano verde, coef: [1, 1], signo: "<=", rhs: 100}
+  - {nombre: Tostadora (h), coef: [2, 4], signo: "<=", rhs: 280}
+  - {nombre: Demanda Premium, coef: [0, 1], signo: "<=", rhs: 50}
+  - {nombre: Contrato Tradicional, coef: [1, 0], signo: ">=", rhs: 20}
