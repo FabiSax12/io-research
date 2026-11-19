@@ -31,7 +31,7 @@ if sobran:
                    + (f"agregó 1 {cosa} (Ficticio 1)" if k == 1 else f"agregaron {k} {cosa.replace(' ', 's ')}s (Ficticio 1 a {k})")
                    + " con valor 0; quien queda asignado ahí no recibe trabajo")
 
-# --- Método húngaro de SciPy ---
+# --- SciPy: Jonker-Volgenant modificado (Crouse, 2016) ---
 costo = np.array(matriz, dtype=float)
 filas_opt, cols_opt = linear_sum_assignment(costo, maximize=maximizar)
 valor = costo[filas_opt, cols_opt].sum()

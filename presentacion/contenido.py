@@ -187,8 +187,9 @@ PARTE1 = {
                 "Técnicos: xi1 + xi2 + xi3 ≤ 1 (i = 1, …, 4)",
                 "Órdenes: x1j + x2j + x3j + x4j = 1 (j = 1, 2, 3); xij ∈ {{0,1}}"],
         "der": ["## Ajuste", "{as_ajuste}",
-                "## Librerías", "Python: SciPy linear_sum_assignment (método húngaro) y PuLP con variables binarias "
-                "para verificar. R: lpSolve::lp.assign(). El PL ya da un óptimo entero (Winston, 2004, sec. 7.5).",
+                "## Librerías", "Python: SciPy linear_sum_assignment (Jonker-Volgenant; Crouse, 2016), que da el mismo óptimo "
+                "que el método húngaro (Kuhn, 1955), y PuLP con variables binarias para verificar. "
+                "R: lpSolve::lp.assign(). El PL ya da un óptimo entero (Winston, 2004, sec. 7.5).",
                 "## Resultado", "Tiempo mínimo = {as_optimo} min. Daniel va a Barva, Carolina a Santo Domingo y "
                 "Bryan a San Rafael; Andrea queda de guardia."],
         "exhibicion": {
@@ -200,7 +201,7 @@ PARTE1 = {
                               "lo mejora Carolina (30), y Andrea queda libre.",
                               "La orden ficticia marca a quién no se le asigna trabajo."],
         },
-        "codigo": [("parte1/python/asignacion.py", "--- Método húngaro de SciPy", None),
+        "codigo": [("parte1/python/asignacion.py", "--- SciPy: Jonker-Volgenant", None),
                    ("parte1/r/asignacion.R", "--- Si no es cuadrada", "--- Nota del ajuste")],
     },
 }
@@ -230,7 +231,7 @@ QUE_ES = {
     "titular": "¿Qué es un problema de transbordo?",
     "cita": "Un problema de transbordo es un problema de transporte en el que la mercancía puede pasar por "
             "nodos intermedios antes de llegar a su destino.",
-    "autor": "Definición basada en Taha (2017), cap. 5, y Winston (2004), sec. 7.6",
+    "autor": "Definición basada en Taha (2017), cap. 5, y Winston (2004), sec. 7.6; el modelo lo planteó Orden (1956)",
     "iniciales": "HT",
     "situaciones": [
         "## Situaciones que modela",
@@ -369,7 +370,7 @@ CONCLUSIONES = {
             "## Verificación", "Resolver con dos lenguajes y un segundo método detecta errores de planteamiento."],
     "der": ["## Parte II", "El transbordo generaliza al transporte; con el buffer B se resuelve con las mismas herramientas.",
             "## Desbalanceo", "Se corrige con un nodo ficticio de costo 0, igual que en transporte.",
-            "## Conclusión", "Con problemas propios (café, bicicletas, leche, técnicos en Heredia y una red de transbordo) vimos que, "
+            "## Conclusión", "Con problemas propios (café, bicicletas, leche y una red de transbordo) vimos que, "
             "si el modelo está bien planteado, Python, R y Solver llegan al mismo óptimo: la herramienta cambia la "
             "sintaxis, no la respuesta. Lo que más trabajo cuesta es pasar el enunciado a variables y restricciones."],
     "implicaciones": ["Modelar bien (nodos, arcos, balance) importa más que la herramienta elegida.",
@@ -392,16 +393,22 @@ REFERENCIAS = [
     "Engineering, Education, and Technology*. LACCEI. https://doi.org/10.18687/LACCEI2021.1.1.257",
     "Chase, R. B., Jacobs, F. R. y Aquilano, N. J. (2004). Linear programming with the Excel Solver [Suplemento A]. "
     "En *Operations management for competitive advantage* (10.ª ed., pp. 702–710). McGraw-Hill/Irwin.",
+    "Crouse, D. F. (2016). On implementing 2D rectangular assignment algorithms. "
+    "*IEEE Transactions on Aerospace and Electronic Systems, 52*(4), 1679–1696. https://doi.org/10.1109/TAES.2016.140952",
     "Forrest, J., Ralphs, T., Vigerske, S., Gambini Santos, H., Hafer, L. y Kristjansson, B. (2024). *coin-or/Cbc* "
     "(versión 2.10.12) [Software]. Zenodo. https://github.com/coin-or/Cbc",
     "Hillier, F. S. y Lieberman, G. J. (2021). *Introduction to operations research* (11.ª ed.). McGraw-Hill.",
     "Khurana, A. (2015). Variants of transshipment problem. *European Transport Research Review, 7*(2), Artículo 11. "
     "https://doi.org/10.1007/s12544-015-0154-8",
+    "Kuhn, H. W. (1955). The Hungarian method for the assignment problem. "
+    "*Naval Research Logistics Quarterly, 2*(1–2), 83–97. https://doi.org/10.1002/nav.3800020109",
     "Microsoft. (s. f.). *Definir y resolver un problema con Solver*. Soporte de Microsoft. Recuperado el 19 de "
     "noviembre de 2026, de https://support.microsoft.com/es-es/office/definir-y-resolver-un-problema-con-solver-"
     "5d1a388f-079d-43ac-a7eb-f63e45925040",
     "Mitchell, S., O’Sullivan, M. y Dunning, I. (2011). *PuLP: A linear programming toolkit for Python* [Manuscrito]. "
     "The University of Auckland. http://www.optimization-online.org/DB_HTML/2011/09/3178.html",
+    "Orden, A. (1956). The transhipment problem. *Management Science, 2*(3), 276–285. "
+    "https://doi.org/10.1287/mnsc.2.3.276",
     "Perron, L. y Furnon, V. (2024). *OR-Tools* (versión 9.10) [Software]. Google. https://developers.google.com/optimization/",
     "Schumacher, D. (2023). *ompr: Model and solve mixed integer linear programs* [Paquete de R]. CRAN. "
     "https://CRAN.R-project.org/package=ompr",
