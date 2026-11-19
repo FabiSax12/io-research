@@ -1,15 +1,37 @@
-# EJEMPLO - reemplazar por el problema del grupo
-#
 # Problema de transporte (minimizar costo).
 # Si oferta total != demanda total, el script agrega un origen o destino
-# ficticio con costo 0 y lo informa. Este ejemplo está desbalanceado a propósito.
+# ficticio con costo 0 y lo informa. Este problema está desbalanceado (sobra oferta).
 # Se usa en: parte1/python/transporte.py y parte1/r/transporte.R
-nombre: Distribución desde 3 plantas a 4 clientes
-origenes: [Planta A, Planta B, Planta C]
-destinos: [Cliente 1, Cliente 2, Cliente 3, Cliente 4]
-oferta: [120, 80, 100]       # una por origen (total 300)
-demanda: [80, 60, 70, 60]    # una por destino (total 270)
-costos:                      # filas = orígenes, columnas = destinos
-  - [8, 6, 10, 9]
-  - [9, 12, 13, 7]
-  - [14, 9, 16, 5]
+#
+# ------------------------------------------------------------------ ENUNCIADO
+# Una cooperativa lechera tiene tres plantas: San Carlos, Zarcero y Cartago. Esta semana cuenta con 200, 150 y
+# 150 miles de litros de leche, respectivamente, y debe abastecer a tres centros de distribución: San José
+# (180 miles de litros), Alajuela (170) y Heredia (100).
+#
+# El costo de enviar mil litros de cada planta a cada centro, en miles de colones, es:
+#
+#                  San José   Alajuela   Heredia   Oferta
+#   San Carlos         8          5          6       200
+#   Zarcero            7          4          5       150
+#   Cartago            4          9          7       150
+#   Demanda          180        170        100
+#
+# ¿Cuánta leche debe enviar cada planta a cada centro para cubrir la demanda al menor costo?
+#
+# ------------------------------------------------------------------ MODELO
+# Variables: x_ij = miles de litros enviados de la planta i al centro j.
+#   Min Z = Σ c_ij x_ij
+#   Σ_j x_ij = oferta_i   (cada planta despacha su oferta; lo que sobra va al destino ficticio)
+#   Σ_i x_ij = demanda_j  (cada centro recibe su demanda)
+#   x_ij >= 0
+# Oferta total 500 > demanda total 450: se agrega un destino ficticio con demanda 50 y costo 0.
+# Óptimo esperado: Z = 2140 (miles de colones).
+nombre: Distribución de leche de 3 plantas a 3 centros
+origenes: [San Carlos, Zarcero, Cartago]
+destinos: [San José, Alajuela, Heredia]
+oferta: [200, 150, 150]      # una por origen (total 500), en miles de litros
+demanda: [180, 170, 100]     # una por destino (total 450), en miles de litros
+costos:                      # filas = orígenes, columnas = destinos (miles de colones por mil litros)
+  - [8, 5, 6]
+  - [7, 4, 5]
+  - [4, 9, 7]
