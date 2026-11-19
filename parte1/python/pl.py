@@ -8,7 +8,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[2]))  # preámbulo: para
 import pulp
 from scipy.optimize import linprog
 
-from comun.utilidades import armar_resultado, emitir, leer_yaml
+from comun.utilidades import armar_resultado, emitir, fmt, leer_yaml, limpiar
 
 d = leer_yaml("pl")
 nombres, c, sentido, restr = d["variables"], d["objetivo"], d["sentido"], d["restricciones"]
@@ -26,6 +26,7 @@ modelo.solve(pulp.PULP_CBC_CMD(msg=False))
 
 estado = pulp.LpStatus[modelo.status]
 valor = pulp.value(modelo.objective) if estado == "Optimal" else None
+sombra = [rc.pi for rc in modelo.constraints.values()] if estado == "Optimal" else []  # precios sombra (duales)
 
 # --- Verificación cruzada con SciPy linprog ---
 A_ub, b_ub, A_eq, b_eq = [], [], [], []
@@ -43,6 +44,10 @@ valor_scipy = k * chk.fun if chk.success else None
 coincide = valor is not None and valor_scipy is not None and abs(valor - valor_scipy) < 1e-6
 
 res = armar_resultado("pl", estado, valor, {v: x[v].value() for v in nombres},
-                      verificacion={"metodo": "scipy.optimize.linprog", "valor": valor_scipy, "coincide": coincide})
-filas = [[v, res["variables"][v]] for v in nombres] + [[f"Z óptimo ({sentido})", res["valor_objetivo"]]]
+                      verificacion={"metodo": "scipy.optimize.linprog", "valor": valor_scipy, "coincide": coincide},
+                      precios_sombra=[limpiar(y) for y in sombra])
+filas = ([[v, res["variables"][v]] for v in nombres] + [[f"Z óptimo ({sentido})", res["valor_objetivo"]]]
+         + [[f"Sombra: {r['nombre']}", y] for r, y in zip(restr, res["precios_sombra"])])
 emitir(res, d["nombre"], ["Variable", "Valor"], filas)
+for r, y in zip(restr, res["precios_sombra"]):
+    print(f"Precio sombra ({r['nombre']}): {fmt(y)}")

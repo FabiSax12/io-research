@@ -138,3 +138,13 @@ def test_asignacion_maximizar(tmp_path, lenguaje):
     res = ejecutar(tmp_path, "asignacion", asignacion([[5, 1], [2, 6]], "max"), lenguaje)
     assert res["valor_objetivo"] == pytest.approx(11)
     assert distintas_de_cero(res) == {"A1->T1": 1, "A2->T2": 1}
+
+
+@pytest.mark.parametrize("lenguaje", LENGUAJES)
+def test_pl_precios_sombra(tmp_path, lenguaje):
+    # max x + 2y  s.a. x <= 3, y <= 2, x + y <= 4  ->  activas y <= 2 y x + y <= 4.
+    # Duales: columna de x: y3 = 1; columna de y: y2 + y3 = 2 -> y2 = 1; x <= 3 tiene holgura -> y1 = 0.
+    datos = {"nombre": "t", "sentido": "max", "variables": ["x", "y"], "objetivo": [1, 2],
+             "restricciones": [restr([1, 0], "<=", 3), restr([0, 1], "<=", 2), restr([1, 1], "<=", 4)]}
+    res = ejecutar(tmp_path, "pl", datos, lenguaje)
+    assert res["precios_sombra"] == pytest.approx([0, 1, 1])
