@@ -1,13 +1,58 @@
-# EJEMPLO - reemplazar por el problema del grupo
-#
-# Programación lineal entera. Igual que pl.yaml, más la lista de variables enteras.
+# Programación lineal entera (PLE). Igual que pl.yaml, más la lista de variables enteras.
 # Se usa en: parte1/python/ple.py y parte1/r/ple.R
-nombre: Producción en unidades enteras
+#
+# ------------------------------------------------------------------ ENUNCIADO
+# Un taller de Cartago arma bicicletas de montaña y bicicletas urbanas. Cada bicicleta de montaña deja una
+# ganancia de ₡70 000 y cada urbana ₡50 000. Las bicicletas se venden completas, así que la cantidad de cada
+# tipo tiene que ser un número entero.
+#
+# - Soldadura: una bicicleta de montaña necesita 3 horas de soldadura y una urbana 2 horas. El soldador
+#   dispone de 19 horas en la semana.
+# - Pintura: una bicicleta de montaña necesita 1 hora de pintura y una urbana 3 horas. La cabina de pintura
+#   está disponible 17 horas en la semana.
+# - Cuadros de montaña: el proveedor solo entregó 4 cuadros de montaña, así que no se pueden armar más de 4
+#   bicicletas de montaña.
+# - Ensamblaje: el banco de ensamblaje tiene espacio para armar como máximo 8 bicicletas en la semana, sin
+#   importar el tipo.
+#
+# ¿Cuántas bicicletas de cada tipo debe armar el taller en la semana para maximizar su ganancia?
+#
+# ------------------------------------------------------------------ MODELO
+# Variables de decisión:
+#   x1 = bicicletas de montaña armadas en la semana
+#   x2 = bicicletas urbanas armadas en la semana
+#
+# Función objetivo (ganancia en miles de colones):
+#   Max Z = 70 x1 + 50 x2
+#
+# Sujeto a:
+#   3x1 + 2x2 <= 19       (horas de soldadura)
+#    x1 + 3x2 <= 17       (horas de pintura)
+#    x1       <=  4       (cuadros de montaña disponibles)
+#    x1 +  x2 <=  8       (capacidad del banco de ensamblaje)
+#   x1, x2 >= 0 y enteras (no negatividad e integralidad)
+#
+# ------------------------------------------------------------------ SOLUCIÓN ESPERADA
+# Relajación lineal (sin exigir enteros): x1 = 23/7 ≈ 3,29, x2 = 32/7 ≈ 4,57, Z ≈ 458,57.
+#   Es solo una cota superior: no se pueden armar 3,29 bicicletas.
+# Óptimo entero: x1 = 4, x2 = 3, Z = 430 (₡430 000 de ganancia semanal).
+#   Usa 18 de 19 h de soldadura, 13 de 17 h de pintura, los 4 cuadros de montaña y 7 de 8 cupos de ensamblaje.
+# Restricción que cambia de papel: x1 <= 4 tiene holgura en la relajación (3,29 < 4), pero está activa en el
+#   óptimo entero (x1 = 4). Exigir enteros cambia qué restricciones mandan, no solo los valores.
+# El ensamblaje no está activa en ninguna de las dos soluciones (7,86 y 7 de 8): no cambia el óptimo, pero
+#   asegura 4 restricciones, 3 de ellas con las dos variables.
+# Por qué redondear no sirve:
+#   - Redondear al más cercano da (3, 5): pide 3 + 15 = 18 h de pintura y solo hay 17. No es factible.
+#   - Redondear hacia abajo da (3, 4): es factible, pero Z = 410, peor que 430.
+# Exigir enteros baja Z de 458,57 a 430 (≈ 6,2 % menos). Esa brecha es el costo de la integralidad.
+
+nombre: Taller de bicicletas (montaña y urbanas)
 sentido: max
-variables: [x1, x2]
+variables: [x1, x2]          # x1 = bicicletas de montaña, x2 = bicicletas urbanas
 enteras: [x1, x2]            # variables que deben ser enteras (puede ser un subconjunto)
-objetivo: [5, 4]
+objetivo: [70, 50]           # ganancia por bicicleta, en miles de colones
 restricciones:
-  - {nombre: Madera, coef: [6, 4], signo: "<=", rhs: 24}
-  - {nombre: Horas, coef: [1, 2], signo: "<=", rhs: 6}
-  - {nombre: Demanda de x2, coef: [0, 1], signo: "<=", rhs: 2}
+  - {nombre: Soldadura (h), coef: [3, 2], signo: "<=", rhs: 19}
+  - {nombre: Pintura (h), coef: [1, 3], signo: "<=", rhs: 17}
+  - {nombre: Cuadros de montaña, coef: [1, 0], signo: "<=", rhs: 4}
+  - {nombre: Ensamblaje, coef: [1, 1], signo: "<=", rhs: 8}

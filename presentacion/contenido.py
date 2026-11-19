@@ -102,24 +102,31 @@ USO_LIBRERIAS = {
 PARTE1 = {
     "pl": {
         "titular": "Programación lineal",
-        "izq": ["## Problema", "{pl_nombre}. [completar: enunciado en una o dos oraciones.]",
+        "izq": ["## Problema", "{pl_nombre}. Una cooperativa de Tarrazú decide cuántos quintales producir de café "
+                "Tradicional (x1) y Premium (x2). Ganancia: ₡30 000 y ₡50 000 por quintal (Z en miles de colones).",
                 "## Modelo", "{pl_modelo}"],
-        "der": ["## Librerías", "Python: PuLP (CBC) y SciPy linprog para verificar. R: lpSolve::lp().",
+        "der": ["## Restricciones", "100 qq de grano verde; 280 h de tostadora (2 h y 4 h por qq); "
+                "máximo 50 qq de Premium; contrato de al menos 20 qq de Tradicional.",
+                "## Librerías", "Python: PuLP (CBC) y SciPy linprog para verificar. R: lpSolve::lp().",
                 "## Resultado", "Z = {pl_optimo} con {pl_solucion}."],
         "exhibicion": {
             "titulo": "Región factible y solución óptima",
             "subtitulo": "Restricciones del modelo y recta de nivel de Z en el óptimo",
             "lectura": "el óptimo está en el vértice ({pl_x1}, {pl_x2}), donde se cruzan dos restricciones activas; Z = {pl_optimo}.",
             "fuente": "Elaboración propia con PuLP 3 (CBC) y SciPy linprog sobre datos/pl.yaml.",
-            "implicaciones": ["La línea discontinua es la función objetivo en su mejor valor posible.",
-                              "Las restricciones que no tocan el vértice tienen holgura."],
+            "implicaciones": ["Activas: grano y tostadora. Demanda y contrato tienen holgura (precio sombra 0).",
+                              "Precios sombra: un quintal más de grano o una hora más de tostadora vale ₡10 000."],
         },
         "codigo": [("parte1/python/pl.py", "--- Modelo en PuLP", "--- Verificación"), ("parte1/r/pl.R", None, None)],
     },
     "ple": {
         "titular": "Programación lineal entera",
-        "izq": ["## Problema", "{ple_nombre}. [completar: enunciado.]", "## Modelo", "{ple_modelo}"],
-        "der": ["## Librerías", "Python: PuLP con cat=\"Integer\" (ramificación y acotamiento en CBC) y SciPy milp. "
+        "izq": ["## Problema", "{ple_nombre}. Un taller de Cartago decide cuántas bicicletas de montaña (x1) y "
+                "urbanas (x2) armar; deben ser enteras. Ganancia: ₡70 000 y ₡50 000 (Z en miles de colones).",
+                "## Modelo", "{ple_modelo}"],
+        "der": ["## Restricciones", "19 h de soldadura (3 h y 2 h); 17 h de pintura (1 h y 3 h); "
+                "4 cuadros de montaña; cupo de ensamblaje para 8 bicicletas.",
+                "## Librerías", "Python: PuLP con cat=\"Integer\" (ramificación y acotamiento en CBC) y SciPy milp. "
                 "R: lpSolve::lp() con int.vec.",
                 "## Resultado", "Z = {ple_optimo} con {ple_solucion}."],
         "exhibicion": {
@@ -127,8 +134,8 @@ PARTE1 = {
             "subtitulo": "Valor de Z sin y con la condición de integralidad",
             "lectura": "exigir enteros baja Z de {ple_cota} a {ple_optimo} ({ple_brecha} % menos); la relajación es una cota.",
             "fuente": "Elaboración propia con PuLP 3 (CBC) y SciPy milp/linprog sobre datos/ple.yaml. La barra rayada es una cota, no una solución factible.",
-            "implicaciones": ["Redondear la solución de PL no garantiza el óptimo entero.",
-                              "La brecha mide cuánto cuesta la integralidad."],
+            "implicaciones": ["Redondear no sirve: (3, 5) no es factible y (3, 4) da 410; exigir enteros cuesta {ple_brecha} %.",
+                              "x1 ≤ 4 tiene holgura en la relajación (3,29) pero es activa en el óptimo entero."],
         },
         "codigo": [("parte1/python/ple.py", "--- Modelo en PuLP", "--- Verificación"), ("parte1/r/ple.R", None, None)],
     },
