@@ -30,15 +30,19 @@
 - **Versiones:** PuLP 4 cambió la API (`lowBound`, `PULP_CBC_CMD`). Se trabaja con PuLP 3 y se anota la versión en la
   lámina de librerías.
 - **Problemas resueltos:**
-  - PL (plantas de vidrio, Hillier): óptimo en (2, 6) con Z = 36; coincide a mano, con PuLP y con SciPy.
-  - PLE (madera y horas): la relajación da (3; 1,5) con Z = 21, pero el óptimo entero es (4, 0) con Z = 20.
-    Redondear la solución de PL no sirve; va a una lámina.
-  - Transporte desbalanceado (oferta 300, demanda 270): destino ficticio con demanda 30 y costo 0.
-  - Asignación de 4 agentes a 3 tareas: se agrega una tarea ficticia de valor 0.
-  - Transbordo: se modela como transporte con todos los nodos en filas y columnas, y un costo M donde no hay arco.
-    Falta pasarlo a Solver.
-- **Dudas:** si M causa problemas numéricos en Solver (Kenni prueba con M = 1000) y cómo explicar en la defensa que el
-  nodo de transbordo tiene oferta y demanda cero.
+  - PL (cooperativa cafetalera, café Tradicional y Premium): óptimo en (60, 40) con Z = 3800 (₡3 800 000 de ganancia
+    semanal); coincide con PuLP, SciPy y lpSolve.
+  - PLE (taller de bicicletas de montaña y urbanas): la relajación da (3,29; 4,57) con Z ≈ 458,57, pero el óptimo
+    entero es (4, 3) con Z = 430. Redondear no sirve: (3, 5) no es factible y (3, 4) da 410; va a una lámina.
+  - Transporte desbalanceado (distribución de leche, oferta 500, demanda 450): destino ficticio con demanda 50 y
+    costo 0; costo mínimo 2140.
+  - Asignación de 4 técnicos a 3 órdenes de trabajo: se agrega una orden ficticia de valor 0; valor óptimo 100 y
+    Andrea queda sin orden.
+  - Transbordo (2 plantas, 2 centros de distribución y 3 clientes): se modela como transporte con todos los nodos en
+    filas y columnas, buffer B = 100 y un costo M donde no hay arco; óptimo 820 en Python y R. El caso desbalanceado
+    (oferta 100, demanda 80) da 610. Luego se verificó con Solver: 820 y 610.
+- **Dudas:** si M causa problemas numéricos en Solver (Kenni prueba con M = 1000; el modelo final usa M = 10 000) y
+  cómo explicar en la defensa que el nodo de transbordo tiene oferta y demanda cero.
 - **Exposición:** cada quien confirma qué láminas le tocan según el reparto de la minuta 1. Kenneth, que expone la
   teoría de transbordo, pide a Kenni un resumen de una página sobre nodos y conservación de flujo. Yan, que expone la
   comparación entre Python, R y Solver, la armará con los resultados que le pase Kenneth.
@@ -47,7 +51,7 @@
 
 - Referencias: los libros de Hillier y Taha más la documentación de cada librería, en formato APA (Kenneth).
 - Se mantiene PuLP + lpSolve como solución principal, SciPy como verificación y Solver solo para transbordo.
-- El ejemplo de PLE (21 contra 20) se usa en la lámina de enteros.
+- El ejemplo de PLE (458,57 contra 430) se usa en la lámina de enteros.
 - Cada integrante revisa el código de otra persona antes de incluirlo en la presentación.
 - Se mantiene el reparto de exposición de la minuta 1: Fabián (contexto, PL, PLE), Yan (librerías, transporte,
   comparación, conclusiones), Kenneth (asignación y teoría de transbordo), Kenni (modelo matricial, Solver y

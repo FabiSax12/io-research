@@ -22,12 +22,14 @@
 ## Anotaciones importantes
 
 - Estructura: portada, índice, contexto, tabla de librerías, un bloque por problema (enunciado, modelo, código y
-  resultado), transbordo contra Solver, conclusiones, código, datos e IA, minutas y referencias. Son 51 láminas.
-- Python y R coinciden en los cinco problemas. Kenneth revisó las tablas de resultados.
-- Kenni ya tiene los resultados de Solver para los dos casos de transbordo. Falta pasarlos a la lámina de Solver y al
-  gráfico comparativo, que todavía muestra la barra rayada.
-- Pendientes marcados con "[completar]": enunciados de PL y PLE, opinión del equipo en la tabla de librerías, conclusión
-  final y las tablas de cronograma de las minutas (láminas 40-41, 45 y 50).
+  resultado), transbordo contra Solver, conclusiones, código, datos e IA, minutas y referencias. Son 50 láminas: 36 de
+  contenido, 13 de minutas (37 a 49) y la de referencias (50).
+- Python y R coinciden en los seis problemas (PL 3800, PLE 430, transporte 2140, asignación 100, transbordo 820 y
+  transbordo desbalanceado 610). Kenneth revisó las tablas de resultados.
+- Solver da 820 y 610 para los dos casos de transbordo, igual que Python y R. Los resultados ya están en las láminas
+  30 y 34 y en el gráfico comparativo.
+- Los textos que estaban pendientes quedaron resueltos: enunciados, opinión del equipo en la tabla de
+  librerías, conclusión final (lámina 35) y cronograma, que va en las láminas de las minutas (40-41, 45 y 49).
 - Ajustes de forma: menos texto en las láminas de transporte y asignación, y nodos ficticios en el diagrama de
   transbordo desbalanceado.
 - Los scripts corrieron sin errores en otra computadora (Windows con R 4.2) tras instalar los paquetes.
@@ -45,12 +47,8 @@
   | 3 | Kenneth | 18-21 y 23-25 | Asignación, qué es un transbordo, diferencias con transporte y ejemplo de red |
   | 4 | Kenni | 26-34 | Modelo matricial con buffer, código, resultados, Solver y caso desbalanceado |
 
-- Las láminas 1, 2 y 36 a 51 (portada, índice, código, datos e IA, minutas con su cronograma y
+- Las láminas 1, 2 y 36 a 50 (portada, índice, código, datos e IA, minutas con su cronograma y
   referencias) no se exponen. Fabián abre con la portada y cada quien presenta al siguiente al terminar.
-- Se cambian los ejemplos de práctica de la minuta 2 por problemas propios: PL con la cooperativa cafetalera de
-  Tarrazú (en lugar de las plantas de vidrio), PLE con el taller de bicicletas (458,57 contra 430, en lugar de 21
-  contra 20) y transporte con la cooperativa lechera. Esto reemplaza el acuerdo de la minuta 2 sobre la lámina de
-  enteros.
 - Todos deben poder explicar el modelo de los demás.
 - Preguntas probables: por qué el óptimo entero es menor que la relajación (Fabián); por qué el destino ficticio cuesta
   cero y por qué se eligió PuLP y lpSolve y no OR-Tools (Yan); en qué se diferencia transbordo de transporte y por qué
@@ -63,10 +61,10 @@
 
 | ACTIVIDAD | PLAZO | RESPONSABLE | CONDICIÓN |
 |-----------|-------|-------------|-----------|
-| Pasar los valores de Solver a la lámina 30 y al gráfico de la lámina 22 | 2026-11-17 | Kenni Rodríguez | Concluida |
-| Completar los textos "[completar]" de la parte de cada quien | 2026-11-18 | Todos | Concluida |
+| Pasar los valores de Solver a las láminas 30 y 34 y al gráfico de la lámina 22 | 2026-11-17 | Kenni Rodríguez | Concluida |
+| Completar los textos pendientes de la parte de cada quien | 2026-11-18 | Todos | Concluida |
 | Ajustar el diagrama de red con nodos ficticios | 2026-11-18 | Yan Torres | Concluida |
-| Completar el cronograma de las minutas (láminas 40-41, 45 y 50) | 2026-11-18 | Fabián Vargas | Concluida |
+| Completar el cronograma en las láminas de las minutas (40-41, 45 y 49) | 2026-11-18 | Fabián Vargas | Concluida |
 | Versión final de la presentación y exportación a PDF | 2026-11-18 | Fabián Vargas | En proceso |
 | Revisión de erratas de la presentación completa | 2026-11-19 | Kenneth Araya | En proceso |
 | Ensayo con cronómetro y prueba de los scripts en la laptop | 2026-11-19 | Todos | En proceso |
