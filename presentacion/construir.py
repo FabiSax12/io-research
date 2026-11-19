@@ -378,7 +378,7 @@ def fuerzas(m, c, grafico):
     y = TOPE + 140
     rect(lam, COL_IZQ_X, y, 64, 80, AMARILLO)
     texto(lam, COL_IZQ_X + 8, y + 50, 50, 26, c["iniciales"], tam=22, fuente=TITULAR)
-    texto(lam, COL_IZQ_X + 78, y, COL_IZQ_W - 78, 66, f"“{c['cita']}”", tam=14, negrita=True, interlineado=1.15)
+    texto(lam, COL_IZQ_X + 78, y, COL_IZQ_W - 78, 66, c["cita"], tam=14, negrita=True, interlineado=1.15)
     texto(lam, COL_IZQ_X + 78, y + 68, COL_IZQ_W - 78, 14, c["autor"], tam=10, fuente=NOTA)
     regla_h(lam, COL_IZQ_X, y + 94, COL_IZQ_W)
     mitad = len(c["situaciones"]) // 2

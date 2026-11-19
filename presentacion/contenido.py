@@ -179,22 +179,29 @@ PARTE1 = {
     },
     "asignacion": {
         "titular": "Problema de asignación",
-        "izq": ["## Problema", "{as_nombre}. Matriz de {as_dim} ({as_sentido}).",
-                "## Modelo", "x_ij ∈ {{0,1}}; cada agente hace a lo sumo una tarea y cada tarea la hace un agente. "
-                "Con ofertas y demandas enteras, el PL ya tiene un óptimo entero (Winston, 2004, sec. 7.3 y 7.5)."],
+        "izq": ["## Problema", "{as_nombre}. Una empresa de mantenimiento eléctrico de Heredia asigna 4 técnicos "
+                "(Andrea, Bryan, Carolina, Daniel) a 3 órdenes (Barva, Santo Domingo, San Rafael). xij = 1 si el "
+                "técnico i atiende la orden j; cij = minutos de traslado + reparación.",
+                "## Modelo", "Min Z = 50x11 + 35x12 + 60x13 + 45x21 + 40x22 + 30x23 + 55x31 + 30x32 + 40x33 "
+                "+ 40x41 + 50x42 + 45x43",
+                "Técnicos: xi1 + xi2 + xi3 ≤ 1 (i = 1, …, 4)",
+                "Órdenes: x1j + x2j + x3j + x4j = 1 (j = 1, 2, 3); xij ∈ {{0,1}}"],
         "der": ["## Ajuste", "{as_ajuste}",
-                "## Librerías", "Python: PuLP (y verificación con variables binarias). R: lpSolve::lp.assign().",
-                "## Resultado", "Valor óptimo = {as_optimo}."],
+                "## Librerías", "Python: SciPy linear_sum_assignment (método húngaro) y PuLP con variables binarias "
+                "para verificar. R: lpSolve::lp.assign(). El PL ya da un óptimo entero (Winston, 2004, sec. 7.5).",
+                "## Resultado", "Tiempo mínimo = {as_optimo} min. Daniel va a Barva, Carolina a Santo Domingo y "
+                "Bryan a San Rafael; Andrea queda de guardia."],
         "exhibicion": {
-            "titulo": "Asignación óptima por agente",
-            "subtitulo": "Valor de la tarea asignada y mínimo de cada fila de la matriz",
+            "titulo": "Asignación óptima por técnico",
+            "subtitulo": "Minutos de la orden asignada y mínimo de cada fila de la matriz",
             "lectura": "{as_lectura}",
             "fuente": None,
-            "implicaciones": ["No siempre gana el mínimo de cada fila: dos agentes no pueden tomar la misma tarea.",
-                              "Las tareas ficticias marcan a quién no se le asigna trabajo."],
+            "implicaciones": ["No siempre gana el mínimo de cada fila: el mejor tiempo de Andrea (35, Santo Domingo) "
+                              "lo mejora Carolina (30), y Andrea queda libre.",
+                              "La orden ficticia marca a quién no se le asigna trabajo."],
         },
-        "codigo": [("parte1/python/asignacion.py", "--- Verificación: modelo de PL", None),
-                   ("parte1/r/asignacion.R", "--- Modelo de asignación", None)],
+        "codigo": [("parte1/python/asignacion.py", "--- Método húngaro de SciPy", None),
+                   ("parte1/r/asignacion.R", "--- Si no es cuadrada", "--- Nota del ajuste")],
     },
 }
 
@@ -223,12 +230,13 @@ QUE_ES = {
     "titular": "¿Qué es un problema de transbordo?",
     "cita": "Un problema de transbordo es un problema de transporte en el que la mercancía puede pasar por "
             "nodos intermedios antes de llegar a su destino.",
-    "autor": "Paráfrasis de Taha (2017), cap. 5",
+    "autor": "Definición basada en Taha (2017), cap. 5, y Winston (2004), sec. 7.6",
     "iniciales": "HT",
     "situaciones": [
         "## Situaciones que modela",
-        "Cadenas de suministro con bodegas o centros de distribución; cross-docking; redes de combustible "
-        "con terminales; carga aérea con aeropuertos hub; redes de agua o energía con estaciones intermedias.",
+        "Plantas que abastecen clientes a través de bodegas o centros de distribución (Taha, 2017, cap. 5); "
+        "envíos que pasan por aeropuertos intermedios (Winston, 2004, sec. 7.6); redes de distribución y de "
+        "suministro planteadas como flujo de costo mínimo (Hillier y Lieberman, 2021, cap. 10).",
         "## Elementos",
         "Nodos de origen (oferta), de transbordo (entra = sale) y de destino (demanda); arcos con costo unitario.",
     ],
@@ -252,7 +260,7 @@ RELACION = {
          "Se convierte en transporte agregando un buffer B a filas y columnas (Taha, 2017)"),
     ],
     "lectura": "todo problema de transbordo se puede resolver como uno de transporte; la diferencia está en armar la matriz.",
-    "fuente": "Taha (2017), cap. 5; Hillier y Lieberman (2021), cap. 9; Winston (2004), sec. 7.6; Khurana (2015).",
+    "fuente": "Taha (2017), cap. 5; Hillier y Lieberman (2021), caps. 9 y 10; Winston (2004), sec. 7.6; Khurana (2015).",
 }
 
 EJEMPLO = {
@@ -264,9 +272,10 @@ EJEMPLO = {
     "exhibicion": {
         "titulo": "Red del ejemplo y flujo óptimo",
         "subtitulo": "Costo unitario por arco; [flujo] en los arcos usados (unidades)",
-        "lectura": "todo el flujo pasa por T1 o T2; el arco directo P1→D1 (costo 12) queda sin usar.",
+        "lectura": "todo el flujo pasa por T1 o T2; el arco directo P1→D1 (costo 12) queda sin usar porque P1→T1→D1 cuesta 4 + 3 = 7.",
         "fuente": None,
-        "implicaciones": ["Los arcos grises existen pero no conviene usarlos.",
+        "implicaciones": ["Hay óptimos alternos: P1→T1→T2 cuesta 4 + 2 = 6, igual que P1→T2; Solver usa esa "
+                          "otra ruta y también da {tb_optimo}.",
                           "Los nodos rosados no ofrecen ni demandan: solo redistribuyen."],
     },
 }
@@ -360,7 +369,7 @@ CONCLUSIONES = {
             "## Verificación", "Resolver con dos lenguajes y un segundo método detecta errores de planteamiento."],
     "der": ["## Parte II", "El transbordo generaliza al transporte; con el buffer B se resuelve con las mismas herramientas.",
             "## Desbalanceo", "Se corrige con un nodo ficticio de costo 0, igual que en transporte.",
-            "## Conclusión", "Con problemas propios (café, bicicletas, leche y una red de transbordo) vimos que, "
+            "## Conclusión", "Con problemas propios (café, bicicletas, leche, técnicos en Heredia y una red de transbordo) vimos que, "
             "si el modelo está bien planteado, Python, R y Solver llegan al mismo óptimo: la herramienta cambia la "
             "sintaxis, no la respuesta. Lo que más trabajo cuesta es pasar el enunciado a variables y restricciones."],
     "implicaciones": ["Modelar bien (nodos, arcos, balance) importa más que la herramienta elegida.",
@@ -386,7 +395,7 @@ REFERENCIAS = [
     "Forrest, J., Ralphs, T., Vigerske, S., Gambini Santos, H., Hafer, L. y Kristjansson, B. (2024). *coin-or/Cbc* "
     "(versión 2.10.12) [Software]. Zenodo. https://github.com/coin-or/Cbc",
     "Hillier, F. S. y Lieberman, G. J. (2021). *Introduction to operations research* (11.ª ed.). McGraw-Hill.",
-    "Khurana, A. (2015). Variants of transshipment problem. *European Transport Research Review, 7*, Artículo 11. "
+    "Khurana, A. (2015). Variants of transshipment problem. *European Transport Research Review, 7*(2), Artículo 11. "
     "https://doi.org/10.1007/s12544-015-0154-8",
     "Microsoft. (s. f.). *Definir y resolver un problema con Solver*. Soporte de Microsoft. Recuperado el 19 de "
     "noviembre de 2026, de https://support.microsoft.com/es-es/office/definir-y-resolver-un-problema-con-solver-"

@@ -204,7 +204,7 @@ def asignacion_barras(ruta, w=426, h=170):
     ax.bar(xs, costos, 0.5, color=SERIES[0], label="Valor de la tarea asignada")
     ax.plot(xs, minimos, "o", color="black", markersize=4, label="Mínimo de la fila")
     for x, c, m in zip(xs, costos, minimos):
-        ax.text(x, max(c, m), datos.fmt(c), ha="center", va="bottom", fontsize=9, fontweight="bold")
+        ax.text(x, c, datos.fmt(c), ha="center", va="bottom", fontsize=9, fontweight="bold")
     ax.set_xticks(list(xs), etiquetas)
     rejilla_y(ax)
     ax.axhline(0, color="black", linewidth=1)
