@@ -50,7 +50,14 @@ INTRO = {
             "El balanceo (nodos ficticios) agrega variables: hay que contarlas al explicar el modelo.",
         ],
     },
+    "cita": "Fuentes: Winston (2004, pp. 360, 394); Cárdenas-Escobar et al. (2021, p. 3). Gráfico: elaboración propia.",
 }
+
+# Pies de cita compartidos por las láminas de código y de resultados (formato de la minuta 2)
+CITA_PYTHON = ("Código propio. Librería: PuLP (Mitchell et al., 2011) con CBC (Forrest et al., 2024). "
+               "Ver sección de código para YAML e IA.")
+CITA_R = "Código propio. Librería: lpSolve (Berkelaar y Csárdi, 2024, pp. 2–4)."
+CITA_RESULTADOS = "Elaboración propia con los resultados de los scripts."
 
 # ------------------------------------------------------------------ herramientas (tabla de valoración)
 # Tabla de librerías. Cada fila: (librería, lenguaje, qué resuelve, rol en el trabajo, recomendación, expectativa, comentario)
@@ -78,7 +85,9 @@ HERRAMIENTAS = {
          "Simplex LP; muestra la matriz completa. Máximo 200 celdas variables."),
     ],
     "lectura": "PuLP (Python) y lpSolve (R) cubren los cuatro tipos con poco código, por eso son las que usamos; SciPy verifica los resultados.",
-    "fuente": "Documentación oficial de PuLP, SciPy, lpSolve y Excel Solver (ver referencias).",
+    "fuente": "Fuentes: Mitchell et al. (2011); Forrest et al. (2024); Virtanen et al. (2020); Perron y Furnon (2024); "
+              "Bynum et al. (2021); Berkelaar y Csárdi (2024); Schumacher (2023); Theußl et al. (2020); Microsoft (s. f.). "
+              "Límite de Solver: Buttrey (2005, p. 1). Recomendación: valoración propia del equipo.",
 }
 
 USO_LIBRERIAS = {
@@ -95,6 +104,8 @@ USO_LIBRERIAS = {
         "## 4. Resolver y leer",
         "modelo.solve(PULP_CBC_CMD()) o lp(...). Se lee el estado, el valor óptimo y las variables.",
     ],
+    "cita": "Fuentes: Mitchell et al. (2011, pp. 5–6); Berkelaar y Csárdi (2024, pp. 2–4). "
+            "Ejemplo adaptado de Hillier y Lieberman (2021, sec. 3.1).",
 }
 
 # ------------------------------------------------------------------ parte I (un bloque por problema)
@@ -117,6 +128,9 @@ PARTE1 = {
                               "Precios sombra: un quintal más de grano o una hora más de tostadora vale ₡10 000."],
         },
         "codigo": [("parte1/python/pl.py", "--- Modelo en PuLP", "--- Verificación"), ("parte1/r/pl.R", None, None)],
+        "cita": "Fuentes: Wu (2026a, diap. 10); Chase et al. (2004, p. 708). Problema y gráfico: elaboración propia.",
+        "cita_codigo": {"Python": CITA_PYTHON, "R": CITA_R},
+        "cita_resultados": CITA_RESULTADOS,
     },
     "ple": {
         "titular": "Programación lineal entera",
@@ -137,6 +151,9 @@ PARTE1 = {
                               "x1 ≤ 4 tiene holgura en la relajación (3,29) pero es activa en el óptimo entero."],
         },
         "codigo": [("parte1/python/ple.py", "--- Modelo en PuLP", "--- Verificación"), ("parte1/r/ple.R", None, None)],
+        "cita": "Fuentes: Bradley et al. (1977, pp. 288–289); Wu (2026b, diaps. 38–40). Problema y gráfico: elaboración propia.",
+        "cita_codigo": {"Python": CITA_PYTHON, "R": CITA_R},
+        "cita_resultados": CITA_RESULTADOS,
     },
     "transporte": {
         "titular": "Problema de transporte",
@@ -350,15 +367,43 @@ CONCLUSIONES = {
                       "El modelo de red es más corto de escribir; el matricial es el que se presenta en clase."],
 }
 
+# Referencias en APA 7, en orden alfabético: solo las obras citadas en algún pie de lámina.
+# *texto* sale en cursiva (título del libro, software o revista y su volumen).
 REFERENCIAS = [
-    "Hillier, F. S. y Lieberman, G. J. (2021). Introduction to Operations Research (11.ª ed.). McGraw-Hill.",
-    "Taha, H. A. (2017). Operations Research: An Introduction (10.ª ed., edición global). Pearson.",
-    "Winston, W. L. (2004). Operations Research: Applications and Algorithms (4.ª ed.). Brooks/Cole.",
-    "Mitchell, S., O'Sullivan, M. y Dunning, I. (2011). PuLP: A Linear Programming Toolkit for Python. University of Auckland. https://coin-or.github.io/pulp/ (este proyecto usa la serie 3.x)",
-    "Virtanen, P. et al. (2020). SciPy 1.0: Fundamental Algorithms for Scientific Computing in Python. Nature Methods, 17, 261–272. https://doi.org/10.1038/s41592-019-0686-2",
-    "Huangfu, Q. y Hall, J. A. J. (2018). Parallelizing the dual revised simplex method. Mathematical Programming Computation, 10, 119–142. (HiGHS) https://doi.org/10.1007/s12532-017-0130-5",
-    "Berkelaar, M. et al. (2024). lpSolve: Interface to 'Lp_solve' v. 5.5 to Solve Linear/Integer Programs. CRAN. https://CRAN.R-project.org/package=lpSolve",
-    "Schumacher, D. (2023). ompr: Model and Solve Mixed Integer Linear Programs. CRAN. https://CRAN.R-project.org/package=ompr",
-    "Microsoft (s. f.). Definir y resolver un problema con Solver. Soporte de Microsoft. https://support.microsoft.com/es-es/office/definir-y-resolver-un-problema-con-solver-5d1a388f-079d-43ac-a7eb-f63e45925040 (consultado 19/11/2026)",
-    "Khurana, A. (2015). Variants of transshipment problem. European Transportation Research Review, 7, 11. https://doi.org/10.1007/s12544-015-0154-8",
+    "Berkelaar, M. y Csárdi, G. (2024). *lpSolve: Interface to ‘Lp_solve’ v. 5.5 to solve linear/integer programs* "
+    "(versión 5.6.23) [Paquete de R]. CRAN. https://CRAN.R-project.org/package=lpSolve",
+    "Bradley, S. P., Hax, A. C. y Magnanti, T. L. (1977). *Applied mathematical programming*. Addison-Wesley.",
+    "Buttrey, S. E. (2005). Calling the lp_solve linear program software from R, S-PLUS and Excel. "
+    "*Journal of Statistical Software, 14*(4), 1–13. https://doi.org/10.18637/jss.v014.i04",
+    "Bynum, M. L., Hackebeil, G. A., Hart, W. E., Laird, C. D., Nicholson, B. L., Siirola, J. D., Watson, J.-P. y "
+    "Woodruff, D. L. (2021). *Pyomo: Optimization modeling in Python* (3.ª ed.). Springer. "
+    "https://doi.org/10.1007/978-3-030-68928-5",
+    "Cárdenas-Escobar, N., Moreira-Gómez, E. y García-Bustos, S. (2021). Modelo de transporte para el reabastecimiento "
+    "de inventario en una red de tiendas retail. En *Proceedings of the 19th LACCEI International Multi-Conference for "
+    "Engineering, Education, and Technology*. LACCEI. https://doi.org/10.18687/LACCEI2021.1.1.257",
+    "Chase, R. B., Jacobs, F. R. y Aquilano, N. J. (2004). Linear programming with the Excel Solver [Suplemento A]. "
+    "En *Operations management for competitive advantage* (10.ª ed., pp. 702–710). McGraw-Hill/Irwin.",
+    "Forrest, J., Ralphs, T., Vigerske, S., Gambini Santos, H., Hafer, L. y Kristjansson, B. (2024). *coin-or/Cbc* "
+    "(versión 2.10.12) [Software]. Zenodo. https://github.com/coin-or/Cbc",
+    "Hillier, F. S. y Lieberman, G. J. (2021). *Introduction to operations research* (11.ª ed.). McGraw-Hill.",
+    "Khurana, A. (2015). Variants of transshipment problem. *European Transport Research Review, 7*, Artículo 11. "
+    "https://doi.org/10.1007/s12544-015-0154-8",
+    "Microsoft. (s. f.). *Definir y resolver un problema con Solver*. Soporte de Microsoft. Recuperado el 19 de "
+    "noviembre de 2026, de https://support.microsoft.com/es-es/office/definir-y-resolver-un-problema-con-solver-"
+    "5d1a388f-079d-43ac-a7eb-f63e45925040",
+    "Mitchell, S., O’Sullivan, M. y Dunning, I. (2011). *PuLP: A linear programming toolkit for Python* [Manuscrito]. "
+    "The University of Auckland. http://www.optimization-online.org/DB_HTML/2011/09/3178.html",
+    "Perron, L. y Furnon, V. (2024). *OR-Tools* (versión 9.10) [Software]. Google. https://developers.google.com/optimization/",
+    "Schumacher, D. (2023). *ompr: Model and solve mixed integer linear programs* [Paquete de R]. CRAN. "
+    "https://CRAN.R-project.org/package=ompr",
+    "Taha, H. A. (2017). *Operations research: An introduction* (10.ª ed., edición global). Pearson.",
+    "Theußl, S., Schwendinger, F. y Hornik, K. (2020). ROI: An extensible R optimization infrastructure. "
+    "*Journal of Statistical Software, 94*(15), 1–64. https://doi.org/10.18637/jss.v094.i15",
+    "Virtanen, P., Gommers, R., Oliphant, T. E., Haberland, M., Reddy, T., Cournapeau, D., … SciPy 1.0 Contributors. "
+    "(2020). SciPy 1.0: Fundamental algorithms for scientific computing in Python. *Nature Methods, 17*(3), 261–272. "
+    "https://doi.org/10.1038/s41592-019-0686-2",
+    "Winston, W. L. (2004). *Operations research: Applications and algorithms* (4.ª ed.). Brooks/Cole.",
+    "Wu, C. (2026a). *Linear programming II: Geometric solutions* [Diapositivas del curso 1.041/1.200]. "
+    "Massachusetts Institute of Technology.",
+    "Wu, C. (2026b). *Integer programming* [Diapositivas del curso 1.041/1.200]. Massachusetts Institute of Technology.",
 ]

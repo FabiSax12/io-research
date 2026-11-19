@@ -113,12 +113,14 @@ def regla_v(lamina, x, y, h, grosor=4, color=NEGRO):
 
 
 def texto(lamina, x, y, w, h, parrafos, tam=12, fuente=CUERPO, color=NEGRO, negrita=False,
-          interlineado=None, alinear="izq", anclar="arriba", espacio_despues=0, vinetas=False, mayusculas=False):
+          interlineado=None, alinear="izq", anclar="arriba", espacio_despues=0, vinetas=False, mayusculas=False,
+          sangria_francesa=0):
     """Cuadro de texto sin márgenes internos.
 
     parrafos: str, lista de str, o lista de párrafos donde cada párrafo es una lista de
-    tramos (texto, dict de estilo) con claves opcionales: negrita, color, fuente, tam.
+    tramos (texto, dict de estilo) con claves opcionales: negrita, cursiva, color, fuente, tam.
     Con vinetas=True cada párrafo lleva una viñeta "•" con sangría francesa.
+    sangria_francesa: px de sangría francesa sin viñeta (lista de referencias APA).
     """
     caja = lamina.shapes.add_textbox(px(x), px(y), px(w), px(h))
     tf = caja.text_frame
@@ -141,6 +143,10 @@ def texto(lamina, x, y, w, h, parrafos, tam=12, fuente=CUERPO, color=NEGRO, negr
             pPr.set("indent", str(-px(11)))
             bu = etree.SubElement(pPr, qn("a:buChar"))
             bu.set("char", "•")
+        elif sangria_francesa:
+            pPr = p._p.get_or_add_pPr()
+            pPr.set("marL", str(px(sangria_francesa)))
+            pPr.set("indent", str(-px(sangria_francesa)))
         for contenido, estilo in tramos:
             r = p.add_run()
             r.text = contenido.upper() if mayusculas else contenido
@@ -148,6 +154,7 @@ def texto(lamina, x, y, w, h, parrafos, tam=12, fuente=CUERPO, color=NEGRO, negr
             f.name = estilo.get("fuente", fuente)
             f.size = pt(estilo.get("tam", tam))
             f.bold = estilo.get("negrita", negrita)
+            f.italic = estilo.get("cursiva", False)
             f.color.rgb = rgb(estilo.get("color", color))
     return caja
 
@@ -217,6 +224,14 @@ def nota_fuente(lamina, x, y, w, fuente, h=30):
         return
     texto(lamina, x, y, w, h, [[(fuente, {})]],
           tam=10, fuente=NOTA, interlineado=1.0)
+
+
+def cita_pie(lamina, cita):
+    """Cita corta al pie, abajo a la izquierda: gris, ~9,5 pt (formato de la minuta 2)."""
+    if not cita:
+        return
+    texto(lamina, MARGEN, 484, 800, 42, [[(cita, {})]], tam=12.5, fuente=NOTA, color=GRIS_PIE,
+          interlineado=1.0, anclar="abajo")
 
 
 def lectura(lamina, x, y, w, mensaje, h=32):
