@@ -179,22 +179,35 @@ PARTE1 = {
     },
     "asignacion": {
         "titular": "Problema de asignación",
-        "izq": ["## Problema", "{as_nombre}. Matriz de {as_dim} ({as_sentido}).",
-                "## Modelo", "x_ij ∈ {{0,1}}; cada agente hace a lo sumo una tarea y cada tarea la hace un agente. "
-                "Con ofertas y demandas enteras, el PL ya tiene un óptimo entero (Winston, 2004, sec. 7.3 y 7.5)."],
+        "izq": ["## Problema", "{as_nombre}. Una empresa de mantenimiento eléctrico de Heredia asigna 4 técnicos "
+                "(Andrea, Bryan, Carolina, Daniel) a 3 órdenes (Barva, Santo Domingo, San Rafael). xij = 1 si el "
+                "técnico i atiende la orden j; cij = minutos de traslado + reparación.",
+                "## Modelo", "Min Z = 50x11 + 35x12 + 60x13 + 45x21 + 40x22 + 30x23 + 55x31 + 30x32 + 40x33 "
+                "+ 40x41 + 50x42 + 45x43",
+                "Técnicos: xi1 + xi2 + xi3 ≤ 1 (i = 1, …, 4)",
+                "Órdenes: x1j + x2j + x3j + x4j = 1 (j = 1, 2, 3); xij ∈ {{0,1}}"],
         "der": ["## Ajuste", "{as_ajuste}",
-                "## Librerías", "Python: PuLP (y verificación con variables binarias). R: lpSolve::lp.assign().",
-                "## Resultado", "Valor óptimo = {as_optimo}."],
+                "## Librerías", "Python: SciPy linear_sum_assignment (Jonker-Volgenant; Crouse, 2016), que da el mismo óptimo "
+                "que el método húngaro (Kuhn, 1955), y PuLP con variables binarias para verificar. "
+                "R: lpSolve::lp.assign(). El PL ya da un óptimo entero (Winston, 2004, sec. 7.5).",
+                "## Resultado", "Tiempo mínimo = {as_optimo} min. Daniel va a Barva, Carolina a Santo Domingo y "
+                "Bryan a San Rafael; Andrea queda de guardia."],
         "exhibicion": {
-            "titulo": "Asignación óptima por agente",
-            "subtitulo": "Valor de la tarea asignada y mínimo de cada fila de la matriz",
+            "titulo": "Asignación óptima por técnico",
+            "subtitulo": "Minutos de la orden asignada y mínimo de cada fila de la matriz",
             "lectura": "{as_lectura}",
             "fuente": None,
-            "implicaciones": ["No siempre gana el mínimo de cada fila: dos agentes no pueden tomar la misma tarea.",
-                              "Las tareas ficticias marcan a quién no se le asigna trabajo."],
+            "implicaciones": ["No siempre gana el mínimo de cada fila: el mejor tiempo de Andrea (35, Santo Domingo) "
+                              "lo mejora Carolina (30), y Andrea queda libre.",
+                              "La orden ficticia marca a quién no se le asigna trabajo."],
         },
-        "codigo": [("parte1/python/asignacion.py", "--- Verificación: modelo de PL", None),
-                   ("parte1/r/asignacion.R", "--- Modelo de asignación", None)],
+        "cita": "Fuentes: Winston (2004, sec. 7.5); Kuhn (1955); Crouse (2016). Problema y gráfico: elaboración propia.",
+        "cita_codigo": {"Python": "Código propio. Librerías: SciPy (Virtanen et al., 2020; algoritmo de Crouse, 2016) "
+                                  "y PuLP (Mitchell et al., 2011) para verificar.",
+                        "R": CITA_R},
+        "cita_resultados": CITA_RESULTADOS,
+        "codigo": [("parte1/python/asignacion.py", "--- SciPy: Jonker-Volgenant", None),
+                   ("parte1/r/asignacion.R", "--- Si no es cuadrada", "--- Nota del ajuste")],
     },
 }
 
@@ -223,12 +236,14 @@ QUE_ES = {
     "titular": "¿Qué es un problema de transbordo?",
     "cita": "Un problema de transbordo es un problema de transporte en el que la mercancía puede pasar por "
             "nodos intermedios antes de llegar a su destino.",
-    "autor": "Paráfrasis de Taha (2017), p. 224",
+    "autor": "Definición basada en Winston (2004), sec. 7.6, y Taha (2017), sec. 22.1; el modelo lo planteó Orden (1956)",
+    "pie": "Gráfico: elaboración propia con el resultado del ejemplo de la Parte II.",
     "iniciales": "HT",
     "situaciones": [
         "## Situaciones que modela",
-        "Cadenas de suministro con bodegas o centros de distribución; cross-docking; redes de combustible "
-        "con terminales; carga aérea con aeropuertos hub; redes de agua o energía con estaciones intermedias.",
+        "Plantas que abastecen clientes pasando por puntos intermedios, como aeropuertos (Winston, 2004, sec. 7.6); "
+        "redes de distribución y de suministro con bodegas o centros de distribución, planteadas como flujo de "
+        "costo mínimo (Hillier y Lieberman, 2021, cap. 10; Taha, 2017, sec. 22.1).",
         "## Elementos",
         "Nodos de origen (oferta), de transbordo (entra = sale) y de destino (demanda); arcos con costo unitario.",
     ],
@@ -249,10 +264,10 @@ RELACION = {
         ("Restricciones", "Oferta por fila y demanda por columna", "Conservación de flujo en cada nodo: sale − entra = oferta − demanda"),
         ("Matriz", "m × n (orígenes × destinos)", "n × n con todos los nodos; costo 0 en la diagonal y M donde no hay arco"),
         ("Relación", "Caso particular del transbordo sin nodos intermedios",
-         "Se convierte en transporte agregando un buffer B a filas y columnas (Taha, 2017, p. 224)"),
+         "Se convierte en transporte agregando un buffer B a filas y columnas (Winston, 2004, sec. 7.6)"),
     ],
     "lectura": "todo problema de transbordo se puede resolver como uno de transporte; la diferencia está en armar la matriz.",
-    "fuente": "Taha (2017), p. 224 y sec. 22.1 (material web); Hillier y Lieberman (2021), cap. 9; Winston (2004), sec. 7.6; Khurana (2015).",
+    "fuente": "Winston (2004), sec. 7.6; Hillier y Lieberman (2021), caps. 9 y 10; Taha (2017), cap. 5 y sec. 22.1; Khurana (2015).",
 }
 
 EJEMPLO = {
@@ -264,11 +279,13 @@ EJEMPLO = {
     "exhibicion": {
         "titulo": "Red del ejemplo y flujo óptimo",
         "subtitulo": "Costo unitario por arco; [flujo] en los arcos usados (unidades)",
-        "lectura": "todo el flujo pasa por T1 o T2; el arco directo P1→D1 (costo 12) queda sin usar.",
+        "lectura": "todo el flujo pasa por T1 o T2; el arco directo P1→D1 (costo 12) queda sin usar porque P1→T1→D1 cuesta 4 + 3 = 7.",
         "fuente": None,
-        "implicaciones": ["Los arcos grises existen pero no conviene usarlos.",
+        "implicaciones": ["Hay óptimos alternos: P1→T1→T2 cuesta 4 + 2 = 6, igual que P1→T2; Solver usa esa "
+                          "otra ruta y también da {tb_optimo}.",
                           "Los nodos rosados no ofrecen ni demandan: solo redistribuyen."],
     },
+    "cita": "Problema y gráfico: elaboración propia. Método: Winston (2004, sec. 7.6).",
 }
 
 MATRICIAL = {
@@ -384,16 +401,22 @@ REFERENCIAS = [
     "Engineering, Education, and Technology*. LACCEI. https://doi.org/10.18687/LACCEI2021.1.1.257",
     "Chase, R. B., Jacobs, F. R. y Aquilano, N. J. (2004). Linear programming with the Excel Solver [Suplemento A]. "
     "En *Operations management for competitive advantage* (10.ª ed., pp. 702–710). McGraw-Hill/Irwin.",
+    "Crouse, D. F. (2016). On implementing 2D rectangular assignment algorithms. "
+    "*IEEE Transactions on Aerospace and Electronic Systems, 52*(4), 1679–1696. https://doi.org/10.1109/TAES.2016.140952",
     "Forrest, J., Ralphs, T., Vigerske, S., Gambini Santos, H., Hafer, L. y Kristjansson, B. (2024). *coin-or/Cbc* "
     "(versión 2.10.12) [Software]. Zenodo. https://github.com/coin-or/Cbc",
     "Hillier, F. S. y Lieberman, G. J. (2021). *Introduction to operations research* (11.ª ed.). McGraw-Hill.",
-    "Khurana, A. (2015). Variants of transshipment problem. *European Transport Research Review, 7*, Artículo 11. "
+    "Khurana, A. (2015). Variants of transshipment problem. *European Transport Research Review, 7*(2), Artículo 11. "
     "https://doi.org/10.1007/s12544-015-0154-8",
+    "Kuhn, H. W. (1955). The Hungarian method for the assignment problem. "
+    "*Naval Research Logistics Quarterly, 2*(1–2), 83–97. https://doi.org/10.1002/nav.3800020109",
     "Microsoft. (s. f.). *Definir y resolver un problema con Solver*. Soporte de Microsoft. Recuperado el 19 de "
     "noviembre de 2026, de https://support.microsoft.com/es-es/office/definir-y-resolver-un-problema-con-solver-"
     "5d1a388f-079d-43ac-a7eb-f63e45925040",
     "Mitchell, S., O’Sullivan, M. y Dunning, I. (2011). *PuLP: A linear programming toolkit for Python* [Manuscrito]. "
     "The University of Auckland. http://www.optimization-online.org/DB_HTML/2011/09/3178.html",
+    "Orden, A. (1956). The transhipment problem. *Management Science, 2*(3), 276–285. "
+    "https://doi.org/10.1287/mnsc.2.3.276",
     "Perron, L. y Furnon, V. (2024). *OR-Tools* (versión 9.10) [Software]. Google. https://developers.google.com/optimization/",
     "Schumacher, D. (2023). *ompr: Model and solve mixed integer linear programs* [Paquete de R]. CRAN. "
     "https://CRAN.R-project.org/package=ompr",

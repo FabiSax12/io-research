@@ -1,19 +1,20 @@
 # Problema propuesto por el grupo (no viene de un enunciado dado).
 #
-# ENUNCIADO: una empresa tiene 4 técnicos (Ana, Beto, Carla y Diego) y 3 trabajos. Cada técnico hace a lo sumo un
-# trabajo y cada trabajo lo hace un solo técnico; la matriz da el costo de cada combinación. ¿A quién se asigna cada
-# trabajo para minimizar el costo total? Quien no recibe trabajo queda libre (trabajo ficticio de costo 0).
+# ENUNCIADO: una empresa de mantenimiento eléctrico de Heredia recibe tres órdenes de trabajo para hoy, en Barva,
+# Santo Domingo y San Rafael. Tiene cuatro técnicos disponibles (Andrea, Bryan, Carolina y Daniel). La matriz da el
+# tiempo total de cada técnico en cada orden (traslado desde donde está + reparación), en minutos. Cada técnico atiende
+# a lo sumo una orden y cada orden la atiende un solo técnico. ¿A quién se asigna cada orden para minimizar el tiempo
+# total? Quien no recibe orden queda de guardia (orden ficticia de tiempo 0).
 #
-# Problema de asignación (versión de programación lineal).
-# Si la matriz no es cuadrada, el script la completa con filas o columnas
-# ficticias (valor 0) y lo informa. Este ejemplo tiene 4 agentes y 3 tareas.
+# Problema de asignación (versión de programación lineal): 12 variables x_ij en {0,1} y 7 restricciones
+# (4 de técnicos, 3 de órdenes). Al no ser cuadrada (4 x 3), el script agrega una orden ficticia de valor 0.
 # Se usa en: parte1/python/asignacion.py y parte1/r/asignacion.R
-nombre: Asignación de 4 técnicos a 3 trabajos
-sentido: min                 # min si la matriz es de costos, max si es de rendimiento
-agentes: [Ana, Beto, Carla, Diego]
-tareas: [Trabajo 1, Trabajo 2, Trabajo 3]
-matriz:                      # filas = agentes, columnas = tareas
-  - [9, 2, 7]
-  - [6, 4, 3]
-  - [5, 8, 1]
-  - [7, 6, 9]
+nombre: Asignación de técnicos a órdenes de trabajo
+sentido: min                 # min si la matriz es de costos o tiempos, max si es de rendimiento
+agentes: [Andrea, Bryan, Carolina, Daniel]
+tareas: [Barva, Santo Domingo, San Rafael]
+matriz:                      # filas = técnicos, columnas = órdenes (minutos)
+  - [50, 35, 60]
+  - [45, 40, 30]
+  - [55, 30, 40]
+  - [40, 50, 45]

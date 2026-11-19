@@ -234,8 +234,8 @@ def cita_pie(lamina, cita):
           interlineado=1.0, anclar="abajo")
 
 
-def lectura(lamina, x, y, w, mensaje, h=32):
-    texto(lamina, x, y, w, h, [[(ETIQUETA_LECTURA + " ", {"negrita": True}), (mensaje, {})]], tam=11.5)
+def lectura(lamina, x, y, w, mensaje, h=32, etiqueta=None):
+    texto(lamina, x, y, w, h, [[((etiqueta or ETIQUETA_LECTURA) + " ", {"negrita": True}), (mensaje, {})]], tam=11.5)
 
 
 def caja_implicaciones(lamina, x, y, w, h, seccion, vinetas, titulo=TITULO_IMPLICACIONES):

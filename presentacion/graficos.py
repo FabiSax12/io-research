@@ -204,7 +204,7 @@ def asignacion_barras(ruta, w=426, h=170):
     ax.bar(xs, costos, 0.5, color=SERIES[0], label="Valor de la tarea asignada")
     ax.plot(xs, minimos, "o", color="black", markersize=4, label="Mínimo de la fila")
     for x, c, m in zip(xs, costos, minimos):
-        ax.text(x, max(c, m), datos.fmt(c), ha="center", va="bottom", fontsize=9, fontweight="bold")
+        ax.text(x, c, datos.fmt(c), ha="center", va="bottom", fontsize=9, fontweight="bold")
     ax.set_xticks(list(xs), etiquetas)
     rejilla_y(ax)
     ax.axhline(0, color="black", linewidth=1)
@@ -247,7 +247,7 @@ def comparacion(ruta, solver, w=426, h=180):
 
 
 # ------------------------------------------------------------------ transbordo: red con flujos
-def red_transbordo(ruta, problema="transbordo", w=426, h=200):
+def red_transbordo(ruta, problema="transbordo", w=426, h=200, separar_etiquetas=False):
     d = datos.yaml_de(problema)
     res = datos.resultado(problema)
     flujos = (res or {}).get("variables", {})
@@ -276,7 +276,10 @@ def red_transbordo(ruta, problema="transbordo", w=426, h=200):
                                  linewidth=2.0 if usado else 0.9, linestyle="-" if "Ficticio" not in b + a else "--",
                                  zorder=1 if not usado else 2)
         ax.add_patch(flecha)
-        mx, my = (pos[a][0] * 0.6 + pos[b][0] * 0.4), (pos[a][1] * 0.6 + pos[b][1] * 0.4)
+        # con separar_etiquetas, en los arcos diagonales de una sola columna la etiqueta va más cerca del origen,
+        # para que no choque con la de otro arco que lo cruza (P1→T2 y P2→T1)
+        t = 0.3 if separar_etiquetas and not rad and pos[a][1] != pos[b][1] and abs(pos[b][0] - pos[a][0]) == 2.0 else 0.4
+        mx, my = (pos[a][0] * (1 - t) + pos[b][0] * t), (pos[a][1] * (1 - t) + pos[b][1] * t)
         etiqueta = f"{datos.fmt(c)}" + (f" [{datos.fmt(f)}]" if usado else "")
         ax.text(mx, my + (0.12 if rad else 0), etiqueta, fontsize=6.5, ha="center", va="center",
                 fontweight="bold" if usado else "normal", zorder=3,
@@ -316,7 +319,8 @@ def destino_directo_vs_transbordo(ruta, w=426, h=150):
     fig, ax = figura(w, h)
     ys = list(range(len(destinos)))[::-1]
     ax.barh(ys, via, 0.55, color=SERIES[0], label="Llega por un nodo de transbordo")
-    ax.barh(ys, directo, 0.55, left=via, color=SERIES[1], label="Llega directo desde un origen")
+    if any(directo):   # sin envíos directos no se dibuja (ni se pone en la leyenda) una serie vacía
+        ax.barh(ys, directo, 0.55, left=via, color=SERIES[1], label="Llega directo desde un origen")
     for yv, a, b in zip(ys, via, directo):
         ax.text(a + b, yv, f"  {datos.fmt(a + b)}", va="center", fontsize=9, fontweight="bold")
     ax.set_yticks(ys, destinos)
@@ -359,7 +363,7 @@ def generar_todos(carpeta, solver):
     g = {}
     for nombre, funcion in (("tamanos", tamano_modelos), ("pl", region_pl), ("ple", relajacion_ple),
                             ("transporte", transporte_apilado), ("asignacion", asignacion_barras),
-                            ("red", red_transbordo), ("directo", destino_directo_vs_transbordo),
+                            ("red", lambda r: red_transbordo(r, separar_etiquetas=True)), ("directo", destino_directo_vs_transbordo),
                             ("desbalanceo", curva_desbalanceo)):
         ruta = carpeta / f"{nombre}.png"
         g[nombre] = {"ruta": ruta, **funcion(ruta)}
