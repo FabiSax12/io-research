@@ -18,7 +18,7 @@ import laminas_minutas  # noqa: E402
 import minutas  # noqa: E402
 import ventana_codigo  # noqa: E402
 from tema import (AMARILLO, BASE, BLANCO, COL_IZQ_W, COL_IZQ_X, EXH_W, EXH_X, GRIS_EMBARGO, GRIS_VENTANA,  # noqa: E402
-                  MARGEN, NEGRO, NOTA, REGLA_X, SECCIONES, TITULAR, TOPE, BERMELLON, caja_implicaciones,
+                  MARGEN, NEGRO, NOTA, REGLA_X, SECCIONES, TITULAR, TOPE, BERMELLON, caja_implicaciones, cita_pie,
                   columnas_cuerpo, exhibicion, imagen, lectura, marcador, medidor, nota_fuente, ovalo, pestana, pie,
                   px, rect, regla_h, regla_v, texto, titular, ANCHO, ALTO)
 
@@ -201,6 +201,7 @@ def dividida(m, seccion, c, grafico, alto_grafico=None, sin_grafico=False):
     e = c["exhibicion"]
     exhibicion(lam, seccion, e["titulo"], e["subtitulo"], grafico, e["lectura"], e["fuente"], e.get("implicaciones"),
                alto_grafico=alto_grafico, dibujar_grafico=not sin_grafico)
+    cita_pie(lam, c.get("cita"))
     return lam
 
 
@@ -231,11 +232,13 @@ def matriz_nativa(lam, ruta_csv, x, y, w, h):
             regla_h(lam, x, fy + alto - 1.5, w, grosor=1.5 if i in (nf - 2, nf - 1) else 0.75)
 
 
-def codigo(m, seccion, titulo, fragmentos):
+def codigo(m, seccion, titulo, fragmentos, citas=None):
     """Una lámina por fragmento (Python y luego R), con la ventana de código a todo lo ancho.
 
     fragmentos: [(ruta, desde, hasta), ...]
+    citas: {"Python": cita, "R": cita} para el pie de cada lámina (opcional).
     """
+    citas = citas or {}
     for ruta, desde, hasta in fragmentos:
         python = ruta.endswith(".py")
         lenguaje = "Python" if python else "R"
@@ -245,6 +248,7 @@ def codigo(m, seccion, titulo, fragmentos):
         lineas = datos.fragmento(ruta, desde, hasta, max_lineas=80)   # la ventana corta lo que no cabe
         ventana(lam, lineas or ["(sin fragmento)"], MARGEN, y, 880, BASE - 40 - y, "python" if python else "r",
                 f"{lenguaje} · {ruta}", tam=(10.0, 13.5))
+        cita_pie(lam, citas.get(lenguaje))
 
 
 def resultados(m, seccion, titulo, problema, lectura_txt, fuente):
@@ -277,7 +281,7 @@ def resultados(m, seccion, titulo, problema, lectura_txt, fuente):
         ventana(lam, lineas, x_der, y0 + 42, w_der, y_fin - y0 - 42, "consola", f"Terminal · python run_all.py {problema}",
                 tam=(8.5, 11.5))
     lectura(lam, MARGEN, BASE - 62, 880, lectura_txt, h=20)
-    nota_fuente(lam, MARGEN, BASE - 38, 880, fuente)
+    cita_pie(lam, fuente)
     return lam
 
 
@@ -364,7 +368,7 @@ def tabla_herramientas(m, c):
         y += alto_fila
         regla_h(lam, MARGEN, y - 1.5, 880)
     lectura(lam, MARGEN, BASE - 50, 880, c["lectura"], h=18)
-    nota_fuente(lam, MARGEN, BASE - 30, 880, c["fuente"])
+    cita_pie(lam, c["fuente"])
 
 
 def fuerzas(m, c, grafico):
@@ -456,7 +460,12 @@ def referencias(m):
     lam = m.nueva("resumen", "Referencias", grupo="referencias")
     titular(lam, MARGEN, TOPE, 880, "Referencias", h=50)
     regla_h(lam, MARGEN, TOPE + 62, 880)
-    texto(lam, MARGEN, TOPE + 76, 880, BASE - TOPE - 76, K.REFERENCIAS, tam=12, espacio_despues=7)
+    # *texto* = cursiva (APA 7); dos columnas con sangría francesa
+    pars = [[(t, {"cursiva": i % 2 == 1}) for i, t in enumerate(ref.split("*")) if t] for ref in K.REFERENCIAS]
+    mitad = (len(pars) + 1) // 2
+    for k, col in enumerate((pars[:mitad], pars[mitad:])):
+        texto(lam, MARGEN + k * 452, TOPE + 74, 428, BASE - TOPE - 74, col, tam=10, interlineado=1.15,
+              espacio_despues=4, sangria_francesa=14)
 
 
 # ================================================================== armado
@@ -493,15 +502,15 @@ def construir(destino=None):
         "sol$objval; sol$solution",
         "# PLE: int.vec · transporte: lp.transport() · asignación: lp.assign()",
     ], EXH_X, TOPE + 220, EXH_W, 124, "r", "R · lpSolve")
-    nota_fuente(lam, EXH_X, TOPE + 354, EXH_W, "Ejemplo ilustrativo (plantas de vidrio, Hillier y Lieberman).")
+    cita_pie(lam, c["cita"])
 
     for p in ("pl", "ple", "transporte", "asignacion"):
         c = llenar(K.PARTE1[p], v)
         dividida(m, "parte1", c, g[p]["ruta"], alto_grafico=190)
-        codigo(m, "parte1", f"{c['titular']}: código", list(c["codigo"]))
+        codigo(m, "parte1", f"{c['titular']}: código", list(c["codigo"]), c.get("cita_codigo"))
         resultados(m, "parte1", f"{c['titular']}: resultados", p,
                    f"Python y R resuelven el mismo YAML; el valor óptimo es {f((datos.resultado(p) or {}).get('valor_objetivo'))}.",
-                   None)
+                   c.get("cita_resultados"))
     dividida(m, "parte1", llenar(K.COMPARACION, v), g["comparacion"]["ruta"], alto_grafico=180)
 
     fuerzas(m, llenar(K.QUE_ES, v), g["directo"]["ruta"])
