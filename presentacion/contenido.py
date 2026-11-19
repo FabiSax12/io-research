@@ -206,7 +206,7 @@ QUE_ES = {
     "titular": "¿Qué es un problema de transbordo?",
     "cita": "Un problema de transbordo es un problema de transporte en el que la mercancía puede pasar por "
             "nodos intermedios antes de llegar a su destino.",
-    "autor": "Paráfrasis de Winston (2004), sec. 7.6",
+    "autor": "Paráfrasis de Taha (2017), cap. 5",
     "iniciales": "HT",
     "situaciones": [
         "## Situaciones que modela",
@@ -232,10 +232,10 @@ RELACION = {
         ("Restricciones", "Oferta por fila y demanda por columna", "Conservación de flujo en cada nodo: sale − entra = oferta − demanda"),
         ("Matriz", "m × n (orígenes × destinos)", "n × n con todos los nodos; costo 0 en la diagonal y M donde no hay arco"),
         ("Relación", "Caso particular del transbordo sin nodos intermedios",
-         "Se convierte en transporte agregando un buffer B a filas y columnas (Khurana, 2015)"),
+         "Se convierte en transporte agregando un buffer B a filas y columnas (Taha, 2017)"),
     ],
     "lectura": "todo problema de transbordo se puede resolver como uno de transporte; la diferencia está en armar la matriz.",
-    "fuente": "Winston (2004), sec. 7.6; Khurana (2015).",
+    "fuente": "Taha (2017), cap. 5; Hillier y Lieberman (2021), cap. 9; Winston (2004), sec. 7.6; Khurana (2015).",
 }
 
 EJEMPLO = {
@@ -314,7 +314,7 @@ VARIANTES = {
     ],
     "nota": "Costo óptimo del ejemplo en cada caso (variando la oferta de P1 en ±20 unidades). "
             "B se calcula después de balancear, con el total ya igualado.",
-    "fuente": "Winston (2004), sec. 7.1; Khurana (2015).",
+    "fuente": "Taha (2017), cap. 5; Khurana (2015).",
 }
 
 DESBALANCEADO = {
@@ -351,6 +351,7 @@ CONCLUSIONES = {
 
 REFERENCIAS = [
     "Hillier, F. S. y Lieberman, G. J. (2021). Introduction to Operations Research (11.ª ed.). McGraw-Hill.",
+    "Taha, H. A. (2017). Operations Research: An Introduction (10.ª ed.). Pearson.",
     "Winston, W. L. (2004). Operations Research: Applications and Algorithms (4.ª ed.). Brooks/Cole.",
     "Mitchell, S., O'Sullivan, M. y Dunning, I. (2011). PuLP: A Linear Programming Toolkit for Python. University of Auckland. https://coin-or.github.io/pulp/ (este proyecto usa la serie 3.x)",
     "Virtanen, P. et al. (2020). SciPy 1.0: Fundamental Algorithms for Scientific Computing in Python. Nature Methods, 17, 261–272. https://doi.org/10.1038/s41592-019-0686-2",
