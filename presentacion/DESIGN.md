@@ -50,7 +50,7 @@ El diseño es fijo; lo que cambia es el contenido. Estas son las únicas traducc
 | Portada: año + *Global Outlook* | "2026 / Trabajo de investigación" a 64 px 800 |
 | Nombre del instituto apilado | Instituto / **Tecnológico** / de Costa Rica (solo texto, sin logo) |
 | Franja de embargo | **Se quitó** a pedido del equipo (la portada no lleva fecha de defensa) |
-| *Chart takeaway:* | **Lectura del gráfico:** |
+| *Chart takeaway:* | **Lectura:** (vale para gráficos y tablas) |
 | *Forward-looking estimates may not come to pass.* | **Se quitó**: la nota de fuente muestra solo la fuente |
 | *Investment implications* | **Implicaciones para el modelo** |
 | *Capital at risk* (pie) | **Se quitó**: el pie muestra solo el número de lámina |

@@ -329,8 +329,9 @@ VARIANTES = {
         ("sobra", "Oferta > demanda", "Destino ficticio con demanda = excedente ({f_sobra}) y arcos de costo 0 desde cada origen."),
         ("falta", "Oferta < demanda", "Origen ficticio con oferta = faltante ({f_falta}) y arcos de costo 0 hacia cada destino."),
     ],
-    "nota": "Costo óptimo del ejemplo en cada caso (variando la oferta de P1 en ±20 unidades). "
-            "B se calcula después de balancear, con el total ya igualado.",
+    "nota": "Costo óptimo de la red balanceada del ejemplo (oferta {o_bal}, demanda {d_bal}) al variar la oferta de P1 en ±20 unidades. "
+            "Nuestro caso desbalanceado (demanda 80, costo {desb_optimo}) se resuelve en las láminas siguientes. "
+            "B se calcula después de balancear.",
     "fuente": "Taha (2017), cap. 5; Khurana (2015).",
 }
 
@@ -345,7 +346,7 @@ DESBALANCEADO = {
     "exhibicion": {
         "titulo": "Costo óptimo según la oferta disponible",
         "subtitulo": "Costo total al variar la oferta de {curva_nodo}; demanda fija de {curva_bal} unidades",
-        "lectura": "con oferta de sobra el costo no cambia ({curva_costo}); si falta, baja solo porque se envía menos, no porque la red sea más barata.",
+        "lectura": "con oferta de sobra el costo no cambia ({curva_costo} con demanda {curva_bal}; nuestro caso, con demanda 80, cuesta {desb_optimo}); si falta, baja solo porque se envía menos, no porque la red sea más barata.",
         "fuente": None,
         "implicaciones": ["Un costo menor con faltante es engañoso: hay demanda sin cubrir.",
                           "Conviene reportar las unidades del ficticio junto al costo."],

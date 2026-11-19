@@ -47,7 +47,7 @@ SECCIONES = {
 }
 
 # ------------------------------------------------------------------ textos fijos del diseño (en español)
-ETIQUETA_LECTURA = "Lectura del gráfico:"
+ETIQUETA_LECTURA = "Lectura:"
 TITULO_IMPLICACIONES = "Implicaciones para el modelo"
 
 # ------------------------------------------------------------------ retícula
