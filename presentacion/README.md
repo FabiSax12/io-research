@@ -51,11 +51,12 @@ Queda marcado para completar (buscar `[completar` en `contenido.py` o los recuad
    y escribir el óptimo en `SOLVER` dentro de `contenido.py`.
 4. Enunciados de cada problema, nombre del profesor, valoración de librerías, conclusión propia y fuentes extra.
 
-## Orden de las láminas (49)
+## Orden de las láminas (51)
 
 Portada · Contenido · Introducción · Librerías (tabla) · Patrón PuLP/lpSolve ·
 por cada problema de la Parte I (PL, PLE, transporte, asignación): planteamiento + gráfico, código en Python, código en R,
 resultados (tablas de Python y R a la izquierda, consola a la derecha) ·
 Comparación Python/R/Solver · ¿Qué es transbordo? · Transporte vs. transbordo · Ejemplo (red) · Modelo matricial paso a paso ·
 Código en Python · Código en R · Resultados · Solver · Variantes desbalanceadas · Caso desbalanceado · Resultados desbalanceado · Solver desbalanceado ·
-Conclusiones · Minutas (tres, con anotaciones, acuerdos y cronograma; láminas 36 a 48) · Referencias (última lámina, como pide el enunciado).
+Conclusiones (lámina 35) · Código, datos e IA (lámina 36) · Minutas (tres, con anotaciones, acuerdos y cronograma; láminas 37 a 50,
+cronogramas en 40-41, 45 y 50) · Referencias (lámina 51, la última, como pide el enunciado).
