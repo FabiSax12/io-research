@@ -348,7 +348,7 @@ VARIANTES = {
     ],
     "nota": "Costo óptimo del ejemplo en cada caso (variando la oferta de P1 en ±20 unidades). "
             "B se calcula después de balancear, con el total ya igualado.",
-    "fuente": "Taha (2017), cap. 5; Khurana (2015).",
+    "fuente": "Taha (2017), pp. 209-210; Khurana (2015).",
 }
 
 DESBALANCEADO = {
@@ -419,7 +419,7 @@ REFERENCIAS = [
     "Perron, L. y Furnon, V. (2024). *OR-Tools* (versión 9.10) [Software]. Google. https://developers.google.com/optimization/",
     "Schumacher, D. (2023). *ompr: Model and solve mixed integer linear programs* [Paquete de R]. CRAN. "
     "https://CRAN.R-project.org/package=ompr",
-    "Taha, H. A. (2017). *Operations research: An introduction* (10.ª ed.). Pearson.",
+    "Taha, H. A. (2017). *Operations research: An introduction* (10.ª ed., edición global). Pearson.",
     "Theußl, S., Schwendinger, F. y Hornik, K. (2020). ROI: An extensible R optimization infrastructure. "
     "*Journal of Statistical Software, 94*(15), 1–64. https://doi.org/10.18637/jss.v094.i15",
     "Virtanen, P., Gommers, R., Oliphant, T. E., Haberland, M., Reddy, T., Cournapeau, D., … SciPy 1.0 Contributors. "
