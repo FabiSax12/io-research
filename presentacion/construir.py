@@ -240,7 +240,6 @@ def codigo(m, seccion, titulo, fragmentos):
         lineas = datos.fragmento(ruta, desde, hasta, max_lineas=80)   # la ventana corta lo que no cabe
         ventana(lam, lineas or ["(sin fragmento)"], MARGEN, y, 880, BASE - 40 - y, "python" if python else "r",
                 f"{lenguaje} · {ruta}", tam=(10.0, 13.5))
-        nota_fuente(lam, MARGEN, BASE - 28, 880, f"Fragmento de {ruta}, sin preámbulo ni la parte de salida (JSON y PNG).")
 
 
 def resultados(m, seccion, titulo, problema, lectura_txt, fuente):
@@ -446,7 +445,6 @@ def conclusiones(m, c):
         texto(lam, EXH_X + 350, y + 5, 70, 18, "—" if sv == "—" else (f(sv) if sv is not None else "pend."), tam=12)
         y += 28
         regla_h(lam, EXH_X, y - 1.5, EXH_W)
-    nota_fuente(lam, EXH_X, y + 8, EXH_W, "Valores óptimos de resultados/*.json; Solver se reporta a mano en contenido.SOLVER.")
 
 
 def referencias(m):
@@ -490,7 +488,7 @@ def construir(destino=None):
         "sol$objval; sol$solution",
         "# PLE: int.vec · transporte: lp.transport() · asignación: lp.assign()",
     ], EXH_X, TOPE + 220, EXH_W, 124, "r", "R · lpSolve")
-    nota_fuente(lam, EXH_X, TOPE + 354, EXH_W, "Ejemplo ilustrativo (plantas de vidrio, Hillier y Lieberman). El código completo está en parte1/.")
+    nota_fuente(lam, EXH_X, TOPE + 354, EXH_W, "Ejemplo ilustrativo (plantas de vidrio, Hillier y Lieberman).")
 
     for p in ("pl", "ple", "transporte", "asignacion"):
         c = llenar(K.PARTE1[p], v)
@@ -498,7 +496,7 @@ def construir(destino=None):
         codigo(m, "parte1", f"{c['titular']}: código", list(c["codigo"]))
         resultados(m, "parte1", f"{c['titular']}: resultados", p,
                    f"Python y R resuelven el mismo YAML; el valor óptimo es {f((datos.resultado(p) or {}).get('valor_objetivo'))}.",
-                   f"Capturas de run_all.py: capturas/{p}_python_tabla.png, {p}_r_tabla.png y {p}_python.txt, a partir de datos/{p}.yaml.")
+                   None)
     dividida(m, "parte1", llenar(K.COMPARACION, v), g["comparacion"]["ruta"], alto_grafico=180)
 
     fuerzas(m, llenar(K.QUE_ES, v), g["directo"]["ruta"])
@@ -510,7 +508,7 @@ def construir(destino=None):
     codigo(m, "parte2", "Transbordo: código", K.CODIGO_TRANSBORDO)
     resultados(m, "parte2", "Transbordo: resultados", "transbordo",
                f"el modelo de red y el modelo matricial con buffer dan {v['tb_optimo']} en Python.",
-               "Capturas de run_all.py: capturas/transbordo_python_tabla.png, transbordo_r_tabla.png y transbordo_python.txt, a partir de datos/transbordo.yaml.")
+               None)
     dividida(m, "parte2", llenar(K.SOLVER_LAMINA, v), datos.captura("transbordo_solver.png") or "transbordo_solver.png",
              alto_grafico=190)
     escenarios(m, llenar(K.VARIANTES, v), v["_escenarios"])
@@ -521,8 +519,7 @@ def construir(destino=None):
                datos.CAPTURAS / "transbordo_desbalanceado_matriz_python.csv", ""),
               panel_resultado("transbordo_desbalanceado", "python")],
              f"el ficticio absorbe el excedente a costo 0 y el costo óptimo es {v['desb_optimo']}.",
-             "Elaboración propia con PuLP 3 sobre datos/transbordo_desbalanceado.yaml; matriz de "
-             "capturas/transbordo_desbalanceado_matriz_python.csv y tabla de capturas/transbordo_desbalanceado_python_tabla.png.",
+             None,
              pesos=[0.95, 1.45, 0.9])
 
     conclusiones(m, K.CONCLUSIONES)

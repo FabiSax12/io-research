@@ -44,7 +44,7 @@ INTRO = {
         "subtitulo": "Variables de decisión y restricciones por problema, después de balancear (unidades)",
         "lectura": "el modelo más grande es {mayor_nombre}, con {mayor_vars} variables; ninguno pasa de 20, "
                    "así que el reto es modelar bien, no la escala.",
-        "fuente": "Elaboración propia a partir de datos/*.yaml y de los modelos que arman los scripts del repositorio.",
+        "fuente": None,
         "implicaciones": [
             "Todos cumplen el mínimo de 3 restricciones que pide el enunciado.",
             "El balanceo (nodos ficticios) agrega variables: hay que contarlas al explicar el modelo.",
@@ -78,8 +78,7 @@ HERRAMIENTAS = {
          "Simplex LP; muestra la matriz completa. Máximo 200 celdas variables."),
     ],
     "lectura": "PuLP (Python) y lpSolve (R) cubren los cuatro tipos con poco código, por eso son las que usamos; SciPy verifica los resultados.",
-    "fuente": "Opinión del equipo después de resolver los problemas [completar: confirmar con la experiencia de cada integrante]. "
-              "Documentación oficial de cada librería (ver referencias).",
+    "fuente": "Documentación oficial de cada librería (ver referencias).",
 }
 
 USO_LIBRERIAS = {
@@ -113,7 +112,7 @@ PARTE1 = {
             "titulo": "Región factible y solución óptima",
             "subtitulo": "Restricciones del modelo y recta de nivel de Z en el óptimo",
             "lectura": "el óptimo está en el vértice ({pl_x1}, {pl_x2}), donde se cruzan dos restricciones activas; Z = {pl_optimo}.",
-            "fuente": "Elaboración propia con PuLP 3 (CBC) y SciPy linprog sobre datos/pl.yaml.",
+            "fuente": None,
             "implicaciones": ["Activas: grano y tostadora. Demanda y contrato tienen holgura (precio sombra 0).",
                               "Precios sombra: un quintal más de grano o una hora más de tostadora vale ₡10 000."],
         },
@@ -133,7 +132,7 @@ PARTE1 = {
             "titulo": "Óptimo entero frente a la relajación lineal",
             "subtitulo": "Valor de Z sin y con la condición de integralidad",
             "lectura": "exigir enteros baja Z de {ple_cota} a {ple_optimo} ({ple_brecha} % menos); la relajación es una cota.",
-            "fuente": "Elaboración propia con PuLP 3 (CBC) y SciPy milp/linprog sobre datos/ple.yaml. La barra rayada es una cota, no una solución factible.",
+            "fuente": "La barra rayada es una cota, no una solución factible.",
             "implicaciones": ["Redondear no sirve: (3, 5) no es factible y (3, 4) da 410; exigir enteros cuesta {ple_brecha} %.",
                               "x1 ≤ 4 tiene holgura en la relajación (3,29) pero es activa en el óptimo entero."],
         },
@@ -150,7 +149,7 @@ PARTE1 = {
             "titulo": "Uso de la oferta por planta",
             "subtitulo": "Unidades enviadas a clientes y asignadas al destino ficticio, por origen",
             "lectura": "{tr_lectura}",
-            "fuente": "Elaboración propia con PuLP 3 sobre datos/transporte.yaml.",
+            "fuente": None,
             "implicaciones": ["Lo que va al ficticio es oferta que se queda en la planta.",
                               "El ficticio tiene costo 0, así que no altera el costo total."],
         },
@@ -168,7 +167,7 @@ PARTE1 = {
             "titulo": "Asignación óptima por agente",
             "subtitulo": "Valor de la tarea asignada y mínimo de cada fila de la matriz",
             "lectura": "{as_lectura}",
-            "fuente": "Elaboración propia con PuLP 3 sobre datos/asignacion.yaml.",
+            "fuente": None,
             "implicaciones": ["No siempre gana el mínimo de cada fila: dos agentes no pueden tomar la misma tarea.",
                               "Las tareas ficticias marcan a quién no se le asigna trabajo."],
         },
@@ -187,7 +186,7 @@ COMPARACION = {
         "titulo": "Valor óptimo relativo al de Python",
         "subtitulo": "Índice, Python = 100, por problema y herramienta",
         "lectura": "{comparacion_lectura}",
-        "fuente": "Elaboración propia con run_all.py (resultados/*.json). Barras rayadas: resultado aún no generado.",
+        "fuente": "Barras rayadas: resultado aún no generado.",
         "implicaciones": ["Si los tres coinciden, el modelo está bien planteado, no solo bien programado.",
                           "Una diferencia apunta a datos distintos o a un error de balanceo."],
     },
@@ -215,7 +214,7 @@ QUE_ES = {
         "titulo": "Cómo llega la demanda a cada destino",
         "subtitulo": "Unidades por destino según su último tramo, ejemplo de la Parte II",
         "lectura": "el {pct_via} % de la demanda llega a través de un nodo de transbordo: la ruta directa P1→D1 existe, pero es más cara.",
-        "fuente": "Elaboración propia con PuLP 3 sobre datos/transbordo.yaml.",
+        "fuente": None,
     },
 }
 
@@ -244,7 +243,7 @@ EJEMPLO = {
         "titulo": "Red del ejemplo y flujo óptimo",
         "subtitulo": "Costo unitario por arco; [flujo] en los arcos usados (unidades)",
         "lectura": "todo el flujo pasa por T1 o T2; el arco directo P1→D1 (costo 12) queda sin usar.",
-        "fuente": "Elaboración propia con PuLP 3 sobre datos/transbordo.yaml; la red la dibuja graficos.py.",
+        "fuente": None,
         "implicaciones": ["Los arcos grises existen pero no conviene usarlos.",
                           "Los nodos rosados no ofrecen ni demandan: solo redistribuyen."],
     },
@@ -262,7 +261,7 @@ MATRICIAL = {
         "titulo": "Matriz de costos ampliada",
         "subtitulo": "{tb_n} × {tb_n} nodos, buffer B = {tb_B}, M = {tb_M}",
         "lectura": "las celdas M bloquean rutas que no existen; con el buffer el modelo da {tb_buffer} = {tb_optimo} del modelo de red.",
-        "fuente": "Elaboración propia: capturas/transbordo_matriz_python.png generada por parte2/python/transbordo.py.",
+        "fuente": None,
         "implicaciones": ["M se elige mayor que cualquier plan sin arcos ficticios para que nunca convenga.",
                           "La misma matriz se carga en Excel para Solver."],
     },
@@ -276,9 +275,9 @@ SOLVER_LAMINA = {
             "## Método", "Simplex LP. La hoja Instrucciones trae las celdas exactas y el óptimo esperado ({tb_optimo})."],
     "exhibicion": {
         "titulo": "Resultado de Solver",
-        "subtitulo": "Captura de la hoja resuelta (capturas/transbordo_solver.png)",
+        "subtitulo": "Captura de la hoja resuelta",
         "lectura": "{solver_lectura}",
-        "fuente": "Elaboración propia con Excel Solver (Simplex LP) sobre parte2/solver/transbordo.xlsx.",
+        "fuente": None,
         "implicaciones": ["Solver no se automatiza: se corre a mano y se guarda la captura.",
                           "Guardar el libro resuelto con otro nombre; el script sobrescribe transbordo.xlsx."],
     },
@@ -295,7 +294,7 @@ VARIANTES = {
     ],
     "nota": "Costo óptimo del ejemplo en cada caso (variando la oferta de P1 en ±20 unidades). "
             "B se calcula después de balancear, con el total ya igualado.",
-    "fuente": "Elaboración propia: modelo de red resuelto con SciPy linprog (datos.py) sobre datos/transbordo.yaml; Taha (2017), cap. 5.",
+    "fuente": "Taha (2017), cap. 5.",
 }
 
 DESBALANCEADO = {
@@ -309,7 +308,7 @@ DESBALANCEADO = {
         "titulo": "Costo óptimo según la oferta disponible",
         "subtitulo": "Costo total al variar la oferta de {curva_nodo}; demanda fija de {curva_bal} unidades",
         "lectura": "con oferta de sobra el costo no cambia ({curva_costo}); si falta, baja solo porque se envía menos, no porque la red sea más barata.",
-        "fuente": "Elaboración propia: modelo de red con nodo ficticio resuelto con SciPy linprog (datos.py) sobre datos/transbordo.yaml.",
+        "fuente": None,
         "implicaciones": ["Un costo menor con faltante es engañoso: hay demanda sin cubrir.",
                           "Conviene reportar las unidades del ficticio junto al costo."],
     },

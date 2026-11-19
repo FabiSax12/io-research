@@ -22,7 +22,7 @@ VERDE = "008b5c"
 ROSADO = "fc9bb3"
 GRIS_REJILLA = "d6d5dd"     # rejillas de gráficos y celdas del medidor
 GRIS_NEUTRO = "595959"      # celda activa "neutral" del medidor
-GRIS_PIE = "8a8a8a"         # aviso del pie de página
+GRIS_PIE = "8a8a8a"         # número de lámina del pie
 GRIS_EMBARGO = "e3e3ea"     # franja de embargo de la portada
 GRIS_VENTANA = "ededf1"     # ventana de pronóstico / escenario
 TINTE_BERMELLON = "fff3f0"
@@ -47,8 +47,6 @@ SECCIONES = {
 }
 
 # ------------------------------------------------------------------ textos fijos del diseño (en español)
-AVISO_PIE = "Uso académico. Los resultados dependen de los datos de cada modelo."
-APERTURA_FUENTE = "Los resultados dependen de los datos de entrada y pueden variar."
 ETIQUETA_LECTURA = "Lectura del gráfico:"
 TITULO_IMPLICACIONES = "Implicaciones para el modelo"
 
@@ -194,7 +192,6 @@ def pestana(lamina, seccion):
 
 
 def pie(lamina, numero):
-    texto(lamina, MARGEN, 512, 600, 14, AVISO_PIE, tam=10, fuente=NOTA, color=GRIS_PIE, mayusculas=True)
     texto(lamina, ANCHO - MARGEN - 60, 512, 60, 14, str(numero), tam=10, fuente=NOTA, color=GRIS_PIE, alinear="der")
 
 
@@ -216,7 +213,9 @@ def columnas_cuerpo(lamina, y, izquierda, derecha, x=COL_IZQ_X, w=COL_IZQ_W, h=N
 
 
 def nota_fuente(lamina, x, y, w, fuente, h=30):
-    texto(lamina, x, y, w, h, [[(APERTURA_FUENTE + " ", {"negrita": True}), (fuente, {})]],
+    if not fuente:
+        return
+    texto(lamina, x, y, w, h, [[(fuente, {})]],
           tam=10, fuente=NOTA, interlineado=1.0)
 
 

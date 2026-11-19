@@ -51,9 +51,9 @@ El diseño es fijo; lo que cambia es el contenido. Estas son las únicas traducc
 | Nombre del instituto apilado | Instituto / **Tecnológico** / de Costa Rica (solo texto, sin logo) |
 | Franja de embargo | **Se quitó** a pedido del equipo (la portada no lleva fecha de defensa) |
 | *Chart takeaway:* | **Lectura del gráfico:** |
-| *Forward-looking estimates may not come to pass.* | **Los resultados dependen de los datos de entrada y pueden variar.** |
+| *Forward-looking estimates may not come to pass.* | **Se quitó**: la nota de fuente muestra solo la fuente |
 | *Investment implications* | **Implicaciones para el modelo** |
-| *Capital at risk* (pie) | USO ACADÉMICO. LOS RESULTADOS DEPENDEN DE LOS DATOS DE CADA MODELO. |
+| *Capital at risk* (pie) | **Se quitó**: el pie muestra solo el número de lámina |
 | Escenarios: probabilidades a 28 px | Costo óptimo del transbordo en tres casos (balanceado, sobra, falta oferta) |
 | Mega forces: capital público vs. privado | Demanda que llega por un nodo de transbordo vs. directa, por destino |
 | Cita con retrato amarillo | Definición de transbordo (Taha) con mosaico amarillo e iniciales; sin foto |
@@ -61,7 +61,7 @@ El diseño es fijo; lo que cambia es el contenido. Estas son las únicas traducc
 | Barras rayadas = estimaciones | Relajación lineal del PLE (cota) y resultados de R/Solver aún pendientes |
 | Líneas discontinuas sobre ventana #ededf1 | Recta de nivel de Z (PL) y curva de costo en los casos desbalanceados |
 
-Todos los textos fijos están en `tema.py` (`AVISO_PIE`, `APERTURA_FUENTE`, `ETIQUETA_LECTURA`, `TITULO_IMPLICACIONES`)
+Todos los textos fijos están en `tema.py` (`ETIQUETA_LECTURA`, `TITULO_IMPLICACIONES`)
 por si se quiere volver a la redacción original en inglés.
 
 ## Decisiones que la especificación no cubre
