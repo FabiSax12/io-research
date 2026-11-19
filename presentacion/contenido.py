@@ -13,7 +13,7 @@ PROFESOR = "Prof. Esteban José Ballestero Alfaro"
 
 # Resultados de Excel Solver: escribir el valor óptimo que dio Solver al terminar el paso manual.
 # None = todavía no se corrió (la lámina muestra un marcador y el gráfico una barra rayada).
-SOLVER = {"transbordo": None, "transbordo_desbalanceado": None}
+SOLVER = {"transbordo": 820, "transbordo_desbalanceado": 610}
 
 PORTADA = {
     "anio": "2026",
@@ -175,7 +175,7 @@ COMPARACION = {
     "izq": ["## Cómo se comparó", "run_all.py corre cada problema en los dos lenguajes y compara el valor óptimo con tolerancia de 1e-6.",
             "## Verificación interna", "Cada script además resuelve el modelo con un segundo método (SciPy, variables binarias o el modelo con buffer)."],
     "der": ["## Estado", "{estado_comparacion}",
-            "## Pendiente", "[completar: correr Rscript (R 4.2+) y Solver, y actualizar contenido.SOLVER.]"],
+            "## Solver", "Excel Solver (Simplex LP) sobre la matriz con buffer da el mismo óptimo en transbordo y en transbordo desbalanceado."],
     "exhibicion": {
         "titulo": "Valor óptimo relativo al de Python",
         "subtitulo": "Índice, Python = 100, por problema y herramienta",
