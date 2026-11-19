@@ -251,7 +251,7 @@ def codigo(m, seccion, titulo, fragmentos, citas=None):
         cita_pie(lam, citas.get(lenguaje))
 
 
-def resultados(m, seccion, titulo, problema, lectura_txt, fuente):
+def resultados(m, seccion, titulo, problema, lectura_txt, fuente, etiqueta=None):
     """Dos columnas: tablas de solución de Python y de R (una sobre la otra) | salida de consola."""
     lam = m.nueva(seccion, titulo)
     titular(lam, MARGEN, TOPE, 880, titulo, h=50)
@@ -280,7 +280,7 @@ def resultados(m, seccion, titulo, problema, lectura_txt, fuente):
     else:
         ventana(lam, lineas, x_der, y0 + 42, w_der, y_fin - y0 - 42, "consola", f"Terminal · python run_all.py {problema}",
                 tam=(8.5, 11.5))
-    lectura(lam, MARGEN, BASE - 62, 880, lectura_txt, h=20)
+    lectura(lam, MARGEN, BASE - 62, 880, lectura_txt, h=20, etiqueta=etiqueta)
     cita_pie(lam, fuente)
     return lam
 
@@ -388,7 +388,8 @@ def fuerzas(m, c, grafico):
     exhibicion(lam, "parte2", e["titulo"], e["subtitulo"], grafico, e["lectura"], e["fuente"], None, alto_grafico=230)
 
 
-def tabla_texto(m, seccion, titular_txt, encabezados, filas, anchos, lectura_txt=None, fuente=None, tam=12, alto_max=80):
+def tabla_texto(m, seccion, titular_txt, encabezados, filas, anchos, lectura_txt=None, fuente=None, tam=12, alto_max=80,
+                etiqueta=None):
     lam = m.nueva(seccion, titular_txt)
     titular(lam, MARGEN, TOPE, 880, titular_txt, h=50)
     y = TOPE + 70
@@ -408,7 +409,7 @@ def tabla_texto(m, seccion, titular_txt, encabezados, filas, anchos, lectura_txt
         y += alto
         regla_h(lam, MARGEN, y - 1.5, 880)
     if lectura_txt:
-        lectura(lam, MARGEN, BASE - 52, 880, lectura_txt, h=18)
+        lectura(lam, MARGEN, BASE - 52, 880, lectura_txt, h=18, etiqueta=etiqueta)
     if fuente:
         nota_fuente(lam, MARGEN, BASE - 30, 880, fuente)
     return lam
@@ -510,12 +511,14 @@ def construir(destino=None):
         codigo(m, "parte1", f"{c['titular']}: código", list(c["codigo"]), c.get("cita_codigo"))
         resultados(m, "parte1", f"{c['titular']}: resultados", p,
                    f"Python y R resuelven el mismo YAML; el valor óptimo es {f((datos.resultado(p) or {}).get('valor_objetivo'))}.",
-                   c.get("cita_resultados"))
+                   c.get("cita_resultados"),
+                   etiqueta="Lectura de los resultados:" if p == "asignacion" else None)
     dividida(m, "parte1", llenar(K.COMPARACION, v), g["comparacion"]["ruta"], alto_grafico=180)
 
     fuerzas(m, llenar(K.QUE_ES, v), g["directo"]["ruta"])
     c = K.RELACION
-    tabla_texto(m, "parte2", c["titular"], c["encabezados"], c["filas"], [150, 330, 400], c["lectura"], c["fuente"])
+    tabla_texto(m, "parte2", c["titular"], c["encabezados"], c["filas"], [150, 330, 400], c["lectura"], c["fuente"],
+                etiqueta="Lectura de la tabla:")
     dividida(m, "parte2", llenar(K.EJEMPLO, v), g["red"]["ruta"], alto_grafico=190)
     lam = dividida(m, "parte2", llenar(K.MATRICIAL, v), None, alto_grafico=190, sin_grafico=True)
     matriz_nativa(lam, datos.CAPTURAS / "transbordo_matriz_python.csv", EXH_X, TOPE + 42, EXH_W, 190)
