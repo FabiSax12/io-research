@@ -61,10 +61,10 @@
 
 | ACTIVIDAD | PLAZO | RESPONSABLE | CONDICIÓN |
 |-----------|-------|-------------|-----------|
-| Entregar enunciados definitivos de los cinco problemas | 2026-11-13 | Todos | Cada uno con mínimo 3 restricciones |
-| Confirmar versiones de las librerías y probar la instalación | 2026-11-13 | Fabián Vargas | Probar en una máquina limpia |
-| Lista de referencias en formato APA | 2026-11-14 | Kenneth Araya | Libros y documentación de cada librería |
-| Probar el costo M en Excel Solver | 2026-11-14 | Kenni Rodríguez | Matriz de transbordo generada |
-| Resolver transporte y asignación con datos finales | 2026-11-14 | Yan Torres y Kenneth Araya | Enunciados entregados |
-| Resumen de una página sobre nodos y conservación de flujo | 2026-11-14 | Kenni Rodríguez | Para que Kenneth lo use en su parte |
-| Revisión cruzada de scripts | 2026-11-15 | Todos | Cada script revisado por otra persona y corrido sin errores |
+| Entregar enunciados definitivos de los cinco problemas | 2026-11-13 | Todos | Concluida |
+| Confirmar versiones de las librerías y probar la instalación | 2026-11-13 | Fabián Vargas | Concluida |
+| Lista de referencias en formato APA | 2026-11-14 | Kenneth Araya | Concluida |
+| Probar el costo M en Excel Solver | 2026-11-14 | Kenni Rodríguez | Concluida |
+| Resolver transporte y asignación con datos finales | 2026-11-14 | Yan Torres y Kenneth Araya | Concluida |
+| Resumen de una página sobre nodos y conservación de flujo | 2026-11-14 | Kenni Rodríguez | Concluida |
+| Revisión cruzada de scripts | 2026-11-15 | Todos | Concluida |

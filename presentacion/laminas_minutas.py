@@ -43,7 +43,7 @@ def lineas(trs, ancho, tam=TAM):
 def _cabecera(m, mi, seccion, pagina=None):
     """Lámina nueva con rótulo de la minuta, titular de la sección y regla."""
     etiqueta = f"Minuta {mi['numero']} · {mi['tema']} · {mi['fecha']}"
-    lam = m.nueva("resumen", f"Minuta {mi['numero']}: {seccion}", grupo="minutas")
+    lam = m.nueva("minutas", f"Minuta {mi['numero']}: {seccion}", grupo="minutas")
     texto(lam, MARGEN, TOPE, 880, 16, etiqueta, tam=12, negrita=True)
     pag = f" ({pagina[0]}/{pagina[1]})" if pagina and pagina[1] > 1 else ""
     titular(lam, MARGEN, TOPE + 20, 880, seccion + pag, tam=34, h=40)
@@ -53,7 +53,7 @@ def _cabecera(m, mi, seccion, pagina=None):
 
 # ------------------------------------------------------------------ lámina 1: datos, presentes y agenda
 def _datos(m, mi):
-    lam = m.nueva("resumen", f"Minuta {mi['numero']}", grupo="minutas")
+    lam = m.nueva("minutas", f"Minuta {mi['numero']}", grupo="minutas")
     texto(lam, COL_IZQ_X, TOPE, COL_IZQ_W + 400, 16, f"Minuta de reunión · {mi['curso']}", tam=12, negrita=True)
     titular(lam, COL_IZQ_X, TOPE + 20, 880, f"Minuta {mi['numero']}: {mi['tema']}", tam=34, h=40)
     regla_v(lam, REGLA_X, TOPE + 84, BASE - TOPE - 84)

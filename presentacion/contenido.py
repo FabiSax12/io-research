@@ -54,9 +54,11 @@ INTRO = {
 }
 
 # Pies de cita compartidos por las láminas de código y de resultados (formato de la minuta 2)
-CITA_PYTHON = ("Código propio. Librería: PuLP (Mitchell et al., 2011) con CBC (Forrest et al., 2024). "
-               "Ver sección de código para YAML e IA.")
-CITA_R = "Código propio. Librería: lpSolve (Berkelaar y Csárdi, 2024, pp. 2–4)."
+# El código lo escribió el equipo; la IA solo ayudó a depurarlo (detalle en la lámina «Código, datos e IA»).
+CITA_PYTHON = ("Código del equipo, depurado con apoyo de IA (lámina 36). "
+               "PuLP (Mitchell et al., 2011) con CBC (Forrest et al., 2024).")
+CITA_R = ("Código del equipo, depurado con apoyo de IA (lámina 36). "
+          "lpSolve (Berkelaar y Csárdi, 2024, pp. 2–4).")
 CITA_RESULTADOS = "Elaboración propia con los resultados de los scripts."
 
 # ------------------------------------------------------------------ herramientas (tabla de valoración)
@@ -66,18 +68,18 @@ CITA_RESULTADOS = "Elaboración propia con los resultados de los scripts."
 HERRAMIENTAS = {
     "titular": "Librerías que investigamos",
     "intro": "¿Con qué resolver cada tipo de problema? Comparamos siete herramientas según qué problemas cubren y qué "
-             "tan fácil fue escribir los modelos. La columna Recomendación resume nuestra opinión en una escala de −3 a +3.",
+             "tan fácil fue escribir los modelos. Versiones usadas: Python 3.14.8 y R 4.6.1.",
     "leyenda": "Cómo leer la columna Recomendación",
     "filas": [
-        ("PuLP", "Python", "PL · PLE · Transp. · Asig.", "Solución principal", 2, 1,
+        ("PuLP 3.3.2", "Python", "PL · PLE · Transp. · Asig.", "Solución principal", 2, 1,
          "El modelo se escribe casi igual que en la pizarra; trae el solver CBC."),
-        ("SciPy", "Python", "PL · PLE · Asig.", "Verificación", 1, 1,
+        ("SciPy 1.18.1", "Python", "PL · PLE · Asig.", "Verificación", 1, 1,
          "linprog y milp trabajan con matrices; linear_sum_assignment resuelve asignación."),
         ("OR-Tools", "Python", "PL · PLE · Redes", "Solo investigada", 1, 2,
          "Muy completa, pero pide más código del necesario para modelos de clase."),
         ("Pyomo", "Python", "PL · PLE", "Solo investigada", 0, 1,
          "Pensada para modelos grandes; hay que instalar el solver aparte."),
-        ("lpSolve", "R", "PL · PLE · Transp. · Asig.", "Solución principal", 2, 1,
+        ("lpSolve 5.6.23", "R", "PL · PLE · Transp. · Asig.", "Solución principal", 2, 1,
          "lp(), lp.transport() y lp.assign(): una llamada por tipo de problema."),
         ("ompr + ROI", "R", "PL · PLE", "Solo investigada", 0, 0,
          "Sintaxis parecida a PuLP, pero con muchas dependencias que instalar."),
@@ -116,7 +118,7 @@ PARTE1 = {
                 "Tradicional (x1) y Premium (x2). Ganancia: ₡30 000 y ₡50 000 por quintal (Z en miles de colones).",
                 "## Modelo", "{pl_modelo}"],
         "der": ["## Restricciones", "100 qq de grano verde; 280 h de tostadora (2 h y 4 h por qq); "
-                "máximo 50 qq de Premium; contrato de al menos 20 qq de Tradicional.",
+                "Demanda Premium: máximo 50 qq; contrato de al menos 20 qq de Tradicional.",
                 "## Librerías", "Python: PuLP (CBC) y SciPy linprog para verificar. R: lpSolve::lp().",
                 "## Resultado", "Z = {pl_optimo} con {pl_solucion}."],
         "exhibicion": {
@@ -124,12 +126,24 @@ PARTE1 = {
             "subtitulo": "Restricciones del modelo y recta de nivel de Z en el óptimo",
             "lectura": "el óptimo está en el vértice ({pl_x1}, {pl_x2}), donde se cruzan dos restricciones activas; Z = {pl_optimo}.",
             "fuente": None,
-            "implicaciones": ["Activas: grano y tostadora. Demanda y contrato tienen holgura (precio sombra 0).",
-                              "Precios sombra: un quintal más de grano o una hora más de tostadora vale ₡10 000."],
+            "implicaciones": ["Activas: grano y tostadora. Demanda Premium y contrato tienen holgura (precio sombra 0).",
+                              "Precio sombra 10 (₡10 000) en grano y tostadora: y1 + 2y2 = 30 y y1 + 4y2 = 50. "
+                              "PuLP lo da con .pi y R con sol$duals."],
         },
         "codigo": [("parte1/python/pl.py", "--- Modelo en PuLP", "--- Verificación"), ("parte1/r/pl.R", None, None)],
         "cita": "Fuentes: Wu (2026a, diap. 10); Chase et al. (2004, p. 708). Problema y gráfico: elaboración propia.",
         "cita_codigo": {"Python": CITA_PYTHON, "R": CITA_R},
+        "apoyo_codigo": {
+            "yaml": "pl",
+            "Python": [("leer_yaml(\"pl\")", "lee datos/pl.yaml como diccionario (comun/utilidades.py)."),
+                       ("nombres, c, sentido, restr", "variables, objetivo, max o min y restricciones del YAML."),
+                       ("COMPARAR", "pasa el signo del YAML (\"<=\", \">=\", \"=\") al operador de Python."),
+                       ("rc.pi", "precio sombra (dual) de cada restricción, que calcula CBC.")],
+            "R": [("leer_yaml(\"pl\")", "lee datos/pl.yaml como lista (comun/utilidades.R)."),
+                  ("d$restricciones", "restricciones del YAML; de ahí salen A, signos y rhs."),
+                  ("estado_lp()", "traduce el código de lp() (0, 2, 3) a Optimal, Infeasible o Unbounded."),
+                  ("sol$duals", "precios sombra; lp() los calcula con compute.sens = TRUE.")],
+        },
         "cita_resultados": CITA_RESULTADOS,
     },
     "ple": {
@@ -138,21 +152,30 @@ PARTE1 = {
                 "urbanas (x2) armar; deben ser enteras. Ganancia: ₡70 000 y ₡50 000 (Z en miles de colones).",
                 "## Modelo", "{ple_modelo}"],
         "der": ["## Restricciones", "19 h de soldadura (3 h y 2 h); 17 h de pintura (1 h y 3 h); "
-                "4 cuadros de montaña; cupo de ensamblaje para 8 bicicletas.",
+                "4 cuadros de montaña; ensamblaje para 8 bicicletas (no es activa: usa 7,86 y 7 de 8, así que mandan las otras 3).",
                 "## Librerías", "Python: PuLP con cat=\"Integer\" (ramificación y acotamiento en CBC) y SciPy milp. "
                 "R: lpSolve::lp() con int.vec.",
                 "## Resultado", "Z = {ple_optimo} con {ple_solucion}."],
         "exhibicion": {
-            "titulo": "Óptimo entero frente a la relajación lineal",
-            "subtitulo": "Valor de Z sin y con la condición de integralidad",
+            "titulo": "Región factible y puntos enteros",
+            "subtitulo": "Relajación lineal, óptimo entero y redondeo de la relajación",
             "lectura": "exigir enteros baja Z de {ple_cota} a {ple_optimo} ({ple_brecha} % menos); la relajación es una cota.",
-            "fuente": "La barra rayada es una cota, no una solución factible.",
+            "fuente": "El punto hueco es la relajación (cota); la X es el redondeo, que queda fuera por pintura.",
             "implicaciones": ["Redondear no sirve: (3, 5) no es factible y (3, 4) da 410; exigir enteros cuesta {ple_brecha} %.",
                               "x1 ≤ 4 tiene holgura en la relajación (3,29) pero es activa en el óptimo entero."],
         },
         "codigo": [("parte1/python/ple.py", "--- Modelo en PuLP", "--- Verificación"), ("parte1/r/ple.R", None, None)],
         "cita": "Fuentes: Bradley et al. (1977, pp. 288–289); Wu (2026b, diaps. 38–40). Problema y gráfico: elaboración propia.",
         "cita_codigo": {"Python": CITA_PYTHON, "R": CITA_R},
+        "apoyo_codigo": {
+            "yaml": "ple",
+            "Python": [("leer_yaml(\"ple\")", "lee datos/ple.yaml como diccionario (comun/utilidades.py)."),
+                       ("nombres, c, sentido, restr", "variables, objetivo, max o min y restricciones del YAML."),
+                       ("COMPARAR", "pasa el signo del YAML (\"<=\", \">=\", \"=\") al operador de Python.")],
+            "R": [("leer_yaml(\"ple\")", "lee datos/ple.yaml como lista (comun/utilidades.R)."),
+                  ("d$restricciones", "restricciones del YAML; de ahí salen A, signos y rhs."),
+                  ("estado_lp()", "traduce el código de lp() (0, 2, 3) a Optimal, Infeasible o Unbounded.")],
+        },
         "cita_resultados": CITA_RESULTADOS,
     },
     "transporte": {
@@ -385,9 +408,34 @@ CONCLUSIONES = {
                       "El modelo de red es más corto de escribir; el matricial es el que se presenta en clase."],
 }
 
+# ------------------------------------------------------------------ código, datos e IA (las láminas de código remiten aquí)
+CODIGO_IA = {
+    "titular": "Código, datos e IA",
+    "izq": ["## Dónde está el código", "Repositorio del equipo: github.com/FabiSax12/io-research. Parte I en "
+            "parte1/python y parte1/r; transbordo en parte2/python, parte2/r y parte2/solver (Excel).",
+            "## Funciones comunes", "comun/utilidades.py y comun/utilidades.R: leer_yaml, estado_lp y emitir "
+            "(imprime y guarda la tabla). python run_all.py corre todo."],
+    "der": ["## Qué es el YAML", "Un formato de texto para datos con pares clave: valor y listas (Ben-Kiki et al., 2021). "
+            "Cada problema tiene su archivo en datos/.",
+            "## Por qué lo usamos", "Python y R leen el mismo YAML, así que resuelven exactamente el mismo modelo; "
+            "para cambiar un dato no se toca el código."],
+    "exhibicion": {
+        "titulo": "Un YAML del trabajo",
+        "subtitulo": "datos/pl.yaml: el problema de PL completo",
+        "lectura": "cada restricción es una línea con su nombre, coeficientes, signo y lado derecho; "
+                   "el script arma el modelo recorriendo esa lista.",
+    },
+    "implicaciones": ["Usamos un asistente de IA conversacional para revisar y depurar errores de los scripts y para "
+                      "dar formato APA a las referencias.",
+                      "Modelos, datos y conclusiones son del equipo; cada resultado se comprobó corriendo los scripts."],
+    "cita": "Fuentes: Ben-Kiki et al. (2021); Mitchell et al. (2011); Berkelaar y Csárdi (2024). Elaboración propia.",
+}
+
 # Referencias en APA 7, en orden alfabético: solo las obras citadas en algún pie de lámina.
 # *texto* sale en cursiva (título del libro, software o revista y su volumen).
 REFERENCIAS = [
+    "Ben-Kiki, O., Evans, C. y döt Net, I. (2021). *YAML Ain’t Markup Language (YAML™) version 1.2.2*. "
+    "YAML Language Development Team. https://yaml.org/spec/1.2.2/",
     "Berkelaar, M. y Csárdi, G. (2024). *lpSolve: Interface to ‘Lp_solve’ v. 5.5 to solve linear/integer programs* "
     "(versión 5.6.23) [Paquete de R]. CRAN. https://CRAN.R-project.org/package=lpSolve",
     "Bradley, S. P., Hax, A. C. y Magnanti, T. L. (1977). *Applied mathematical programming*. Addison-Wesley.",

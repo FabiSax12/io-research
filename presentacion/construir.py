@@ -177,14 +177,14 @@ def indice(m, lam, integrantes):
     # (rótulo, descripción) de cada fila; las secciones sin entrada usan la etiqueta de su pestaña
     filas = {"contexto": "Introducción", "herramientas": "Librerías de Python y R",
              "parte1": "PL, PLE, transporte y asignación", "parte2": "Problema de transbordo",
-             "resumen": "Conclusiones", "minutas": "Tres reuniones y cronograma", "referencias": "Fuentes consultadas"}
+             "resumen": "Conclusiones", "codigo": "Dónde está el código, YAML e IA", "minutas": "Tres reuniones y cronograma", "referencias": "Fuentes consultadas"}
     y = TOPE + 100
     for grupo, sec, a, b in grupos:
         rotulo = SECCIONES[sec]["etiqueta"] if grupo == sec else grupo.capitalize()
         regla_h(lam, MARGEN + 24, y - 8, 372)
         texto(lam, MARGEN + 24, y, 250, 40, [[(rotulo, {"negrita": True})], [(filas[grupo], {})]], tam=13)
         texto(lam, MARGEN + 300, y, 96, 20, f"{a}–{b}" if a != b else str(a), tam=13, negrita=True, alinear="der")
-        y += 46
+        y += 42
     texto(lam, 500, TOPE + 20, 420, 30, "Equipo", tam=15, fuente=TITULAR)
     texto(lam, 500, TOPE + 46, 420, 120, integrantes or ["[completar: integrantes]"], tam=13)
 
@@ -232,11 +232,13 @@ def matriz_nativa(lam, ruta_csv, x, y, w, h):
             regla_h(lam, x, fy + alto - 1.5, w, grosor=1.5 if i in (nf - 2, nf - 1) else 0.75)
 
 
-def codigo(m, seccion, titulo, fragmentos, citas=None):
+def codigo(m, seccion, titulo, fragmentos, citas=None, apoyo=None):
     """Una lámina por fragmento (Python y luego R), con la ventana de código a todo lo ancho.
 
     fragmentos: [(ruta, desde, hasta), ...]
     citas: {"Python": cita, "R": cita} para el pie de cada lámina (opcional).
+    apoyo: {"yaml": problema, "Python": [(función, qué hace)], "R": [...]} (opcional). Debajo del código muestra
+           el YAML que lee el script y una línea por cada función que se usa pero no aparece en el fragmento.
     """
     citas = citas or {}
     for ruta, desde, hasta in fragmentos:
@@ -246,9 +248,33 @@ def codigo(m, seccion, titulo, fragmentos, citas=None):
         titular(lam, MARGEN, TOPE, 880, f"{titulo} en {lenguaje}", h=50)
         y = TOPE + 62
         lineas = datos.fragmento(ruta, desde, hasta, max_lineas=80)   # la ventana corta lo que no cabe
-        ventana(lam, lineas or ["(sin fragmento)"], MARGEN, y, 880, BASE - 40 - y, "python" if python else "r",
-                f"{lenguaje} · {ruta}", tam=(10.0, 13.5))
+        alto = BASE - 40 - y if not apoyo else 216
+        ventana(lam, lineas or ["(sin fragmento)"], MARGEN, y, 880, alto, "python" if python else "r",
+                f"{lenguaje} · {ruta}", tam=(8.5, 13.5) if apoyo else (10.0, 13.5))
+        if apoyo:
+            ya, h = y + alto + 10, BASE - (y + alto + 10)
+            ventana(lam, datos.yaml_lineas(apoyo["yaml"]), MARGEN, ya, 430, h, "yaml", f"YAML · datos/{apoyo['yaml']}.yaml",
+                    tam=(7.0, 10.0))
+            texto(lam, MARGEN + 450, ya, 430, 18, "Funciones que no se ven en el fragmento", tam=12, negrita=True)
+            texto(lam, MARGEN + 450, ya + 20, 430, h - 20,
+                  [[(fn + ": ", {"negrita": True}), (que, {})] for fn, que in apoyo[lenguaje]],
+                  tam=10.5, interlineado=1.15, espacio_despues=3)
         cita_pie(lam, citas.get(lenguaje))
+
+
+def codigo_ia(m, c):
+    """Dónde está el código, qué es el YAML y para qué se usó IA (las láminas de código remiten aquí)."""
+    lam = m.nueva("codigo", c["titular"])
+    titular(lam, COL_IZQ_X, TOPE, COL_IZQ_W, c["titular"], h=95)
+    columnas_cuerpo(lam, TOPE + 110, c["izq"], c["der"])
+    regla_v(lam, REGLA_X, TOPE, BASE - TOPE)
+    texto(lam, EXH_X, TOPE, EXH_W, 20, c["exhibicion"]["titulo"], tam=15, fuente=TITULAR)
+    texto(lam, EXH_X, TOPE + 20, EXH_W, 16, c["exhibicion"]["subtitulo"], tam=12)
+    ventana(lam, datos.yaml_lineas("pl", sin=()), EXH_X, TOPE + 44, EXH_W, 190, "yaml", "YAML · datos/pl.yaml",
+            tam=(7.0, 10.0))
+    lectura(lam, EXH_X, TOPE + 244, EXH_W, c["exhibicion"]["lectura"], h=60)
+    caja_implicaciones(lam, EXH_X, TOPE + 318, EXH_W, 120, "codigo", c["implicaciones"], titulo="Uso de IA")
+    cita_pie(lam, c["cita"])
 
 
 def resultados(m, seccion, titulo, problema, lectura_txt, fuente, etiqueta=None):
@@ -459,7 +485,7 @@ def conclusiones(m, c):
 
 
 def referencias(m):
-    lam = m.nueva("resumen", "Referencias", grupo="referencias")
+    lam = m.nueva("referencias", "Referencias")
     titular(lam, MARGEN, TOPE, 880, "Referencias", h=50)
     regla_h(lam, MARGEN, TOPE + 62, 880)
     # *texto* = cursiva (APA 7); dos columnas con sangría francesa
@@ -509,7 +535,7 @@ def construir(destino=None):
     for p in ("pl", "ple", "transporte", "asignacion"):
         c = llenar(K.PARTE1[p], v)
         dividida(m, "parte1", c, g[p]["ruta"], alto_grafico=190)
-        codigo(m, "parte1", f"{c['titular']}: código", list(c["codigo"]), c.get("cita_codigo"))
+        codigo(m, "parte1", f"{c['titular']}: código", list(c["codigo"]), c.get("cita_codigo"), c.get("apoyo_codigo"))
         resultados(m, "parte1", f"{c['titular']}: resultados", p,
                    f"Python y R resuelven el mismo YAML; el valor óptimo es {f((datos.resultado(p) or {}).get('valor_objetivo'))}.",
                    c.get("cita_resultados"),
@@ -543,6 +569,9 @@ def construir(destino=None):
              datos.captura("transbordo_desbalanceado_solver.png") or "transbordo_desbalanceado_solver.png", alto_grafico=190)
 
     conclusiones(m, K.CONCLUSIONES)
+    codigo_ia(m, K.CODIGO_IA)
+    if f"lámina {len(m.prs.slides)})" not in K.CITA_PYTHON:   # los pies de código citan esta lámina por número
+        print(f"Aviso: «Código, datos e IA» quedó en la lámina {len(m.prs.slides)}; actualizar CITA_PYTHON y CITA_R.")
     laminas_minutas.agregar(m)
     referencias(m)
 

@@ -156,6 +156,68 @@ def relajacion_ple(ruta, w=426, h=170):
     return {"cota": cota, "entero": entero, "brecha": brecha}
 
 
+# ------------------------------------------------------------------ PLE: región factible con los puntos enteros
+def region_ple(ruta, w=426, h=200):
+    """Región de la relajación, puntos enteros factibles, óptimo entero, relajación y el redondeo (no factible)."""
+    import math
+    import numpy as np
+    d = datos.yaml_de("ple")
+    cota, x_rel = datos.relajacion_ple()
+    res = datos.resultado("ple")
+    entero = res["valor_objetivo"] if res else None
+    brecha = None if not (cota and entero) else abs(cota - entero) / abs(cota) * 100
+    fig, ax = figura(w, h)
+    if len(d["variables"]) != 2 or res is None or x_rel is None:
+        ax.text(0.5, 0.5, "La región se dibuja solo con 2 variables", ha="center", transform=ax.transAxes)
+        guardar(fig, ruta)
+        return {"cota": cota, "entero": entero, "brecha": brecha}
+    x_ent = [res["variables"][v] for v in d["variables"]]
+    factible = lambda p: all({"<=": sum(a * q for a, q in zip(r["coef"], p)) <= r["rhs"] + 1e-9,
+                              ">=": sum(a * q for a, q in zip(r["coef"], p)) >= r["rhs"] - 1e-9,
+                              "=": abs(sum(a * q for a, q in zip(r["coef"], p)) - r["rhs"]) < 1e-9}[r["signo"]]
+                             for r in d["restricciones"]) and min(p) >= 0
+    lim_x, lim_y = math.ceil(max(x_rel[0], x_ent[0]) * 1.5) + 1, math.ceil(max(x_rel[1], x_ent[1]) * 1.3) + 1
+    xs = np.linspace(0, lim_x, 400)
+    X, Y = np.meshgrid(xs, np.linspace(0, lim_y, 400))
+    ok = np.ones_like(X, dtype=bool)
+    for r in d["restricciones"]:
+        lhs = r["coef"][0] * X + r["coef"][1] * Y
+        ok &= {"<=": lhs <= r["rhs"] + 1e-9, ">=": lhs >= r["rhs"] - 1e-9, "=": abs(lhs - r["rhs"]) < 0.05}[r["signo"]]
+    ax.contourf(X, Y, ok.astype(float), levels=[0.5, 1.5], colors=["#fff3f0"])
+    colores = [SERIES[1], SERIES[2], SERIES[3], C["negro"]]
+    for i, r in enumerate(d["restricciones"]):
+        a, b = r["coef"]
+        estilo = dict(color=colores[i % 4], linewidth=1.3, label=r["nombre"])
+        if abs(b) > 1e-12:
+            ax.plot(xs, (r["rhs"] - a * xs) / b, **estilo)
+        else:
+            ax.axvline(r["rhs"] / a, **estilo)
+    puntos = [(i, j) for i in range(lim_x + 1) for j in range(lim_y + 1) if factible((i, j))]
+    ax.plot(*zip(*puntos), "o", color=C["negro"], markersize=2.2, zorder=4, label="Puntos enteros factibles")
+    ax.plot(*x_rel, "o", markerfacecolor="white", markeredgecolor=SERIES[0], markersize=6, zorder=5)
+    ax.annotate(f"Relajación ({datos.fmt(x_rel[0])}; {datos.fmt(x_rel[1])}) Z = {datos.fmt(cota)}", x_rel,
+                xytext=(6, 2), textcoords="offset points", fontsize=TAM_ETIQUETA,
+                bbox=dict(facecolor="white", edgecolor="none", pad=0.5))
+    ax.plot(*x_ent, "o", color=SERIES[0], markersize=6, zorder=6)
+    ax.annotate(f"Óptimo entero ({datos.fmt(x_ent[0])}, {datos.fmt(x_ent[1])}) Z = {datos.fmt(entero)}", x_ent,
+                xytext=(6, -10), textcoords="offset points", fontsize=TAM_ETIQUETA, fontweight="bold",
+                bbox=dict(facecolor="white", edgecolor="none", pad=0.5))
+    redondeo = tuple(round(v) for v in x_rel)
+    if not factible(redondeo):
+        ax.plot(*redondeo, "x", color=C["negro"], markersize=7, markeredgewidth=1.8, zorder=6)
+        ax.annotate(f"Redondeo {redondeo}: no factible", redondeo, xytext=(-6, 4), textcoords="offset points",
+                    fontsize=TAM_ETIQUETA, ha="right", bbox=dict(facecolor="white", edgecolor="none", pad=0.5))
+    ax.set_xlim(0, lim_x)
+    ax.set_ylim(0, lim_y)
+    ax.axhline(0, color="black", linewidth=1)
+    ax.set_xlabel(d["variables"][0], fontsize=TAM_ETIQUETA)
+    ax.set_ylabel(d["variables"][1], fontsize=TAM_ETIQUETA)
+    rejilla_y(ax)
+    leyenda(ax, loc="upper left", ncol=1, bbox_to_anchor=(1.02, 1))   # fuera del área: no tapa los puntos
+    guardar(fig, ruta)
+    return {"cota": cota, "entero": entero, "brecha": brecha}
+
+
 # ------------------------------------------------------------------ transporte: barras apiladas por origen
 def transporte_apilado(ruta, w=426, h=170):
     d = datos.yaml_de("transporte")
@@ -361,7 +423,7 @@ def generar_todos(carpeta, solver):
     carpeta = Path(carpeta)
     carpeta.mkdir(parents=True, exist_ok=True)
     g = {}
-    for nombre, funcion in (("tamanos", tamano_modelos), ("pl", region_pl), ("ple", relajacion_ple),
+    for nombre, funcion in (("tamanos", tamano_modelos), ("pl", region_pl), ("ple", region_ple),
                             ("transporte", transporte_apilado), ("asignacion", asignacion_barras),
                             ("red", lambda r: red_transbordo(r, separar_etiquetas=True)), ("directo", destino_directo_vs_transbordo),
                             ("desbalanceo", curva_desbalanceo)):

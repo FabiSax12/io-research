@@ -52,16 +52,16 @@
 
 | ACTIVIDAD | PLAZO | RESPONSABLE | CONDICIÓN |
 |-----------|-------|-------------|-----------|
-| Elegir los cinco problemas y redactar sus enunciados | 2026-11-09 | Todos | Cada integrante propone el de su parte |
-| Lectura de teoría y documentación de librerías | 2026-11-11 | Todos | Tabla comparativa con recomendación por librería |
-| Reunión de revisión de información (minuta 2) | 2026-11-13 | Todos | Cada quien trae lo leído y lo resuelto |
-| PL y PLE en Python y R | 2026-11-13 | Fabián Vargas | Datos finales de ambos problemas |
-| Transporte en Python y R | 2026-11-14 | Yan Torres | Formato de datos definido |
-| Asignación en Python y R | 2026-11-14 | Kenneth Araya | Formato de datos definido |
-| Transbordo en Python y R, balanceado y desbalanceado | 2026-11-14 | Kenni Rodríguez | Formato de datos definido |
-| Transbordo en Excel Solver (dos archivos) | 2026-11-15 | Kenni Rodríguez | Matriz de transbordo lista |
-| Comparación de resultados entre Python, R y Solver | 2026-11-15 | Kenneth Araya | Los cinco problemas resueltos; los resultados se entregan a Yan, que los expone |
-| Presentación, textos y gráficos | 2026-11-16 | Fabián Vargas | Resultados y capturas listos |
-| Reunión de presentación y preparación de la defensa (minuta 3) | 2026-11-17 | Todos | Diapositivas completas |
-| Ensayo general con cronómetro | 2026-11-19 | Todos | Un ensayo por persona, unos 5 minutos cada uno |
-| Defensa | 2026-11-20 | Todos | Cada integrante expone su parte |
+| Elegir los cinco problemas y redactar sus enunciados | 2026-11-09 | Todos | Concluida |
+| Lectura de teoría y documentación de librerías | 2026-11-11 | Todos | Concluida |
+| Reunión de revisión de información (minuta 2) | 2026-11-13 | Todos | Concluida |
+| PL y PLE en Python y R | 2026-11-13 | Fabián Vargas | Concluida |
+| Transporte en Python y R | 2026-11-14 | Yan Torres | Concluida |
+| Asignación en Python y R | 2026-11-14 | Kenneth Araya | Concluida |
+| Transbordo en Python y R, balanceado y desbalanceado | 2026-11-14 | Kenni Rodríguez | Concluida |
+| Transbordo en Excel Solver (dos archivos) | 2026-11-15 | Kenni Rodríguez | Concluida |
+| Comparación de resultados entre Python, R y Solver | 2026-11-15 | Kenneth Araya | Concluida |
+| Presentación, textos y gráficos | 2026-11-16 | Fabián Vargas | Concluida |
+| Reunión de presentación y preparación de la defensa (minuta 3) | 2026-11-17 | Todos | Concluida |
+| Ensayo general con cronómetro | 2026-11-19 | Todos | En proceso |
+| Defensa | 2026-11-20 | Todos | En proceso |
